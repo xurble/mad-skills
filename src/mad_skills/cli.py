@@ -16,8 +16,18 @@ from mad_skills.paths import find_repo_root, find_toolkit_root
 from mad_skills.validation import validate_toolkit
 
 
+class MadSkillsArgumentParser(argparse.ArgumentParser):
+    def error(self, message: str) -> None:
+        if "--check-command" in message and "expected one argument" in message:
+            message = (
+                "--check-command needs the project validation command as its value. "
+                "For example: mad-skills init --check-command './scripts/check'"
+            )
+        super().error(message)
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="mad-skills", description="Personal Agent Skills toolkit")
+    parser = MadSkillsArgumentParser(prog="mad-skills", description="Personal Agent Skills toolkit")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -49,7 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     github_group.add_argument("--github", dest="use_github", action="store_true")
     github_group.add_argument("--no-github", dest="use_github", action="store_false")
     init_parser.set_defaults(use_github=None)
-    init_parser.add_argument("--check-command")
+    init_parser.add_argument(
+        "--check-command",
+        metavar="COMMAND",
+        help="project validation command run by 'mad-skills check --full'",
+    )
     init_parser.add_argument("--yes", action="store_true", help="accept detected defaults")
 
     labels_parser = subparsers.add_parser("setup-github-labels", help="create missing configured labels using gh")

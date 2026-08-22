@@ -61,6 +61,7 @@ def propose_initialization(
     check_command: str | None = None,
     ios: dict[str, str] | None = None,
 ) -> list[ProposedFile]:
+    _validate_check_command(check_command)
     config: dict = {
         "version": 1,
         "project": {"type": project_type, "profile": profile},
@@ -77,7 +78,11 @@ def propose_initialization(
         if not config["ios"]:
             raise MadSkillsError("iOS initialization needs a project/workspace and scheme")
     if profile == "rigorous" and "check" not in commands:
-        raise MadSkillsError("A rigorous project requires --check-command or an existing scripts/check")
+        raise MadSkillsError(
+            "The rigorous profile requires a project check command: the command that validates the repository "
+            "before a change is accepted. Create scripts/check, or rerun with "
+            "--check-command './scripts/check' (replacing it with your project's command)."
+        )
 
     proposals = [
         ProposedFile(
@@ -137,6 +142,7 @@ def initialize_interactive(
     assume_yes: bool = False,
     prompt: Prompt = input,
 ) -> list[ProposedFile]:
+    _validate_check_command(check_command)
     repo_root = find_repo_root(start)
     config_path = repo_root / PROJECT_CONFIG
     if config_path.exists():
@@ -207,3 +213,11 @@ def _choose(
 
 def _yes(value: str) -> bool:
     return value.strip().lower() in {"y", "yes"}
+
+
+def _validate_check_command(check_command: str | None) -> None:
+    if check_command is not None and not check_command.strip():
+        raise MadSkillsError(
+            "--check-command needs the project validation command as its value. "
+            "For example: mad-skills init --check-command './scripts/check'"
+        )

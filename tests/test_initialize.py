@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from mad_skills.cli import main
 from mad_skills.configuration import load_yaml, validate_project_data
 from mad_skills.errors import MadSkillsError
 from mad_skills.initialize import (
@@ -69,10 +70,23 @@ def test_existing_agents_is_preserved(tmp_path: Path) -> None:
 
 
 def test_rigorous_initialization_requires_check_command(tmp_path: Path) -> None:
-    with pytest.raises(MadSkillsError, match="requires --check-command"):
+    with pytest.raises(MadSkillsError) as error:
         propose_initialization(
             tmp_path,
             project_type="django",
             profile="rigorous",
             use_github=True,
         )
+
+    message = str(error.value)
+    assert "project check command" in message
+    assert "validates the repository before a change is accepted" in message
+    assert "--check-command './scripts/check'" in message
+
+
+def test_check_command_option_without_value_has_actionable_error(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as error:
+        main(["init", "--check-command"])
+
+    assert error.value.code == 2
+    assert "--check-command needs the project validation command as its value" in capsys.readouterr().err
