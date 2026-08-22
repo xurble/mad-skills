@@ -1,6 +1,6 @@
 ---
 name: github-pull-request
-description: Create a concise GitHub pull request linked to its issue after implementation is ready. Use when the user directly asks to open or create a PR, or when a rigorous workflow reaches its approved PR step.
+description: Create a concise GitHub pull request after implementation is ready, linking an existing issue when the work is issue-driven. Use when the user directly asks to open or create a PR, or when a rigorous workflow reaches its approved PR step.
 ---
 
 # Create a GitHub pull request
@@ -8,13 +8,18 @@ description: Create a concise GitHub pull request linked to its issue after impl
 1. Load effective policy. Offer `mad-skills init` when configuration is absent;
    use `light` for this task if declined. Require installed, authenticated `gh`;
    stop and ask for setup if unavailable. Do not use another GitHub integration.
-2. Inspect branch, status, commits, final diff, linked issue, migrations, checks,
-   and remote state. Do not include unrelated changes.
+2. Inspect branch, status, commits, final diff, any existing linked issue,
+   migrations, checks, and remote state. Do not include unrelated changes.
 3. Stop if required tests or `commands.check` failed, if the branch is not pushed,
-   or if a rigorous issue/plan is missing. Report the exact blocker.
-4. Prepare a concise body containing outcome, implementation summary, important
-   decisions, migrations/data/security implications, tests and verification,
-   known risks, and `Closes #N` for the linked issue.
+   or if other policy-required planning, verification, or review is missing.
+   Report the exact blocker. Do not create or require an issue merely because the
+   user requested a PR; treat a missing issue as a blocker only when effective
+   project policy independently requires one.
+4. Prepare a concise body containing the outcome, what changed, why when known,
+   important decisions, migrations/data/security implications, tests and
+   verification, and known risks. For issue-driven work, include `Closes #N` for
+   the existing linked issue. Otherwise let the PR title and body be the durable
+   record; do not invent a rationale or issue reference.
 5. A direct request authorizes PR creation. Use a body file with `gh pr create` and
    return the URL. Create a draft when verification/review remains outstanding;
    mark ready only when policy requirements are satisfied.
