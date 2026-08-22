@@ -9,7 +9,12 @@ from mad_skills import __version__
 from mad_skills.checker import check_project
 from mad_skills.configuration import dump_yaml, load_yaml, resolve_project, validate_project_data
 from mad_skills.errors import MadSkillsError
-from mad_skills.github import create_labels, missing_labels
+from mad_skills.github import (
+    configure_repository,
+    create_labels,
+    mismatched_repository_settings,
+    missing_labels,
+)
 from mad_skills.initialize import initialize_interactive
 from mad_skills.installer import install, skill_directories
 from mad_skills.paths import find_repo_root, find_toolkit_root
@@ -69,6 +74,10 @@ def build_parser() -> argparse.ArgumentParser:
     labels_parser = subparsers.add_parser("setup-github-labels", help="create missing configured labels using gh")
     labels_parser.add_argument("path", nargs="?", type=Path, default=Path.cwd())
     labels_parser.add_argument("--yes", action="store_true")
+
+    github_parser = subparsers.add_parser("setup-github", help="apply configured repository settings and labels")
+    github_parser.add_argument("path", nargs="?", type=Path, default=Path.cwd())
+    github_parser.add_argument("--yes", action="store_true")
     return parser
 
 
@@ -156,6 +165,28 @@ def dispatch(args: argparse.Namespace) -> int:
             raise MadSkillsError("Label setup cancelled; no labels were created")
         create_labels(effective.repo_root, labels)
         print(f"Created {len(labels)} label(s).")
+        return 0
+    if args.command == "setup-github":
+        effective = resolve_project(args.path)
+        if not effective.data["github"].get("use_issues"):
+            raise MadSkillsError("github.use_issues is not enabled for this project")
+        github_config = effective.data["github"]
+        settings = mismatched_repository_settings(effective.repo_root, github_config)
+        labels = missing_labels(effective.repo_root, github_config)
+        if not settings and not labels:
+            print("GitHub repository settings and labels are already ready.")
+            return 0
+        if settings:
+            print("Repository setting changes: " + "; ".join(settings))
+        if labels:
+            print("Missing labels: " + ", ".join(name for name, _ in labels))
+        if not args.yes and input("Apply GitHub setup? [y/N]: ").strip().lower() not in {"y", "yes"}:
+            raise MadSkillsError("GitHub setup cancelled; no repository settings or labels were changed")
+        if settings:
+            configure_repository(effective.repo_root, github_config)
+        if labels:
+            create_labels(effective.repo_root, labels)
+        print(f"Applied GitHub setup: {len(settings)} setting change(s), {len(labels)} label(s).")
         return 0
     raise MadSkillsError(f"Unknown command: {args.command}")
 

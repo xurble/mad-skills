@@ -14,7 +14,10 @@ description: Apply safe Git practices while implementing or preparing a change. 
    or risky experimentation makes isolation useful. Do not require it for an
    ordinary clean change.
 5. Never commit secrets. Stage explicit logical paths rather than broad unrelated
-   sets. Create focused, understandable commits only when the user requests them.
+   sets. Create focused commits only when the user requests them. When
+   `git.conventional_commits` is enabled, use `type(scope): description` or
+   `type: description`, preserving any repository-specific allowed types and
+   scopes.
 6. Inspect the final diff and status. Report unstaged, untracked, or unrelated
    work clearly.
 7. Never force-push, rewrite history, delete branches/worktrees, or perform a

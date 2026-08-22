@@ -5,6 +5,9 @@ description: Investigate an existing GitHub issue and produce a practical implem
 
 # Plan an issue
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Load policy with `mad-skills context --format json`; offer initialization if
    configuration is absent.
 2. Require installed, authenticated `gh`. Read the issue and all material
@@ -19,4 +22,3 @@ description: Investigate an existing GitHub issue and produce a practical implem
    avoid speculative line-by-line prescriptions.
 7. Show the plan locally first. After user approval, post it as a GitHub issue
    comment using `gh issue comment --body-file`; do not rewrite the issue body.
-

@@ -9,7 +9,13 @@ import yaml
 
 from mad_skills.configuration import load_yaml
 from mad_skills.errors import MadSkillsError
-from mad_skills.github import create_labels, missing_labels, require_gh
+from mad_skills.github import (
+    configure_repository,
+    create_labels,
+    mismatched_repository_settings,
+    missing_labels,
+    require_gh,
+)
 from mad_skills.paths import PROJECT_CONFIG, find_repo_root, find_toolkit_root
 
 Prompt = Callable[[str], str]
@@ -72,7 +78,13 @@ def propose_initialization(
         commands["check"] = check_command
     if commands:
         config["commands"] = commands
-    config["github"] = {"use_issues": use_github}
+    config["github"] = {
+        "use_issues": use_github,
+        "merge_method": "squash",
+        "squash_merge_commit_message": "pr-title-description",
+        "delete_branch_on_merge": True,
+    }
+    config["git"] = {"conventional_commits": True}
     if project_type == "ios":
         config["ios"] = ios or detected.ios
         if not config["ios"]:
@@ -167,10 +179,14 @@ def initialize_interactive(
     if github_enabled is None:
         github_enabled = False if assume_yes else _yes(prompt("Use GitHub issues? [y/N]: "))
     pending_labels = []
+    pending_repository_settings = []
+    github_config = None
     if github_enabled:
         require_gh(repo_root)
         defaults = load_yaml(find_toolkit_root() / "config/defaults.yaml")
-        pending_labels = missing_labels(repo_root, defaults["github"])
+        github_config = defaults["github"]
+        pending_labels = missing_labels(repo_root, github_config)
+        pending_repository_settings = mismatched_repository_settings(repo_root, github_config)
 
     proposals = propose_initialization(
         repo_root,
@@ -186,6 +202,16 @@ def initialize_interactive(
             raise MadSkillsError("Initialization cancelled; no files were written")
     write_proposals(proposals)
 
+    if pending_repository_settings and (
+        assume_yes
+        or _yes(
+            prompt(
+                "Configure GitHub for squash-only merges, Conventional Commit squash titles, "
+                "and automatic branch deletion? [y/N]: "
+            )
+        )
+    ):
+        configure_repository(repo_root, github_config or {})
     if pending_labels and (assume_yes or _yes(prompt(f"Create {len(pending_labels)} missing labels? [y/N]: "))):
         create_labels(repo_root, pending_labels)
     return proposals

@@ -47,6 +47,13 @@
         "use_issues": { "type": "boolean" },
         "require_issue_for_nontrivial_work": { "type": "boolean" },
         "require_pull_request_for_nontrivial_work": { "type": "boolean" },
+        "merge_method": {
+          "enum": ["merge", "squash", "rebase"]
+        },
+        "squash_merge_commit_message": {
+          "enum": ["default", "pr-title", "pr-title-commits", "pr-title-description"]
+        },
+        "delete_branch_on_merge": { "type": "boolean" },
         "labels": {
           "type": "object",
           "additionalProperties": {
@@ -111,7 +118,8 @@
           "type": "string",
           "pattern": "^[A-Za-z0-9._/-]*$"
         },
-        "use_worktrees_when_useful": { "type": "boolean" }
+        "use_worktrees_when_useful": { "type": "boolean" },
+        "conventional_commits": { "type": "boolean" }
       }
     },
     "risk": {

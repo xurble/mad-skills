@@ -5,6 +5,9 @@ description: Turn an existing GitHub issue or user request into an implementatio
 
 # Create an agent-actionable issue
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Load effective policy with `mad-skills context --format json`. Offer project
    initialization if missing.
 2. Require installed, authenticated `gh`. Load the issue body, labels, and
@@ -27,4 +30,3 @@ description: Turn an existing GitHub issue or user request into an implementatio
    update the issue body with `gh issue edit --body-file` and apply the configured
    `actionable` and, when justified, `high-risk` labels.
 7. Return the issue URL and a concise readiness summary.
-

@@ -5,6 +5,9 @@ description: Create a durable GitHub issue for a suspected or confirmed defect. 
 
 # Open a bug
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Run `mad-skills context --format json`. If `.agent/config.yaml` is absent,
    offer `mad-skills init`; if declined, use `light` for this task.
 2. Require `gh` and run `gh auth status`. If either fails, stop and ask the user
@@ -28,4 +31,3 @@ description: Create a durable GitHub issue for a suspected or confirmed defect. 
 7. Because the user's direct request authorizes creation, do not add a redundant
    preview step when the issue is sufficiently grounded. Return the issue URL
    and summarize preserved unknowns.
-

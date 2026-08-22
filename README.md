@@ -55,11 +55,13 @@ mad-skills validate               Validate the toolkit
 mad-skills validate-project       Validate one project configuration
 mad-skills list-skills            List shared skills
 mad-skills install --target ...   Install Codex/Claude skill links
+mad-skills setup-github           Apply configured merge settings and labels with gh
 mad-skills setup-github-labels    Create missing configured labels with gh
 ```
 
 GitHub workflows deliberately require the `gh` CLI. They stop with an actionable
-message when `gh` is missing or unauthenticated.
+message when `gh` is missing or unauthenticated. In Codex, run every command that
+reaches GitHub outside the sandbox with escalation from the outset.
 
 ## Documentation
 

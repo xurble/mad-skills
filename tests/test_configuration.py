@@ -21,6 +21,9 @@ def test_unconfigured_project_uses_light_general(tmp_path: Path, toolkit_root: P
     assert effective.bundles == ("general",)
     assert "implement-issue" in effective.skills
     assert effective.data["verification"]["full_check_required"] is False
+    assert effective.data["git"]["conventional_commits"] is True
+    assert effective.data["github"]["merge_method"] == "squash"
+    assert effective.data["github"]["delete_branch_on_merge"] is True
 
 
 def test_django_type_adds_general_python_and_django_skills(tmp_path: Path, toolkit_root: Path) -> None:

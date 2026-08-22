@@ -1,7 +1,8 @@
 # Issue workflow
 
 GitHub is the durable record for tracked work and `gh` is the only supported
-GitHub client.
+GitHub client. In Codex, every direct `gh` command and every `mad-skills` command
+that reaches GitHub runs outside the sandbox with escalation from the outset.
 
 ```text
 open-bug / open-enhancement
@@ -21,6 +22,9 @@ authorizes a mutation.
 A PR request does not authorize or require creating an issue. When the work is not
 issue-driven, the PR title and body document what changed and why when known. When
 an existing issue drove the work, the PR retains the issue link and closing syntax.
+PR titles use Conventional Commits by default so the squash commit keeps the same
+form. Repository setup enables squash-only merges and automatic remote branch
+deletion by default.
 
 Bug and enhancement capture creates an issue immediately when facts are sufficient.
 Converting an existing issue into an implementation contract always previews the

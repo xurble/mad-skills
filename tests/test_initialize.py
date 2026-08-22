@@ -50,6 +50,13 @@ def test_initialization_writes_config_guidance_and_claude_shim(tmp_path: Path, t
     config = load_yaml(tmp_path / ".agent/config.yaml")
     assert validate_project_data(config, toolkit_root) == []
     assert config["project"] == {"type": "python", "profile": "light"}
+    assert config["git"] == {"conventional_commits": True}
+    assert config["github"] == {
+        "use_issues": False,
+        "merge_method": "squash",
+        "squash_merge_commit_message": "pr-title-description",
+        "delete_branch_on_merge": True,
+    }
     assert "Type: `python`" in (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
     assert (tmp_path / "CLAUDE.md").read_text(encoding="utf-8") == "@AGENTS.md\n"
 
@@ -90,3 +97,64 @@ def test_check_command_option_without_value_has_actionable_error(capsys: pytest.
 
     assert error.value.code == 2
     assert "--check-command needs the project validation command as its value" in capsys.readouterr().err
+
+
+def test_github_initialization_applies_standard_repository_settings(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    configured = []
+    monkeypatch.setattr("mad_skills.initialize.require_gh", lambda repo_root: None)
+    monkeypatch.setattr("mad_skills.initialize.missing_labels", lambda repo_root, config: [])
+    monkeypatch.setattr(
+        "mad_skills.initialize.mismatched_repository_settings",
+        lambda repo_root, config: ["squash merges should be enabled"],
+    )
+    monkeypatch.setattr(
+        "mad_skills.initialize.configure_repository",
+        lambda repo_root, config: configured.append((repo_root, config)),
+    )
+
+    initialize_interactive(
+        tmp_path,
+        project_type="general",
+        profile="light",
+        use_github=True,
+        assume_yes=True,
+    )
+
+    assert len(configured) == 1
+    assert configured[0][0] == tmp_path
+    assert configured[0][1]["merge_method"] == "squash"
+    assert configured[0][1]["delete_branch_on_merge"] is True
+
+
+def test_setup_github_command_applies_configured_settings(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config_path = tmp_path / ".agent/config.yaml"
+    config_path.parent.mkdir()
+    config_path.write_text(
+        """project:
+  type: general
+  profile: light
+github:
+  use_issues: true
+""",
+        encoding="utf-8",
+    )
+    configured = []
+    monkeypatch.setattr(
+        "mad_skills.cli.mismatched_repository_settings",
+        lambda repo_root, config: ["squash merges should be enabled"],
+    )
+    monkeypatch.setattr("mad_skills.cli.missing_labels", lambda repo_root, config: [])
+    monkeypatch.setattr(
+        "mad_skills.cli.configure_repository",
+        lambda repo_root, config: configured.append((repo_root, config)),
+    )
+
+    result = main(["setup-github", str(tmp_path), "--yes"])
+
+    assert result == 0
+    assert len(configured) == 1
+    assert configured[0][1]["merge_method"] == "squash"

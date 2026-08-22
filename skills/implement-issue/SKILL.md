@@ -5,6 +5,9 @@ description: Implement an actionable GitHub issue against explicit acceptance cr
 
 # Implement an issue
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Load `mad-skills context --format json`. If unconfigured, ask whether to run
    `mad-skills init`; if declined, use `light` for this task.
 2. Require installed, authenticated `gh`. Load the issue and comments. Stop if it
@@ -32,4 +35,3 @@ description: Implement an actionable GitHub issue against explicit acceptance cr
 10. Hand off the issue, diff, checks, risks, and remaining work. Do not self-verify
     or self-review: rigorous completion requires separate fresh tasks using
     `verify-issue` and `review-change`.
-

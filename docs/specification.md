@@ -289,8 +289,11 @@ executing them. A full check explicitly executes `commands.check`.
 4. propose a concise `AGENTS.md` when one is missing;
 5. propose `.agent/config.yaml` and a `CLAUDE.md` import shim;
 6. identify canonical test and check commands;
-7. inspect configured GitHub labels and ask before creating missing ones;
-8. preview changes and ask before writing.
+7. inspect configured GitHub labels and merge settings and ask before applying
+   missing or drifted setup;
+8. default to Conventional Commits, squash-only merges using the PR title and
+   description, and automatic remote branch deletion after merge;
+9. preview changes and ask before writing.
 
 Initialization does not create an empty decision log. A log begins only when a
 real decision is worth preserving.
@@ -397,12 +400,13 @@ not automatically delegated to a subagent from the implementation conversation.
   reversal cost, compatibility constraints, or context future maintainers would
   otherwise lose.
 - `git-workflow` inspects status, preserves unrelated work, prevents secret
-  commits, encourages focused commits, and uses worktrees when parallel or risky
-  work makes them useful.
+  commits, uses Conventional Commits by default, encourages focused commits, and
+  uses worktrees when parallel or risky work makes them useful.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
   tests, and risks. It links an existing issue for issue-driven work, but a PR
-  request alone neither requires nor authorizes creating one.
+  request alone neither requires nor authorizes creating one. Its default
+  Conventional-Commit title becomes the squash commit title.
 
 ### Technology guidance
 
@@ -421,6 +425,11 @@ GitHub Issues are the durable work record when enabled. `gh` is the only support
 GitHub client. Every GitHub workflow must stop and ask the user to install `gh` or
 authenticate it when the required state is missing; it must not fall back to a
 connector or an alternative client.
+
+In Codex, every direct `gh` command and every `mad-skills` command that reaches
+GitHub must run outside the sandbox with escalation from the outset. The default
+repository policy enables squash merges only, uses the PR title and description
+for the squash commit, and deletes the remote head branch after merge.
 
 The standard semantic labels are:
 
@@ -477,6 +486,7 @@ mad-skills validate
 mad-skills validate-project
 mad-skills list-skills
 mad-skills install --target codex|claude|all
+mad-skills setup-github
 mad-skills setup-github-labels
 ```
 
@@ -491,6 +501,8 @@ Command behavior:
   policy invariants.
 - `list-skills` lists discoverable shared skills.
 - `install` installs user-scope skill links and the editable CLI.
+- `setup-github` applies configured merge settings and missing labels after
+  confirmation.
 - `setup-github-labels` uses `gh` to create missing configured labels after
   confirmation.
 

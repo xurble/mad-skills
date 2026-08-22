@@ -7,6 +7,9 @@ description: Independently verify a completed change against its GitHub issue in
 
 Run this workflow in a task separate from implementation.
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Load policy with `mad-skills context --format json`. Offer `mad-skills init`
    when configuration is absent; use `light` for this task if declined. Require
    authenticated `gh` for a GitHub issue.

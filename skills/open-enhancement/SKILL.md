@@ -5,6 +5,9 @@ description: Create a durable GitHub issue for a feature, improvement, refactor,
 
 # Open an enhancement
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Run `mad-skills context --format json`. Offer `mad-skills init` when project
    configuration is absent; use `light` for this task if declined.
 2. Require an installed and authenticated `gh` CLI. Stop with the needed setup
@@ -20,4 +23,3 @@ description: Create a durable GitHub issue for a feature, improvement, refactor,
    --body-file`, applying the configured `enhancement` label.
 7. A direct request authorizes creation without another confirmation. Return the
    issue URL and note any unresolved questions.
-

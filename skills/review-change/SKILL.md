@@ -7,6 +7,9 @@ description: Review a diff, branch, commit, or GitHub pull request in a separate
 
 Run independently from implementation.
 
+In Codex, run every `gh` command—and any `mad-skills` command that reaches
+GitHub—outside the sandbox with escalation from the outset.
+
 1. Load effective policy and repository guidance. Offer `mad-skills init` when
    configuration is absent; use `light` for this task if declined. For a PR,
    require authenticated `gh` and load its issue, description, diff, and checks.

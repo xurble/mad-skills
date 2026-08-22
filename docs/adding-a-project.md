@@ -18,7 +18,10 @@ point. It never replaces an existing file. It also creates `CLAUDE.md` containin
 `@AGENTS.md` when absent.
 
 GitHub-backed initialization requires installed, authenticated `gh`, checks the
-configured standard labels, and asks before creating missing labels.
+configured standard labels and repository settings, and asks before applying
+them. The defaults allow squash merges only, use the Conventional-Commit PR
+title and description for the squash commit, and delete remote branches after
+merge. In Codex, run initialization outside the sandbox because it invokes `gh`.
 
 ## Adoption levels
 

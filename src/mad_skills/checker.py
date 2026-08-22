@@ -8,7 +8,7 @@ from pathlib import Path
 
 from mad_skills.configuration import EffectiveConfig, resolve_project
 from mad_skills.errors import MadSkillsError
-from mad_skills.github import missing_labels, require_gh
+from mad_skills.github import mismatched_repository_settings, missing_labels, require_gh
 from mad_skills.installer import TARGET_PATHS
 from mad_skills.paths import find_toolkit_root
 from mad_skills.validation import validate_skill
@@ -189,7 +189,16 @@ def _check_github(effective: EffectiveConfig, findings: list[Finding], *, check_
                     Finding(
                         "error",
                         "github.labels",
-                        f"missing configured labels: {names}; run 'mad-skills setup-github-labels'",
+                        f"missing configured labels: {names}; run 'mad-skills setup-github'",
+                    )
+                )
+            mismatches = mismatched_repository_settings(effective.repo_root, effective.data["github"])
+            if mismatches:
+                findings.append(
+                    Finding(
+                        "error",
+                        "github.settings",
+                        "; ".join(mismatches) + "; run 'mad-skills setup-github'",
                     )
                 )
     except (MadSkillsError, subprocess.TimeoutExpired) as exc:

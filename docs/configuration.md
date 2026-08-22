@@ -47,6 +47,9 @@ GitHub workflows require `gh`. The default semantic labels are configurable:
 ```yaml
 github:
   use_issues: true
+  merge_method: squash
+  squash_merge_commit_message: pr-title-description
+  delete_branch_on_merge: true
   labels:
     bug: defect
     enhancement: improvement
@@ -56,6 +59,19 @@ github:
 The full managed set covers bug, enhancement, actionable, needs-investigation,
 blocked, high-risk, in-progress, and verified. Technology labels are optional
 additional mapping entries.
+
+`merge_method` selects the only enabled GitHub merge method. The defaults use a
+Conventional-Commit PR title plus the PR description for the squash commit and
+delete the remote head branch after merge. Apply or repair the settings and
+labels with `mad-skills setup-github`. In Codex, run that command and other `gh`
+work outside the sandbox with escalation from the outset.
+
+Conventional Commits are enabled by default and can be overridden per project:
+
+```yaml
+git:
+  conventional_commits: true
+```
 
 ## Decisions and risk
 
@@ -76,4 +92,3 @@ risk:
 ```
 
 Inspect the complete effective policy with `mad-skills context`.
-
