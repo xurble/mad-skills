@@ -18,6 +18,10 @@ Direct natural-language requests such as “open an issue” or “create a PR�
 the corresponding action; skill syntax is optional. Ambiguous discussion never
 authorizes a mutation.
 
+A PR request does not authorize or require creating an issue. When the work is not
+issue-driven, the PR title and body document what changed and why when known. When
+an existing issue drove the work, the PR retains the issue link and closing syntax.
+
 Bug and enhancement capture creates an issue immediately when facts are sufficient.
 Converting an existing issue into an implementation contract always previews the
 replacement body first. Planning, verification, and PR review also present their
@@ -32,4 +36,3 @@ Rigorous non-trivial work requires an issue, approved plan, tests, PR, full chec
 fresh verification, and fresh review. High-risk work uses these safety expectations
 in every profile. Fresh work means a separate Codex or Claude task, not the
 implementation conversation.
-

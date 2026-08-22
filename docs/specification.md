@@ -400,8 +400,9 @@ not automatically delegated to a subagent from the implementation conversation.
   commits, encourages focused commits, and uses worktrees when parallel or risky
   work makes them useful.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
-  important decisions, migrations, security implications, tests, risks, and its
-  linked issue.
+  known rationale, important decisions, migrations, security implications,
+  tests, and risks. It links an existing issue for issue-driven work, but a PR
+  request alone neither requires nor authorizes creating one.
 
 ### Technology guidance
 
