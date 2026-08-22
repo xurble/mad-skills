@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python Development"
+  short_description: "Follow pragmatic Python conventions"
+  default_prompt: "Use $python-development to implement this Python change using the project patterns."

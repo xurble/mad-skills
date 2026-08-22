@@ -1,0 +1,42 @@
+version: 1
+project:
+  type: general
+  profile: light
+  extra_bundles: []
+commands: {}
+github:
+  use_issues: false
+  require_issue_for_nontrivial_work: false
+  require_pull_request_for_nontrivial_work: false
+  labels:
+    bug: bug
+    enhancement: enhancement
+    actionable: agent-actionable
+    needs_investigation: needs-investigation
+    blocked: blocked
+    high_risk: high-risk
+    in_progress: in-progress
+    verified: verified
+planning:
+  required_for_nontrivial_work: false
+verification:
+  fresh_context_for_nontrivial_work: false
+  separate_review_for_nontrivial_work: false
+  full_check_required: false
+testing:
+  meaningful_changes_require_tests: false
+  bug_fixes_require_regression_tests: false
+decisions:
+  log: null
+  consult_before_architecture_changes: false
+git:
+  branch_prefix: ""
+  use_worktrees_when_useful: true
+risk:
+  authentication: high
+  authorization: high
+  payments: high
+  destructive_migrations: high
+  production_data: high
+  sync_semantics: high
+  security_boundaries: high

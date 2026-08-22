@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mad-skills.local/project-config.schema.json",
+  "title": "mad-skills project configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["project"],
+  "properties": {
+    "version": {
+      "const": 1,
+      "default": 1
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "profile"],
+      "properties": {
+        "type": {
+          "enum": ["general", "python", "django", "ios"]
+        },
+        "profile": {
+          "enum": ["light", "normal", "rigorous"]
+        },
+        "extra_bundles": {
+          "type": "array",
+          "items": {
+            "enum": ["general", "python", "django", "ios"]
+          },
+          "uniqueItems": true,
+          "default": []
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dev": { "$ref": "#/$defs/command" },
+        "test": { "$ref": "#/$defs/command" },
+        "check": { "$ref": "#/$defs/command" }
+      }
+    },
+    "github": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "use_issues": { "type": "boolean" },
+        "require_issue_for_nontrivial_work": { "type": "boolean" },
+        "require_pull_request_for_nontrivial_work": { "type": "boolean" },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "properties": {
+            "bug": { "type": "string", "minLength": 1 },
+            "enhancement": { "type": "string", "minLength": 1 },
+            "actionable": { "type": "string", "minLength": 1 },
+            "needs_investigation": { "type": "string", "minLength": 1 },
+            "blocked": { "type": "string", "minLength": 1 },
+            "high_risk": { "type": "string", "minLength": 1 },
+            "in_progress": { "type": "string", "minLength": 1 },
+            "verified": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "planning": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required_for_nontrivial_work": { "type": "boolean" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fresh_context_for_nontrivial_work": { "type": "boolean" },
+        "separate_review_for_nontrivial_work": { "type": "boolean" },
+        "full_check_required": { "type": "boolean" }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meaningful_changes_require_tests": { "type": "boolean" },
+        "bug_fixes_require_regression_tests": { "type": "boolean" }
+      }
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "log": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "null" }
+          ]
+        },
+        "consult_before_architecture_changes": { "type": "boolean" }
+      }
+    },
+    "git": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "branch_prefix": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._/-]*$"
+        },
+        "use_worktrees_when_useful": { "type": "boolean" }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": ["low", "normal", "high"]
+      }
+    },
+    "ios": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "workspace": { "type": "string", "minLength": 1 },
+        "scheme": { "type": "string", "minLength": 1 },
+        "destination": { "type": "string", "minLength": 1 }
+      },
+      "oneOf": [
+        {
+          "required": ["project"],
+          "not": { "required": ["workspace"] }
+        },
+        {
+          "required": ["workspace"],
+          "not": { "required": ["project"] }
+        }
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "project": {
+            "properties": {
+              "type": { "const": "ios" }
+            },
+            "required": ["type"]
+          }
+        }
+      },
+      "then": {
+        "required": ["ios"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "project": {
+            "properties": {
+              "profile": { "const": "rigorous" }
+            },
+            "required": ["profile"]
+          }
+        }
+      },
+      "then": {
+        "required": ["commands", "github"],
+        "properties": {
+          "commands": { "required": ["check"] },
+          "github": {
+            "required": ["use_issues"],
+            "properties": {
+              "use_issues": { "const": true }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "command": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  }
+}

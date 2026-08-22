@@ -1,0 +1,4 @@
+interface:
+  display_name: "Open Bug"
+  short_description: "Capture a useful GitHub bug issue"
+  default_prompt: "Use $open-bug to capture this defect as a durable GitHub issue."

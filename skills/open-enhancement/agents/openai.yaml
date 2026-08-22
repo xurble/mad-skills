@@ -1,0 +1,4 @@
+interface:
+  display_name: "Open Enhancement"
+  short_description: "Capture a useful enhancement issue"
+  default_prompt: "Use $open-enhancement to record this improvement as a GitHub issue."

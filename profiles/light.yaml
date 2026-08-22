@@ -1,0 +1,16 @@
+name: light
+description: Minimal ceremony for experiments, prototypes, and small utilities.
+policy:
+  github:
+    require_issue_for_nontrivial_work: false
+    require_pull_request_for_nontrivial_work: false
+  planning:
+    required_for_nontrivial_work: false
+  verification:
+    fresh_context_for_nontrivial_work: false
+    separate_review_for_nontrivial_work: false
+    full_check_required: false
+  testing:
+    meaningful_changes_require_tests: false
+    bug_fixes_require_regression_tests: false
+

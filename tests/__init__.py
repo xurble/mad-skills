@@ -1,0 +1,1 @@
+"""mad-skills tests."""

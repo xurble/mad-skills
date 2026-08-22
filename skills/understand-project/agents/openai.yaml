@@ -1,0 +1,4 @@
+interface:
+  display_name: "Understand Project"
+  short_description: "Map an unfamiliar repository safely"
+  default_prompt: "Use $understand-project to map this repository and its working conventions."

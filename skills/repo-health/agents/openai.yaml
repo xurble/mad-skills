@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repository Health"
+  short_description: "Check toolkit wiring and project readiness"
+  default_prompt: "Use $repo-health to check whether this repository is correctly wired into mad-skills."

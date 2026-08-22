@@ -1,0 +1,18 @@
+name: general
+includes: []
+skills:
+  - understand-project
+  - specify-existing-project
+  - repo-health
+  - open-bug
+  - open-enhancement
+  - create-agent-issue
+  - plan-issue
+  - implement-issue
+  - verify-issue
+  - review-change
+  - systematic-debugging
+  - testing
+  - record-decision
+  - git-workflow
+  - github-pull-request

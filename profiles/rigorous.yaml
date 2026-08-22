@@ -1,0 +1,18 @@
+name: rigorous
+description: Full issue, planning, validation, and review for important software.
+policy:
+  github:
+    require_issue_for_nontrivial_work: true
+    require_pull_request_for_nontrivial_work: true
+  planning:
+    required_for_nontrivial_work: true
+  verification:
+    fresh_context_for_nontrivial_work: true
+    separate_review_for_nontrivial_work: true
+    full_check_required: true
+  testing:
+    meaningful_changes_require_tests: true
+    bug_fixes_require_regression_tests: true
+  decisions:
+    consult_before_architecture_changes: true
+

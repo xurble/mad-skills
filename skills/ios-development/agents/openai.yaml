@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Development"
+  short_description: "Follow pragmatic Swift and iOS conventions"
+  default_prompt: "Use $ios-development to implement this Swift or iOS change using the project patterns."

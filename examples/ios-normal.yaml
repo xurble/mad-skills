@@ -1,0 +1,11 @@
+project:
+  type: ios
+  profile: normal
+commands:
+  check: ./scripts/check
+ios:
+  project: Example.xcodeproj
+  scheme: Example
+github:
+  use_issues: true
+

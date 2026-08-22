@@ -1,0 +1,10 @@
+version: 1
+project:
+  type: python
+  profile: normal
+commands:
+  test: ./scripts/test
+  check: ./scripts/check
+github:
+  use_issues: false
+

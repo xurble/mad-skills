@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Pull Request"
+  short_description: "Create a concise issue-linked PR"
+  default_prompt: "Use $github-pull-request to create a concise GitHub pull request for this change."

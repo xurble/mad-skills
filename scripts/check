@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -eu
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+toolkit_root=$(dirname -- "$script_dir")
+
+uv run --project "$toolkit_root" ruff check .
+uv run --project "$toolkit_root" pytest
+uv run --project "$toolkit_root" mad-skills validate
+

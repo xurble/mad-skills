@@ -1,0 +1,4 @@
+interface:
+  display_name: "Specify Existing Project"
+  short_description: "Derive a spec from an existing implementation"
+  default_prompt: "Use $specify-existing-project to reconstruct a specification from this implementation and surface unclear assumptions."

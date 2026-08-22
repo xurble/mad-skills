@@ -1,0 +1,7 @@
+name: django
+includes:
+  - general
+skills:
+  - python-development
+  - django-development
+

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Work safely with branches and diffs"
+  default_prompt: "Use $git-workflow to handle this repository change safely and inspect the final diff."

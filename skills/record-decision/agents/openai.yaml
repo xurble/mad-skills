@@ -1,0 +1,4 @@
+interface:
+  display_name: "Record Decision"
+  short_description: "Preserve a significant project decision"
+  default_prompt: "Use $record-decision to preserve this significant decision and its rationale."

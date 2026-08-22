@@ -1,0 +1,4 @@
+interface:
+  display_name: "Django Development"
+  short_description: "Follow pragmatic Django conventions"
+  default_prompt: "Use $django-development to implement this Django change using the project patterns."

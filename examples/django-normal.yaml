@@ -1,0 +1,11 @@
+project:
+  type: django
+  profile: normal
+commands:
+  test: ./scripts/test
+  check: ./scripts/check
+github:
+  use_issues: true
+decisions:
+  log: docs/decisions.md
+

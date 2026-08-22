@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Agent Issue"
+  short_description: "Make a GitHub issue implementation-ready"
+  default_prompt: "Use $create-agent-issue to turn this request into an implementation-ready GitHub issue."

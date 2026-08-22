@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Issue"
+  short_description: "Verify an issue in a fresh context"
+  default_prompt: "Use $verify-issue in a fresh task to verify this change against its issue."
