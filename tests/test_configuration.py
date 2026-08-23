@@ -96,7 +96,7 @@ def test_rigorous_requires_check_and_github(toolkit_root: Path) -> None:
     assert any("github" in error for error in errors)
 
 
-def test_rigorous_profile_cannot_disable_required_workflow(tmp_path: Path, toolkit_root: Path) -> None:
+def test_rigorous_profile_allows_work_without_an_issue(tmp_path: Path, toolkit_root: Path) -> None:
     path = write_project_config(
         tmp_path,
         """project:
@@ -112,7 +112,50 @@ github:
 
     errors = validate_project_data(load_yaml(path), toolkit_root)
 
-    assert "github.require_issue_for_nontrivial_work cannot be false for rigorous" in errors
+    assert errors == []
+    effective = resolve_project(tmp_path, toolkit_root)
+    assert effective.data["github"]["require_issue_for_nontrivial_work"] is False
+    assert effective.data["github"]["require_pull_request_for_nontrivial_work"] is True
+    assert effective.data["github"]["require_well_specified_pull_request_for_nontrivial_work"] is True
+    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is True
+
+
+@pytest.mark.parametrize(
+    ("setting", "message"),
+    [
+        (
+            "require_pull_request_for_nontrivial_work",
+            "github.require_pull_request_for_nontrivial_work cannot be false for rigorous",
+        ),
+        (
+            "require_well_specified_pull_request_for_nontrivial_work",
+            "github.require_well_specified_pull_request_for_nontrivial_work cannot be false for rigorous",
+        ),
+        (
+            "open_pull_requests_as_draft_until_reviewed",
+            "github.open_pull_requests_as_draft_until_reviewed cannot be false for rigorous",
+        ),
+    ],
+)
+def test_rigorous_profile_cannot_disable_required_pr_gate(
+    tmp_path: Path, toolkit_root: Path, setting: str, message: str
+) -> None:
+    path = write_project_config(
+        tmp_path,
+        f"""project:
+  type: django
+  profile: rigorous
+commands:
+  check: ./scripts/check
+github:
+  use_issues: true
+  {setting}: false
+""",
+    )
+
+    errors = validate_project_data(load_yaml(path), toolkit_root)
+
+    assert message in errors
 
 
 def test_context_includes_source_locations(tmp_path: Path, toolkit_root: Path) -> None:

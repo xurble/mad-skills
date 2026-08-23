@@ -38,7 +38,9 @@ Bundle selection is additive; it cannot remove `general` safety workflows.
 `mad-skills check` verifies that their executables or paths resolve but does not
 run them. `mad-skills check --full` explicitly executes `commands.check`.
 
-Every rigorous project must configure `commands.check` and enable GitHub issues.
+Every rigorous project must configure `commands.check` and enable its GitHub
+workflow. Issues remain available for backlog work, but a rigorous PR does not
+require an issue. The rigorous merge gate is a standalone, well-specified PR.
 
 ## GitHub
 
@@ -47,6 +49,10 @@ GitHub workflows require `gh`. The default semantic labels are configurable:
 ```yaml
 github:
   use_issues: true
+  require_issue_for_nontrivial_work: false
+  require_pull_request_for_nontrivial_work: true
+  require_well_specified_pull_request_for_nontrivial_work: true
+  open_pull_requests_as_draft_until_reviewed: true
   merge_method: squash
   squash_merge_commit_message: pr-title-description
   delete_branch_on_merge: true
@@ -59,6 +65,13 @@ github:
 The full managed set covers bug, enhancement, actionable, needs-investigation,
 blocked, high-risk, in-progress, and verified. Technology labels are optional
 additional mapping entries.
+
+`require_issue_for_nontrivial_work` is independently configurable and defaults to
+false in every profile. Rigorous projects require a PR whose title and body stand
+alone as the final change specification; an existing issue is linked when it
+actually drove the work. They open that PR as a draft, offer a fresh-context code
+review, and mark it ready after the accepted review cycle completes. An explicit
+developer override may bypass the AI-review gate.
 
 `merge_method` selects the only enabled GitHub merge method. The defaults use a
 Conventional-Commit PR title plus the PR description for the squash commit and

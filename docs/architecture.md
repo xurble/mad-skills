@@ -35,7 +35,11 @@ distribution model.
 
 Profiles establish minimum workflow depth. Task risk can raise it: a high-risk
 task always uses rigorous planning, testing, verification, and review expectations.
-Trivial work remains exempt from issue, plan, and PR ceremony.
+For rigorous non-trivial work, a standalone well-specified PR is the merge gate.
+Issues capture future or otherwise tracked work and are not a prerequisite for a
+PR. The PR opens as a draft to expose that fresh AI review is pending; review is
+offered rather than started automatically, and an explicit developer override may
+bypass that advisory gate. Trivial work remains exempt from plan and PR ceremony.
 
 The CLI checks objective facts—schema, paths, installation, labels, and commands.
 Skills handle judgment—risk classification, issue quality, implementation, and
@@ -48,4 +52,3 @@ frontmatter. Codex UI metadata lives in `agents/openai.yaml`. Projects use
 `AGENTS.md` as authoritative guidance and a one-line `CLAUDE.md` import shim.
 
 Supported environments are macOS and WSL. Native Windows is not a v1 target.
-

@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Change"
-  short_description: "Review a change for material problems"
+  short_description: "Review a change in a fresh context"
   default_prompt: "Use $review-change in a fresh task to review this change for material problems."

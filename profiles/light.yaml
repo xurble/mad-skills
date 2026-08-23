@@ -4,6 +4,8 @@ policy:
   github:
     require_issue_for_nontrivial_work: false
     require_pull_request_for_nontrivial_work: false
+    require_well_specified_pull_request_for_nontrivial_work: false
+    open_pull_requests_as_draft_until_reviewed: false
   planning:
     required_for_nontrivial_work: false
   verification:
@@ -13,4 +15,3 @@ policy:
   testing:
     meaningful_changes_require_tests: false
     bug_fixes_require_regression_tests: false
-

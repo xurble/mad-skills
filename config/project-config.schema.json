@@ -47,6 +47,8 @@
         "use_issues": { "type": "boolean" },
         "require_issue_for_nontrivial_work": { "type": "boolean" },
         "require_pull_request_for_nontrivial_work": { "type": "boolean" },
+        "require_well_specified_pull_request_for_nontrivial_work": { "type": "boolean" },
+        "open_pull_requests_as_draft_until_reviewed": { "type": "boolean" },
         "merge_method": {
           "enum": ["merge", "squash", "rebase"]
         },

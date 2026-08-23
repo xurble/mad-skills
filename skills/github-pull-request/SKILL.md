@@ -1,9 +1,9 @@
 ---
 name: github-pull-request
-description: Create a concise GitHub pull request after implementation is ready, linking an existing issue when the work is issue-driven. Use when the user directly asks to open or create a PR, or when a rigorous workflow reaches its approved PR step.
+description: Create a well-specified draft GitHub pull request, offer fresh-context review, mark it ready after the review cycle, or merge it on explicit request. Link an existing issue only when the work is issue-driven. Use when the user asks to open, create, ready, or merge a PR, or when a rigorous workflow reaches its PR gate.
 ---
 
-# Create a GitHub pull request
+# Create or merge a GitHub pull request
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
@@ -17,25 +17,42 @@ GitHub—outside the sandbox with escalation from the outset.
    the PR title to use Conventional Commits; do not rewrite history without
    explicit authorization.
 3. Stop if required tests or `commands.check` failed, if the branch is not pushed,
-   or if other policy-required planning, verification, or review is missing.
-   Report the exact blocker. Do not create or require an issue merely because the
-   user requested a PR; treat a missing issue as a blocker only when effective
-   project policy independently requires one.
-4. Prepare a concise body containing the outcome, what changed, why when known,
-   important decisions, migrations/data/security implications, tests and
-   verification, and known risks. For issue-driven work, include `Closes #N` for
-   the existing linked issue. Otherwise let the PR title and body be the durable
-   record; do not invent a rationale or issue reference.
+   or if policy-required planning or verification is missing. A missing fresh code
+   review does not block draft PR creation; it keeps the PR in draft. Report other
+   exact blockers. Never create or require an issue merely because the user
+   requested a PR; treat a missing issue as a blocker only when effective project
+   policy explicitly requires one.
+4. When policy requires a well-specified PR, make its title and body a standalone
+   change contract that does not depend on the originating chat or an issue. State
+   the desired outcome and motivation, scope and material non-goals, observable
+   acceptance criteria, what changed, important decisions, validation evidence,
+   and relevant migrations, data/security implications, rollout, and known risks.
+   Keep inapplicable sections out and do not invent rationale. For issue-driven
+   work, include `Closes #N`, but consolidate the accepted final specification in
+   the PR instead of making reviewers reconstruct it from the issue history.
 5. Confirm the repository supports `github.merge_method` and
    `github.delete_branch_on_merge`. The defaults are squash-only merging, a
    Conventional-Commit PR title plus description for the squash commit, and
    automatic remote branch deletion. Report drift and offer `mad-skills
    setup-github`; do not silently change repository settings during PR creation.
-6. A direct request authorizes PR creation. Use a body file with `gh pr create`
-   and return the URL. Create a draft when verification/review remains
-   outstanding; mark ready only when policy requirements are satisfied.
-7. Never merge automatically. When the user separately asks to merge, use the
-   configured method; default to squash. Let GitHub delete the remote branch
-   after merge, and do not delete a local branch without explicit authorization.
-   Issue closure occurs through the merged linked PR or a separate explicit user
-   request.
+6. A direct request authorizes PR creation. When policy sets
+   `github.open_pull_requests_as_draft_until_reviewed`, use a body file with `gh pr
+   create --draft`, return the URL, and offer a fresh-context code review. Do not
+   start that review automatically. Otherwise create the PR in the state allowed
+   by effective policy.
+7. When the user accepts the review offer, use `review-change` in a separate fresh
+   task. Keep the PR draft while material findings remain. After fixes, repeat
+   relevant checks and fresh review against the current diff. When the cycle has
+   no unresolved material findings, mark the PR ready with `gh pr ready` and
+   report the transition. If the user declines or does not accept the offer, leave
+   the PR draft.
+8. Never merge automatically. When the user separately asks to merge, use the
+   PR as the merge gate: reload its current title, body, diff, checks, and reviews,
+   and stop if hard evidence is missing or the PR does not meet the configured
+   specification requirement. A direct request to skip AI review, mark ready, or
+   merge an unreviewed draft explicitly overrides only the fresh-review gate: call
+   out the skipped review, never claim it happened, and mark ready if GitHub
+   requires it before using the configured merge method. Default to squash. Let
+   GitHub delete the remote branch after merge, and do not delete a local branch
+   without explicit authorization. Issue closure occurs through the merged linked
+   PR or a separate explicit user request.

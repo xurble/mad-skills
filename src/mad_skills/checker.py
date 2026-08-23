@@ -156,11 +156,14 @@ def _check_policy(effective: EffectiveConfig, full: bool, findings: list[Finding
     profile = effective.data["project"]["profile"]
     if profile == "rigorous":
         required = {
-            "github.require_issue_for_nontrivial_work": effective.data["github"].get(
-                "require_issue_for_nontrivial_work"
-            ),
             "github.require_pull_request_for_nontrivial_work": effective.data["github"].get(
                 "require_pull_request_for_nontrivial_work"
+            ),
+            "github.require_well_specified_pull_request_for_nontrivial_work": effective.data["github"].get(
+                "require_well_specified_pull_request_for_nontrivial_work"
+            ),
+            "github.open_pull_requests_as_draft_until_reviewed": effective.data["github"].get(
+                "open_pull_requests_as_draft_until_reviewed"
             ),
             "planning.required_for_nontrivial_work": effective.data["planning"].get("required_for_nontrivial_work"),
             "verification.fresh_context_for_nontrivial_work": effective.data["verification"].get(
