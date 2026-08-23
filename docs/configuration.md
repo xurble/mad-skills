@@ -84,6 +84,13 @@ issues. Required PR policy also implies GitHub enablement for backward
 compatibility. Repository checks and `mad-skills setup-github` manage PR settings,
 while issue-label management remains conditional on `use_issues`.
 
+| Change classification | Pull-request review gate |
+| --- | --- |
+| Trivial and not high risk | No profile review gate; create non-draft when otherwise allowed. |
+| Non-trivial under `normal` | Open as draft and offer separate review. |
+| Non-trivial under `rigorous` | Open as draft and require the accepted review cycle before readying. |
+| High risk under any profile | Use the rigorous draft and review gate. |
+
 `merge_method` selects the only enabled GitHub merge method. The defaults use a
 Conventional-Commit PR title plus the PR description for the squash commit and
 delete the remote head branch after merge. Apply or repair the settings and

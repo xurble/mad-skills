@@ -37,12 +37,13 @@ GitHub—outside the sandbox with escalation from the outset.
    Conventional-Commit PR title plus description for the squash commit, and
    automatic remote branch deletion. Report drift and offer `mad-skills
    setup-github`; do not silently change repository settings during PR creation.
-6. A direct request authorizes PR creation. Use a body file with `gh pr create
-   --draft`, return the URL, and offer a fresh-context code review when policy sets
-   `github.open_pull_requests_as_draft_until_reviewed`, when effective policy
-   requires separate review for this non-trivial change, or when task risk is
-   high. Do not start that review automatically. Otherwise create the PR in the
-   state allowed by effective policy.
+6. A direct request authorizes PR creation. Use a body file and return the URL.
+   Open with `gh pr create --draft` and offer a fresh-context code review when task
+   risk is high, or when the change is non-trivial and either policy sets
+   `github.open_pull_requests_as_draft_until_reviewed` or effective policy requires
+   separate review. Do not start that review automatically. Otherwise create the
+   PR in the non-draft state allowed by effective policy; trivial work does not
+   inherit a profile's non-trivial review gate.
 7. When the user accepts the review offer, use `review-change` in a separate fresh
    task. Keep the PR draft while material findings remain. After fixes, repeat
    relevant checks and fresh review against the current diff. When the cycle has

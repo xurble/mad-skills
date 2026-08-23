@@ -42,7 +42,7 @@ def test_django_type_adds_general_python_and_django_skills(tmp_path: Path, toolk
     assert "django-development" in effective.skills
     assert effective.data["testing"]["meaningful_changes_require_tests"] is True
     assert effective.data["verification"]["separate_review_for_nontrivial_work"] is True
-    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is True
+    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is False
 
 
 def test_pull_request_policy_does_not_require_issues(toolkit_root: Path) -> None:
