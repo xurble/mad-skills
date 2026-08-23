@@ -6,7 +6,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from mad_skills.configuration import EffectiveConfig, resolve_project
+from mad_skills.configuration import EffectiveConfig, github_workflow_enabled, resolve_project
 from mad_skills.errors import MadSkillsError
 from mad_skills.github import mismatched_repository_settings, missing_labels, require_gh
 from mad_skills.installer import TARGET_PATHS
@@ -59,7 +59,7 @@ def check_project(
     _check_local_skills(effective, root, findings)
     _check_decisions(effective, findings)
     _check_policy(effective, full, findings)
-    if effective.data["github"].get("use_issues") and check_github:
+    if check_github and github_workflow_enabled(effective.data["github"]):
         _check_github(effective, findings, check_remote=True)
     if full:
         _run_full_check(effective, findings)
@@ -185,16 +185,17 @@ def _check_github(effective: EffectiveConfig, findings: list[Finding], *, check_
     try:
         require_gh(effective.repo_root)
         if check_remote:
-            missing = missing_labels(effective.repo_root, effective.data["github"])
-            if missing:
-                names = ", ".join(name for name, _ in missing)
-                findings.append(
-                    Finding(
-                        "error",
-                        "github.labels",
-                        f"missing configured labels: {names}; run 'mad-skills setup-github'",
+            if effective.data["github"].get("use_issues"):
+                missing = missing_labels(effective.repo_root, effective.data["github"])
+                if missing:
+                    names = ", ".join(name for name, _ in missing)
+                    findings.append(
+                        Finding(
+                            "error",
+                            "github.labels",
+                            f"missing configured labels: {names}; run 'mad-skills setup-github'",
+                        )
                     )
-                )
             mismatches = mismatched_repository_settings(effective.repo_root, effective.data["github"])
             if mismatches:
                 findings.append(

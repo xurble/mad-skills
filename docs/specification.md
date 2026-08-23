@@ -197,7 +197,8 @@ understand -> durable issue when useful -> implement -> test -> verify
 
 Meaningful behavior changes normally receive tests. Bug fixes normally receive
 regression coverage. Issues, plans, and pull requests follow project policy and
-the significance of the task.
+the significance of the task. When a non-trivial PR needs the profile's separate
+review, it opens as a draft and offers that review without starting it.
 
 ### `rigorous`
 
@@ -293,6 +294,10 @@ workflow. Enabling issues keeps backlog capture available; it does not require a
 issue for each PR. An ordinary repository check validates that configured
 commands resolve without executing them. A full check explicitly executes
 `commands.check`.
+
+A GitHub workflow is enabled when a project uses issues or requires pull requests.
+Repository checks and `setup-github` manage authentication and merge settings for
+either form. Label inspection and setup remain conditional on issues being enabled.
 
 ## 11. Initialization and unconfigured repositories
 

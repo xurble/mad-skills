@@ -7,7 +7,13 @@ from pathlib import Path
 
 from mad_skills import __version__
 from mad_skills.checker import check_project
-from mad_skills.configuration import dump_yaml, load_yaml, resolve_project, validate_project_data
+from mad_skills.configuration import (
+    dump_yaml,
+    github_workflow_enabled,
+    load_yaml,
+    resolve_project,
+    validate_project_data,
+)
 from mad_skills.errors import MadSkillsError
 from mad_skills.github import (
     configure_repository,
@@ -168,11 +174,11 @@ def dispatch(args: argparse.Namespace) -> int:
         return 0
     if args.command == "setup-github":
         effective = resolve_project(args.path)
-        if not effective.data["github"].get("use_issues"):
-            raise MadSkillsError("github.use_issues is not enabled for this project")
         github_config = effective.data["github"]
+        if not github_workflow_enabled(github_config):
+            raise MadSkillsError("GitHub workflow is not enabled for this project")
         settings = mismatched_repository_settings(effective.repo_root, github_config)
-        labels = missing_labels(effective.repo_root, github_config)
+        labels = missing_labels(effective.repo_root, github_config) if github_config.get("use_issues") else []
         if not settings and not labels:
             print("GitHub repository settings and labels are already ready.")
             return 0

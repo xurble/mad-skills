@@ -73,6 +73,12 @@ actually drove the work. They open that PR as a draft, offer a fresh-context cod
 review, and mark it ready after the accepted review cycle completes. An explicit
 developer override may bypass the AI-review gate.
 
+Normal projects also open non-trivial PRs as drafts because their default policy
+requires separate review. High-risk work uses the rigorous draft gate in every
+profile. A project may enable required PRs while leaving `use_issues` false;
+repository checks and `mad-skills setup-github` still manage PR settings, while
+issue-label management remains disabled.
+
 `merge_method` selects the only enabled GitHub merge method. The defaults use a
 Conventional-Commit PR title plus the PR description for the squash commit and
 delete the remote head branch after merge. Apply or repair the settings and

@@ -62,6 +62,13 @@ def deep_merge(base: Data, overlay: Data) -> Data:
     return merged
 
 
+def github_workflow_enabled(github: Data) -> bool:
+    return bool(
+        github.get("use_issues", False)
+        or github.get("require_pull_request_for_nontrivial_work", False)
+    )
+
+
 def schema_validator(toolkit_root: Path | None = None) -> Draft202012Validator:
     root = toolkit_root or find_toolkit_root()
     schema_path = root / "config/project-config.schema.json"

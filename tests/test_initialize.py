@@ -158,3 +158,36 @@ github:
     assert result == 0
     assert len(configured) == 1
     assert configured[0][1]["merge_method"] == "squash"
+
+
+def test_setup_github_supports_pr_only_projects(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    config_path = tmp_path / ".agent/config.yaml"
+    config_path.parent.mkdir()
+    config_path.write_text(
+        """project:
+  type: general
+  profile: light
+github:
+  use_issues: false
+  require_pull_request_for_nontrivial_work: true
+""",
+        encoding="utf-8",
+    )
+    configured = []
+    monkeypatch.setattr(
+        "mad_skills.cli.mismatched_repository_settings",
+        lambda repo_root, config: ["squash merges should be enabled"],
+    )
+    monkeypatch.setattr(
+        "mad_skills.cli.missing_labels",
+        lambda repo_root, config: pytest.fail("PR-only setup should not inspect issue labels"),
+    )
+    monkeypatch.setattr(
+        "mad_skills.cli.configure_repository",
+        lambda repo_root, config: configured.append((repo_root, config)),
+    )
+
+    result = main(["setup-github", str(tmp_path), "--yes"])
+
+    assert result == 0
+    assert len(configured) == 1

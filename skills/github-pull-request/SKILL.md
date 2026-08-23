@@ -12,7 +12,8 @@ GitHub—outside the sandbox with escalation from the outset.
    use `light` for this task if declined. Require installed, authenticated `gh`;
    stop and ask for setup if unavailable. Do not use another GitHub integration.
 2. Inspect branch, status, commits, final diff, any existing linked issue,
-   migrations, checks, and remote state. Do not include unrelated changes. When
+   migrations, checks, task risk, and remote state. High-risk work uses rigorous
+   safety in every profile. Do not include unrelated changes. When
    `git.conventional_commits` is enabled, require introduced commit messages and
    the PR title to use Conventional Commits; do not rewrite history without
    explicit authorization.
@@ -35,11 +36,12 @@ GitHub—outside the sandbox with escalation from the outset.
    Conventional-Commit PR title plus description for the squash commit, and
    automatic remote branch deletion. Report drift and offer `mad-skills
    setup-github`; do not silently change repository settings during PR creation.
-6. A direct request authorizes PR creation. When policy sets
-   `github.open_pull_requests_as_draft_until_reviewed`, use a body file with `gh pr
-   create --draft`, return the URL, and offer a fresh-context code review. Do not
-   start that review automatically. Otherwise create the PR in the state allowed
-   by effective policy.
+6. A direct request authorizes PR creation. Use a body file with `gh pr create
+   --draft`, return the URL, and offer a fresh-context code review when policy sets
+   `github.open_pull_requests_as_draft_until_reviewed`, when effective policy
+   requires separate review for this non-trivial change, or when task risk is
+   high. Do not start that review automatically. Otherwise create the PR in the
+   state allowed by effective policy.
 7. When the user accepts the review offer, use `review-change` in a separate fresh
    task. Keep the PR draft while material findings remain. After fixes, repeat
    relevant checks and fresh review against the current diff. When the cycle has

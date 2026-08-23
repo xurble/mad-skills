@@ -41,6 +41,20 @@ def test_django_type_adds_general_python_and_django_skills(tmp_path: Path, toolk
     assert "python-development" in effective.skills
     assert "django-development" in effective.skills
     assert effective.data["testing"]["meaningful_changes_require_tests"] is True
+    assert effective.data["verification"]["separate_review_for_nontrivial_work"] is True
+    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is True
+
+
+def test_pull_request_policy_does_not_require_issues(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "light"},
+        "github": {
+            "use_issues": False,
+            "require_pull_request_for_nontrivial_work": True,
+        },
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
 
 
 def test_extra_bundles_are_additive(tmp_path: Path, toolkit_root: Path) -> None:
