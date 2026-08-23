@@ -42,6 +42,8 @@ run them. `mad-skills check --full` explicitly executes `commands.check`.
 Every rigorous project must configure `commands.check` and enable its GitHub
 workflow. Issues remain available for backlog work, but a rigorous PR does not
 require an issue. The rigorous merge gate is a standalone, well-specified PR.
+Initialize a PR-only project with `mad-skills init --github --no-issues`; use
+`--issues` only when the project also wants issue capture and labels.
 
 ## GitHub
 

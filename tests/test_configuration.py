@@ -144,7 +144,8 @@ def test_rigorous_profile_allows_work_without_an_issue(tmp_path: Path, toolkit_r
 commands:
   check: ./scripts/check
 github:
-  use_issues: true
+  enabled: true
+  use_issues: false
   require_issue_for_nontrivial_work: false
 """,
     )
@@ -187,7 +188,8 @@ def test_rigorous_profile_cannot_disable_required_pr_gate(
 commands:
   check: ./scripts/check
 github:
-  use_issues: true
+  enabled: true
+  use_issues: false
   {setting}: false
 """,
     )

@@ -189,10 +189,16 @@
         "properties": {
           "commands": { "required": ["check"] },
           "github": {
-            "required": ["use_issues"],
-            "properties": {
-              "use_issues": { "const": true }
-            }
+            "anyOf": [
+              {
+                "required": ["enabled"],
+                "properties": { "enabled": { "const": true } }
+              },
+              {
+                "required": ["use_issues"],
+                "properties": { "use_issues": { "const": true } }
+              }
+            ]
           }
         }
       }

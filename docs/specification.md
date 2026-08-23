@@ -313,9 +313,10 @@ enabled.
 6. identify canonical test and check commands;
 7. inspect configured GitHub labels and merge settings and ask before applying
    missing or drifted setup;
-8. default to Conventional Commits, squash-only merges using the PR title and
+8. configure GitHub workflow use independently from optional issue use;
+9. default to Conventional Commits, squash-only merges using the PR title and
    description, and automatic remote branch deletion after merge;
-9. preview changes and ask before writing.
+10. preview changes and ask before writing.
 
 Initialization does not create an empty decision log. A log begins only when a
 real decision is worth preserving.

@@ -70,6 +70,10 @@ def build_parser() -> argparse.ArgumentParser:
     github_group.add_argument("--github", dest="use_github", action="store_true")
     github_group.add_argument("--no-github", dest="use_github", action="store_false")
     init_parser.set_defaults(use_github=None)
+    issues_group = init_parser.add_mutually_exclusive_group()
+    issues_group.add_argument("--issues", dest="use_issues", action="store_true")
+    issues_group.add_argument("--no-issues", dest="use_issues", action="store_false")
+    init_parser.set_defaults(use_issues=None)
     init_parser.add_argument(
         "--check-command",
         metavar="COMMAND",
@@ -153,6 +157,7 @@ def dispatch(args: argparse.Namespace) -> int:
             project_type=args.type,
             profile=args.profile,
             use_github=args.use_github,
+            use_issues=args.use_issues,
             check_command=args.check_command,
             assume_yes=args.yes,
         )

@@ -77,6 +77,31 @@ def test_existing_agents_is_preserved(tmp_path: Path) -> None:
     assert agents.read_text(encoding="utf-8") == "Keep me\n"
 
 
+def test_initialization_can_enable_github_without_issues(
+    tmp_path: Path, toolkit_root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("mad_skills.initialize.require_gh", lambda repo_root: None)
+    monkeypatch.setattr("mad_skills.initialize.mismatched_repository_settings", lambda repo_root, config: [])
+    monkeypatch.setattr(
+        "mad_skills.initialize.missing_labels",
+        lambda repo_root, config: pytest.fail("PR-only initialization should not inspect issue labels"),
+    )
+    proposals = initialize_interactive(
+        tmp_path,
+        project_type="general",
+        profile="light",
+        use_github=True,
+        use_issues=False,
+        assume_yes=True,
+    )
+
+    assert len(proposals) == 3
+    config = load_yaml(tmp_path / ".agent/config.yaml")
+    assert validate_project_data(config, toolkit_root) == []
+    assert config["github"]["enabled"] is True
+    assert config["github"]["use_issues"] is False
+
+
 def test_rigorous_initialization_requires_check_command(tmp_path: Path) -> None:
     with pytest.raises(MadSkillsError) as error:
         propose_initialization(
