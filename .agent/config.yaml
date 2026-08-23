@@ -8,3 +8,5 @@ commands:
 github:
   enabled: true
   use_issues: false
+decisions:
+  log: docs/decisions.md
