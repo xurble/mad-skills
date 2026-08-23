@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from mad_skills.configuration import load_yaml, resolve_project, validate_project_data
+from mad_skills.configuration import github_workflow_enabled, load_yaml, resolve_project, validate_project_data
 from mad_skills.errors import MadSkillsError
 from tests.conftest import write_project_config
 
@@ -55,6 +55,31 @@ def test_pull_request_policy_does_not_require_issues(toolkit_root: Path) -> None
     }
 
     assert validate_project_data(data, toolkit_root) == []
+
+
+def test_github_workflow_can_enable_optional_prs_without_issues(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "normal"},
+        "github": {"enabled": True, "use_issues": False},
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
+    assert github_workflow_enabled(data["github"]) is True
+
+
+def test_github_workflow_cannot_be_disabled_when_prs_are_required(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "light"},
+        "github": {
+            "enabled": False,
+            "use_issues": False,
+            "require_pull_request_for_nontrivial_work": True,
+        },
+    }
+
+    assert "github.enabled cannot be false when issue or PR workflows are required" in validate_project_data(
+        data, toolkit_root
+    )
 
 
 def test_extra_bundles_are_additive(tmp_path: Path, toolkit_root: Path) -> None:

@@ -64,7 +64,8 @@ def deep_merge(base: Data, overlay: Data) -> Data:
 
 def github_workflow_enabled(github: Data) -> bool:
     return bool(
-        github.get("use_issues", False)
+        github.get("enabled", False)
+        or github.get("use_issues", False)
         or github.get("require_pull_request_for_nontrivial_work", False)
     )
 
@@ -91,6 +92,10 @@ def validate_project_data(data: Data, toolkit_root: Path | None = None) -> list[
 
     profile = data["project"]["profile"]
     github = data.get("github", {})
+    if github.get("enabled") is False and (
+        github.get("use_issues", False) or github.get("require_pull_request_for_nontrivial_work", False)
+    ):
+        errors.append("github.enabled cannot be false when issue or PR workflows are required")
     if not github.get("use_issues", False) and github.get("require_issue_for_nontrivial_work", False):
         errors.append("github: issue requirements need github.use_issues: true")
     if profile == "rigorous":

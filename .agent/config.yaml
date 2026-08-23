@@ -6,5 +6,5 @@ commands:
   test: ./scripts/test
   check: ./scripts/check
 github:
+  enabled: true
   use_issues: false
-

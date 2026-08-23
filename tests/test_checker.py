@@ -102,8 +102,8 @@ def test_pr_only_project_checks_github_settings(
 commands:
   check: ./scripts/check
 github:
+  enabled: true
   use_issues: false
-  require_pull_request_for_nontrivial_work: true
 """,
     )
     install("all", home=home, toolkit_root=toolkit_root)

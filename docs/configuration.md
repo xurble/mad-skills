@@ -13,6 +13,7 @@ project:
   type: django
   profile: normal
 github:
+  enabled: true
   use_issues: true
 commands:
   test: ./scripts/test
@@ -48,6 +49,7 @@ GitHub workflows require `gh`. The default semantic labels are configurable:
 
 ```yaml
 github:
+  enabled: true
   use_issues: true
   require_issue_for_nontrivial_work: false
   require_pull_request_for_nontrivial_work: true
@@ -75,9 +77,10 @@ developer override may bypass the AI-review gate.
 
 Normal projects also open non-trivial PRs as drafts because their default policy
 requires separate review. High-risk work uses the rigorous draft gate in every
-profile. A project may enable required PRs while leaving `use_issues` false;
-repository checks and `mad-skills setup-github` still manage PR settings, while
-issue-label management remains disabled.
+profile. Set `github.enabled: true` for optional PR workflows that do not use
+issues. Required PR policy also implies GitHub enablement for backward
+compatibility. Repository checks and `mad-skills setup-github` manage PR settings,
+while issue-label management remains conditional on `use_issues`.
 
 `merge_method` selects the only enabled GitHub merge method. The defaults use a
 Conventional-Commit PR title plus the PR description for the squash commit and

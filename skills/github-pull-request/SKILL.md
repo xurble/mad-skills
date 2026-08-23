@@ -23,14 +23,15 @@ GitHub—outside the sandbox with escalation from the outset.
    exact blockers. Never create or require an issue merely because the user
    requested a PR; treat a missing issue as a blocker only when effective project
    policy explicitly requires one.
-4. When policy requires a well-specified PR, make its title and body a standalone
-   change contract that does not depend on the originating chat or an issue. State
-   the desired outcome and motivation, scope and material non-goals, observable
-   acceptance criteria, what changed, important decisions, validation evidence,
-   and relevant migrations, data/security implications, rollout, and known risks.
-   Keep inapplicable sections out and do not invent rationale. For issue-driven
-   work, include `Closes #N`, but consolidate the accepted final specification in
-   the PR instead of making reviewers reconstruct it from the issue history.
+4. When policy requires a well-specified PR or task risk is high, make its title
+   and body a standalone change contract that does not depend on the originating
+   chat or an issue. State the desired outcome and motivation, scope and material
+   non-goals, observable acceptance criteria, what changed, important decisions,
+   validation evidence, and relevant migrations, data/security implications,
+   rollout, and known risks. Keep inapplicable sections out and do not invent
+   rationale. For issue-driven work, include `Closes #N`, but consolidate the
+   accepted final specification in the PR instead of making reviewers reconstruct
+   it from the issue history.
 5. Confirm the repository supports `github.merge_method` and
    `github.delete_branch_on_merge`. The defaults are squash-only merging, a
    Conventional-Commit PR title plus description for the squash commit, and
@@ -50,11 +51,12 @@ GitHub—outside the sandbox with escalation from the outset.
    the PR draft.
 8. Never merge automatically. When the user separately asks to merge, use the
    PR as the merge gate: reload its current title, body, diff, checks, and reviews,
-   and stop if hard evidence is missing or the PR does not meet the configured
-   specification requirement. A direct request to skip AI review, mark ready, or
-   merge an unreviewed draft explicitly overrides only the fresh-review gate: call
-   out the skipped review, never claim it happened, and mark ready if GitHub
-   requires it before using the configured merge method. Default to squash. Let
-   GitHub delete the remote branch after merge, and do not delete a local branch
-   without explicit authorization. Issue closure occurs through the merged linked
-   PR or a separate explicit user request.
+   and stop if hard evidence is missing or the PR does not meet the standalone
+   specification requirement imposed by effective policy or high task risk. A
+   direct request to skip AI review, mark ready, or merge an unreviewed draft
+   explicitly overrides only the fresh-review gate: call out the skipped review,
+   never claim it happened, and mark ready if GitHub requires it before using the
+   configured merge method. Default to squash. Let GitHub delete the remote branch
+   after merge, and do not delete a local branch without explicit authorization.
+   Issue closure occurs through the merged linked PR or a separate explicit user
+   request.

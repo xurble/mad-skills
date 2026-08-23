@@ -44,6 +44,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "enabled": { "type": "boolean" },
         "use_issues": { "type": "boolean" },
         "require_issue_for_nontrivial_work": { "type": "boolean" },
         "require_pull_request_for_nontrivial_work": { "type": "boolean" },

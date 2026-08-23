@@ -52,6 +52,7 @@ def test_initialization_writes_config_guidance_and_claude_shim(tmp_path: Path, t
     assert config["project"] == {"type": "python", "profile": "light"}
     assert config["git"] == {"conventional_commits": True}
     assert config["github"] == {
+        "enabled": False,
         "use_issues": False,
         "merge_method": "squash",
         "squash_merge_commit_message": "pr-title-description",
@@ -168,8 +169,8 @@ def test_setup_github_supports_pr_only_projects(tmp_path: Path, monkeypatch: pyt
   type: general
   profile: light
 github:
+  enabled: true
   use_issues: false
-  require_pull_request_for_nontrivial_work: true
 """,
         encoding="utf-8",
     )

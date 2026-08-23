@@ -79,6 +79,7 @@ def propose_initialization(
     if commands:
         config["commands"] = commands
     config["github"] = {
+        "enabled": use_github,
         "use_issues": use_github,
         "merge_method": "squash",
         "squash_merge_commit_message": "pr-title-description",

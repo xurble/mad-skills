@@ -295,9 +295,11 @@ issue for each PR. An ordinary repository check validates that configured
 commands resolve without executing them. A full check explicitly executes
 `commands.check`.
 
-A GitHub workflow is enabled when a project uses issues or requires pull requests.
+A GitHub workflow is enabled explicitly, when a project uses issues, or when it
+requires pull requests. The derived forms preserve existing configuration.
 Repository checks and `setup-github` manage authentication and merge settings for
-either form. Label inspection and setup remain conditional on issues being enabled.
+all three forms. Label inspection and setup remain conditional on issues being
+enabled.
 
 ## 11. Initialization and unconfigured repositories
 

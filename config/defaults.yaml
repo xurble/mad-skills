@@ -5,6 +5,7 @@ project:
   extra_bundles: []
 commands: {}
 github:
+  enabled: false
   use_issues: false
   require_issue_for_nontrivial_work: false
   require_pull_request_for_nontrivial_work: false
