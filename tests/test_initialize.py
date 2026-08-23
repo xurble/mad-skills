@@ -117,6 +117,22 @@ def test_rigorous_initialization_requires_check_command(tmp_path: Path) -> None:
     assert "--check-command './scripts/check'" in message
 
 
+def test_rigorous_initialization_requires_github_without_writing_files(tmp_path: Path) -> None:
+    with pytest.raises(MadSkillsError, match="rigorous profile requires GitHub workflows"):
+        initialize_interactive(
+            tmp_path,
+            project_type="general",
+            profile="rigorous",
+            use_github=False,
+            check_command="true",
+            assume_yes=True,
+        )
+
+    assert not (tmp_path / ".agent").exists()
+    assert not (tmp_path / "AGENTS.md").exists()
+    assert not (tmp_path / "CLAUDE.md").exists()
+
+
 def test_check_command_option_without_value_has_actionable_error(capsys: pytest.CaptureFixture[str]) -> None:
     with pytest.raises(SystemExit) as error:
         main(["init", "--check-command"])

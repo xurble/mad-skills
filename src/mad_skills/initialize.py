@@ -69,6 +69,11 @@ def propose_initialization(
     ios: dict[str, str] | None = None,
 ) -> list[ProposedFile]:
     _validate_check_command(check_command)
+    if profile == "rigorous" and not use_github:
+        raise MadSkillsError(
+            "The rigorous profile requires GitHub workflows for its pull request review gate; "
+            "rerun with --github"
+        )
     config: dict = {
         "version": 1,
         "project": {"type": project_type, "profile": profile},
