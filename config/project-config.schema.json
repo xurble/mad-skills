@@ -197,6 +197,10 @@
               {
                 "required": ["use_issues"],
                 "properties": { "use_issues": { "const": true } }
+              },
+              {
+                "required": ["require_pull_request_for_nontrivial_work"],
+                "properties": { "require_pull_request_for_nontrivial_work": { "const": true } }
               }
             ]
           }

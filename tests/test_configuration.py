@@ -160,6 +160,17 @@ github:
     assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is True
 
 
+def test_rigorous_profile_accepts_pr_implied_github_workflow(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "django", "profile": "rigorous"},
+        "commands": {"check": "./scripts/check"},
+        "github": {"require_pull_request_for_nontrivial_work": True},
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
+    assert github_workflow_enabled(data["github"]) is True
+
+
 @pytest.mark.parametrize(
     ("setting", "message"),
     [
