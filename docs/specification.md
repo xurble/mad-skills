@@ -23,7 +23,8 @@ personal portfolio.
 It must make agent-assisted development safer and more consistent without
 forcing the same amount of process onto every repository. A small hobby project
 must remain lightweight, while an important or high-risk project can require
-issues, planning, tests, independent verification, review, and pull requests.
+planning, tests, independent verification, review, and well-specified pull
+requests. Issues remain available to capture future work.
 
 The product, repository, Python package, and command-line program are all named
 `mad-skills`.
@@ -196,23 +197,36 @@ understand -> durable issue when useful -> implement -> test -> verify
 
 Meaningful behavior changes normally receive tests. Bug fixes normally receive
 regression coverage. Issues, plans, and pull requests follow project policy and
-the significance of the task.
+the significance of the task. When a non-trivial PR needs the profile's separate
+review, it opens as a draft and offers that review without starting it.
 
 ### `rigorous`
 
 Use for production-facing, security-sensitive, financially consequential, or
 otherwise important projects.
 
-Every non-trivial task requires:
+The standard path for every non-trivial task requires:
 
-1. a durable issue;
-2. an implementation-ready contract with acceptance criteria;
-3. a written plan presented to the user, then posted to the issue after approval;
-4. implementation on a pull-request branch;
-5. proportionate tests and the configured full check;
-6. verification against the issue in a separate fresh task;
-7. code review in another separate fresh task;
-8. a pull request linked with `Closes #N`.
+1. an implementation-ready specification with acceptance criteria, supplied in
+   chat or an existing issue;
+2. a written plan presented to and approved by the user;
+3. implementation on a pull-request branch;
+4. proportionate tests and the configured full check;
+5. verification against the supplied accepted specification in a separate fresh
+   task;
+6. a standalone well-specified draft pull request;
+7. an explicit offer of code review in another separate fresh task, without
+   starting it automatically;
+8. when the offer is accepted, completion of the review and remediation cycle
+   against the current diff before the PR is marked ready.
+
+The PR must consolidate the accepted outcome, motivation, scope, material
+non-goals, observable acceptance criteria, important decisions, validation
+evidence, and relevant operational or security risks. It links and closes an
+existing issue when the work was issue-driven, but an issue is not a prerequisite.
+Draft state is an advisory AI-review gate for one-person projects. The developer
+may explicitly override it and mark ready or merge without AI review; the agent
+must disclose the skipped review and never represent the change as reviewed.
 
 Trivial changes remain exempt from ceremony that adds no safety.
 
@@ -232,8 +246,8 @@ The following areas are high risk by default:
 
 Projects may add domain-specific risk mappings. A high-risk task always uses the
 planning, testing, fresh verification, and fresh review expectations of the
-rigorous profile. GitHub-specific steps apply only when the repository uses
-GitHub.
+rigorous profile. When the repository uses GitHub, it also uses the rigorous
+standalone PR merge gate.
 
 ## 10. Project configuration
 
@@ -275,9 +289,17 @@ commands:
 Projects should reuse their existing canonical tooling when wrappers provide no
 benefit. Native Xcode and `xcodebuild` commands are valid for iOS projects.
 
-Every rigorous project must configure `commands.check` and enable GitHub issues.
-An ordinary repository check validates that configured commands resolve without
-executing them. A full check explicitly executes `commands.check`.
+Every rigorous project must configure `commands.check` and enable its GitHub
+workflow. Enabling issues keeps backlog capture available; it does not require an
+issue for each PR. An ordinary repository check validates that configured
+commands resolve without executing them. A full check explicitly executes
+`commands.check`.
+
+A GitHub workflow is enabled explicitly, when a project uses issues, or when it
+requires pull requests. The derived forms preserve existing configuration.
+Repository checks and `setup-github` manage authentication and merge settings for
+all three forms. Label inspection and setup remain conditional on issues being
+enabled.
 
 ## 11. Initialization and unconfigured repositories
 
@@ -291,9 +313,10 @@ executing them. A full check explicitly executes `commands.check`.
 6. identify canonical test and check commands;
 7. inspect configured GitHub labels and merge settings and ask before applying
    missing or drifted setup;
-8. default to Conventional Commits, squash-only merges using the PR title and
+8. configure GitHub workflow use independently from optional issue use;
+9. default to Conventional Commits, squash-only merges using the PR title and
    description, and automatic remote branch deletion after merge;
-9. preview changes and ask before writing.
+10. preview changes and ask before writing.
 
 Initialization does not create an empty decision log. A log begins only when a
 real decision is worth preserving.
@@ -375,14 +398,17 @@ activation.
 - `implement-issue` works from explicit acceptance criteria, applies the selected
   profile and task risk, preserves unrelated changes, tests proportionately, and
   reports evidence.
-- `verify-issue` runs in a separate fresh task, checks the completed change against
-  every acceptance criterion, presents its finding first, and posts the approved
-  result and label changes afterward.
+- `verify-issue` runs in a separate fresh task and checks the completed change
+  against an issue-driven contract, an existing PR, or an explicitly supplied
+  accepted specification. It presents its finding first, then posts an approved
+  result when a source artifact exists; issue label changes apply only to
+  issue-driven work.
 - `review-change` runs in a separate fresh task and reviews correctness,
   maintainability, complexity, likely defects, data-loss or security risk,
   architecture, and important missing tests. It presents findings first and posts
-  a pull-request review only after approval. “No significant issues found” is a
-  valid result.
+  a pull-request review only after approval. It starts only when the user directly
+  requests review or accepts the offer made after draft PR creation. “No
+  significant issues found” is a valid result.
 - Verification and review are different responsibilities and do not substitute
   for each other.
 
@@ -404,9 +430,14 @@ not automatically delegated to a subagent from the implementation conversation.
   uses worktrees when parallel or risky work makes them useful.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
-  tests, and risks. It links an existing issue for issue-driven work, but a PR
-  request alone neither requires nor authorizes creating one. Its default
-  Conventional-Commit title becomes the squash commit title.
+  tests, and risks. Under rigorous policy, it makes the PR a standalone change
+  contract with scope and observable acceptance criteria, opens it as a draft,
+  and offers but does not automatically start fresh-context review. It marks the
+  PR ready when the accepted review cycle completes. An explicit developer
+  override may bypass only that review gate. The skill links an existing issue for
+  issue-driven work, but a PR request alone neither requires nor authorizes
+  creating one. Its default Conventional-Commit title becomes the squash commit
+  title.
 
 ### Technology guidance
 
@@ -421,10 +452,11 @@ not automatically delegated to a subagent from the implementation conversation.
 
 ## 14. GitHub workflow
 
-GitHub Issues are the durable work record when enabled. `gh` is the only supported
-GitHub client. Every GitHub workflow must stop and ask the user to install `gh` or
-authenticate it when the required state is missing; it must not fall back to a
-connector or an alternative client.
+GitHub Issues are the backlog for future work when enabled. Pull requests are the
+durable delivery record and merge gate. `gh` is the only supported GitHub client.
+Every GitHub workflow must stop and ask the user to install `gh` or authenticate it
+when the required state is missing; it must not fall back to a connector or an
+alternative client.
 
 In Codex, every direct `gh` command and every `mad-skills` command that reaches
 GitHub must run outside the sandbox with escalation from the outset. The default
@@ -447,12 +479,30 @@ verified
 Projects may map these semantics to different label names. Initialization checks
 for missing configured labels and asks before creating them.
 
-The normal lifecycle is:
+Issue-driven work may use the full backlog lifecycle:
 
 ```text
 capture issue -> make actionable -> approve plan -> in-progress
--> implement -> verify -> review -> pull request -> merge
+-> implement -> verify -> draft pull request -> offer review
+-> accepted review cycle -> ready -> merge
 ```
+
+Work that is already specified and approved in chat skips issue creation:
+
+```text
+approve specification and plan -> implement -> test and full check
+-> verify against supplied specification -> standalone well-specified draft PR
+-> offer review -> accepted review cycle -> ready -> merge
+```
+
+In both paths, the PR title and body preserve the final specification without
+depending on chat or issue history. Draft state visibly means fresh AI review has
+not completed. PR creation offers that review but does not start it. When accepted,
+the PR remains draft until the current diff has no unresolved material findings,
+then becomes ready. An issue link and `Closes #N` are included only when an
+existing issue actually drove the work. An explicit developer instruction may
+bypass the AI-review gate and mark ready or merge; the skipped review remains an
+explicitly reported limitation.
 
 Workflow labels progress from `agent-actionable` to `in-progress` to `verified`.
 Classification labels such as `bug` or `enhancement` remain in place. Failed or
@@ -597,6 +647,10 @@ Future work must preserve the following rules:
 - GitHub operations use `gh`, preserve approval boundaries, and follow the label
   and closure lifecycle;
 - a fresh task can implement an actionable issue without the originating chat;
+- a rigorous change designed in chat can reach merge without a redundant issue;
+- its PR stands alone as the final specification and merge gate;
+- rigorous PRs open as drafts, visibly offer fresh AI review, and become ready
+  after an accepted review cycle or an explicit developer override;
 - separate fresh tasks can verify the specification and review the code;
 - an inherited project can be specified from implementation while surfacing
   uncertain intent as explicit assumptions;

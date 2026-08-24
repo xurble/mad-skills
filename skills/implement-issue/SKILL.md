@@ -17,8 +17,10 @@ GitHub—outside the sandbox with escalation from the outset.
 4. Classify risk as `low`, `normal`, or `high` and state the evidence. Ask only
    when ambiguity changes the workflow. High risk always uses rigorous safety.
 5. Enforce effective policy:
-   - rigorous non-trivial work needs an issue, approved written plan, PR, tests,
-     full check, and later fresh verification and review;
+   - rigorous non-trivial work needs an approved written plan, tests, a full
+     check, later fresh verification, and a standalone well-specified draft PR
+     that offers fresh review before it is marked ready; the issue is this
+     workflow's input, not a universal prerequisite;
    - normal meaningful changes normally need tests and later fresh review;
    - light work uses focused checks and a final diff inspection.
 6. After confirming actionability, replace configured `actionable`/`verified`
@@ -33,5 +35,6 @@ GitHub—outside the sandbox with escalation from the outset.
 9. Inspect the final diff for scope, debug artifacts, secrets, migrations, and
    acceptance coverage. Do not claim checks that did not run.
 10. Hand off the issue, diff, checks, risks, and remaining work. Do not self-verify
-    or self-review: rigorous completion requires separate fresh tasks using
-    `verify-issue` and `review-change`.
+    or self-review. Rigorous verification uses a separate fresh `verify-issue`
+    task; after draft PR creation, offer a separate fresh `review-change` task and
+    wait for the user's acceptance.

@@ -62,6 +62,14 @@ def deep_merge(base: Data, overlay: Data) -> Data:
     return merged
 
 
+def github_workflow_enabled(github: Data) -> bool:
+    return bool(
+        github.get("enabled", False)
+        or github.get("use_issues", False)
+        or github.get("require_pull_request_for_nontrivial_work", False)
+    )
+
+
 def schema_validator(toolkit_root: Path | None = None) -> Draft202012Validator:
     root = toolkit_root or find_toolkit_root()
     schema_path = root / "config/project-config.schema.json"
@@ -84,16 +92,21 @@ def validate_project_data(data: Data, toolkit_root: Path | None = None) -> list[
 
     profile = data["project"]["profile"]
     github = data.get("github", {})
-    if not github.get("use_issues", False) and (
-        github.get("require_issue_for_nontrivial_work", False)
-        or github.get("require_pull_request_for_nontrivial_work", False)
+    if github.get("enabled") is False and (
+        github.get("use_issues", False) or github.get("require_pull_request_for_nontrivial_work", False)
     ):
-        errors.append("github: issue or PR requirements need github.use_issues: true")
+        errors.append("github.enabled cannot be false when issue or PR workflows are required")
+    if not github.get("use_issues", False) and github.get("require_issue_for_nontrivial_work", False):
+        errors.append("github: issue requirements need github.use_issues: true")
     if profile == "rigorous":
-        if github.get("require_issue_for_nontrivial_work") is False:
-            errors.append("github.require_issue_for_nontrivial_work cannot be false for rigorous")
         if github.get("require_pull_request_for_nontrivial_work") is False:
             errors.append("github.require_pull_request_for_nontrivial_work cannot be false for rigorous")
+        if github.get("require_well_specified_pull_request_for_nontrivial_work") is False:
+            errors.append(
+                "github.require_well_specified_pull_request_for_nontrivial_work cannot be false for rigorous"
+            )
+        if github.get("open_pull_requests_as_draft_until_reviewed") is False:
+            errors.append("github.open_pull_requests_as_draft_until_reviewed cannot be false for rigorous")
 
     decision_log = data.get("decisions", {}).get("log")
     if decision_log:

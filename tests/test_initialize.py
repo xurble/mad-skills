@@ -52,6 +52,7 @@ def test_initialization_writes_config_guidance_and_claude_shim(tmp_path: Path, t
     assert config["project"] == {"type": "python", "profile": "light"}
     assert config["git"] == {"conventional_commits": True}
     assert config["github"] == {
+        "enabled": False,
         "use_issues": False,
         "merge_method": "squash",
         "squash_merge_commit_message": "pr-title-description",
@@ -76,6 +77,31 @@ def test_existing_agents_is_preserved(tmp_path: Path) -> None:
     assert agents.read_text(encoding="utf-8") == "Keep me\n"
 
 
+def test_initialization_can_enable_github_without_issues(
+    tmp_path: Path, toolkit_root: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("mad_skills.initialize.require_gh", lambda repo_root: None)
+    monkeypatch.setattr("mad_skills.initialize.mismatched_repository_settings", lambda repo_root, config: [])
+    monkeypatch.setattr(
+        "mad_skills.initialize.missing_labels",
+        lambda repo_root, config: pytest.fail("PR-only initialization should not inspect issue labels"),
+    )
+    proposals = initialize_interactive(
+        tmp_path,
+        project_type="general",
+        profile="light",
+        use_github=True,
+        use_issues=False,
+        assume_yes=True,
+    )
+
+    assert len(proposals) == 3
+    config = load_yaml(tmp_path / ".agent/config.yaml")
+    assert validate_project_data(config, toolkit_root) == []
+    assert config["github"]["enabled"] is True
+    assert config["github"]["use_issues"] is False
+
+
 def test_rigorous_initialization_requires_check_command(tmp_path: Path) -> None:
     with pytest.raises(MadSkillsError) as error:
         propose_initialization(
@@ -89,6 +115,22 @@ def test_rigorous_initialization_requires_check_command(tmp_path: Path) -> None:
     assert "project check command" in message
     assert "validates the repository before a change is accepted" in message
     assert "--check-command './scripts/check'" in message
+
+
+def test_rigorous_initialization_requires_github_without_writing_files(tmp_path: Path) -> None:
+    with pytest.raises(MadSkillsError, match="rigorous profile requires GitHub workflows"):
+        initialize_interactive(
+            tmp_path,
+            project_type="general",
+            profile="rigorous",
+            use_github=False,
+            check_command="true",
+            assume_yes=True,
+        )
+
+    assert not (tmp_path / ".agent").exists()
+    assert not (tmp_path / "AGENTS.md").exists()
+    assert not (tmp_path / "CLAUDE.md").exists()
 
 
 def test_check_command_option_without_value_has_actionable_error(capsys: pytest.CaptureFixture[str]) -> None:
@@ -158,3 +200,36 @@ github:
     assert result == 0
     assert len(configured) == 1
     assert configured[0][1]["merge_method"] == "squash"
+
+
+def test_setup_github_supports_pr_only_projects(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    config_path = tmp_path / ".agent/config.yaml"
+    config_path.parent.mkdir()
+    config_path.write_text(
+        """project:
+  type: general
+  profile: light
+github:
+  enabled: true
+  use_issues: false
+""",
+        encoding="utf-8",
+    )
+    configured = []
+    monkeypatch.setattr(
+        "mad_skills.cli.mismatched_repository_settings",
+        lambda repo_root, config: ["squash merges should be enabled"],
+    )
+    monkeypatch.setattr(
+        "mad_skills.cli.missing_labels",
+        lambda repo_root, config: pytest.fail("PR-only setup should not inspect issue labels"),
+    )
+    monkeypatch.setattr(
+        "mad_skills.cli.configure_repository",
+        lambda repo_root, config: configured.append((repo_root, config)),
+    )
+
+    result = main(["setup-github", str(tmp_path), "--yes"])
+
+    assert result == 0
+    assert len(configured) == 1

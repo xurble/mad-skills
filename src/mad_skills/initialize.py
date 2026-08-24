@@ -64,10 +64,16 @@ def propose_initialization(
     project_type: str,
     profile: str,
     use_github: bool,
+    use_issues: bool = False,
     check_command: str | None = None,
     ios: dict[str, str] | None = None,
 ) -> list[ProposedFile]:
     _validate_check_command(check_command)
+    if profile == "rigorous" and not use_github:
+        raise MadSkillsError(
+            "The rigorous profile requires GitHub workflows for its pull request review gate; "
+            "rerun with --github"
+        )
     config: dict = {
         "version": 1,
         "project": {"type": project_type, "profile": profile},
@@ -79,7 +85,8 @@ def propose_initialization(
     if commands:
         config["commands"] = commands
     config["github"] = {
-        "use_issues": use_github,
+        "enabled": use_github,
+        "use_issues": use_issues,
         "merge_method": "squash",
         "squash_merge_commit_message": "pr-title-description",
         "delete_branch_on_merge": True,
@@ -150,6 +157,7 @@ def initialize_interactive(
     project_type: str | None = None,
     profile: str | None = None,
     use_github: bool | None = None,
+    use_issues: bool | None = None,
     check_command: str | None = None,
     assume_yes: bool = False,
     prompt: Prompt = input,
@@ -176,8 +184,15 @@ def initialize_interactive(
         assume_yes,
     )
     github_enabled = use_github
+    if use_issues is True and github_enabled is None:
+        github_enabled = True
     if github_enabled is None:
-        github_enabled = False if assume_yes else _yes(prompt("Use GitHub issues? [y/N]: "))
+        github_enabled = False if assume_yes else _yes(prompt("Use GitHub workflows? [y/N]: "))
+    issues_enabled = use_issues
+    if issues_enabled is None:
+        issues_enabled = False if assume_yes or not github_enabled else _yes(prompt("Use GitHub issues? [y/N]: "))
+    if issues_enabled and not github_enabled:
+        raise MadSkillsError("GitHub issues require GitHub workflows; use --github with --issues")
     pending_labels = []
     pending_repository_settings = []
     github_config = None
@@ -185,7 +200,8 @@ def initialize_interactive(
         require_gh(repo_root)
         defaults = load_yaml(find_toolkit_root() / "config/defaults.yaml")
         github_config = defaults["github"]
-        pending_labels = missing_labels(repo_root, github_config)
+        if issues_enabled:
+            pending_labels = missing_labels(repo_root, github_config)
         pending_repository_settings = mismatched_repository_settings(repo_root, github_config)
 
     proposals = propose_initialization(
@@ -193,6 +209,7 @@ def initialize_interactive(
         project_type=selected_type,
         profile=selected_profile,
         use_github=github_enabled,
+        use_issues=issues_enabled,
         check_command=check_command,
         ios=detection.ios,
     )

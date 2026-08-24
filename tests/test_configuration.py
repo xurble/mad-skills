@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from mad_skills.configuration import load_yaml, resolve_project, validate_project_data
+from mad_skills.configuration import github_workflow_enabled, load_yaml, resolve_project, validate_project_data
 from mad_skills.errors import MadSkillsError
 from tests.conftest import write_project_config
 
@@ -41,6 +41,45 @@ def test_django_type_adds_general_python_and_django_skills(tmp_path: Path, toolk
     assert "python-development" in effective.skills
     assert "django-development" in effective.skills
     assert effective.data["testing"]["meaningful_changes_require_tests"] is True
+    assert effective.data["verification"]["separate_review_for_nontrivial_work"] is True
+    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is False
+
+
+def test_pull_request_policy_does_not_require_issues(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "light"},
+        "github": {
+            "use_issues": False,
+            "require_pull_request_for_nontrivial_work": True,
+        },
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
+
+
+def test_github_workflow_can_enable_optional_prs_without_issues(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "normal"},
+        "github": {"enabled": True, "use_issues": False},
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
+    assert github_workflow_enabled(data["github"]) is True
+
+
+def test_github_workflow_cannot_be_disabled_when_prs_are_required(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "general", "profile": "light"},
+        "github": {
+            "enabled": False,
+            "use_issues": False,
+            "require_pull_request_for_nontrivial_work": True,
+        },
+    }
+
+    assert "github.enabled cannot be false when issue or PR workflows are required" in validate_project_data(
+        data, toolkit_root
+    )
 
 
 def test_extra_bundles_are_additive(tmp_path: Path, toolkit_root: Path) -> None:
@@ -96,7 +135,7 @@ def test_rigorous_requires_check_and_github(toolkit_root: Path) -> None:
     assert any("github" in error for error in errors)
 
 
-def test_rigorous_profile_cannot_disable_required_workflow(tmp_path: Path, toolkit_root: Path) -> None:
+def test_rigorous_profile_allows_work_without_an_issue(tmp_path: Path, toolkit_root: Path) -> None:
     path = write_project_config(
         tmp_path,
         """project:
@@ -105,14 +144,70 @@ def test_rigorous_profile_cannot_disable_required_workflow(tmp_path: Path, toolk
 commands:
   check: ./scripts/check
 github:
-  use_issues: true
+  enabled: true
+  use_issues: false
   require_issue_for_nontrivial_work: false
 """,
     )
 
     errors = validate_project_data(load_yaml(path), toolkit_root)
 
-    assert "github.require_issue_for_nontrivial_work cannot be false for rigorous" in errors
+    assert errors == []
+    effective = resolve_project(tmp_path, toolkit_root)
+    assert effective.data["github"]["require_issue_for_nontrivial_work"] is False
+    assert effective.data["github"]["require_pull_request_for_nontrivial_work"] is True
+    assert effective.data["github"]["require_well_specified_pull_request_for_nontrivial_work"] is True
+    assert effective.data["github"]["open_pull_requests_as_draft_until_reviewed"] is True
+
+
+def test_rigorous_profile_accepts_pr_implied_github_workflow(toolkit_root: Path) -> None:
+    data = {
+        "project": {"type": "django", "profile": "rigorous"},
+        "commands": {"check": "./scripts/check"},
+        "github": {"require_pull_request_for_nontrivial_work": True},
+    }
+
+    assert validate_project_data(data, toolkit_root) == []
+    assert github_workflow_enabled(data["github"]) is True
+
+
+@pytest.mark.parametrize(
+    ("setting", "message"),
+    [
+        (
+            "require_pull_request_for_nontrivial_work",
+            "github.require_pull_request_for_nontrivial_work cannot be false for rigorous",
+        ),
+        (
+            "require_well_specified_pull_request_for_nontrivial_work",
+            "github.require_well_specified_pull_request_for_nontrivial_work cannot be false for rigorous",
+        ),
+        (
+            "open_pull_requests_as_draft_until_reviewed",
+            "github.open_pull_requests_as_draft_until_reviewed cannot be false for rigorous",
+        ),
+    ],
+)
+def test_rigorous_profile_cannot_disable_required_pr_gate(
+    tmp_path: Path, toolkit_root: Path, setting: str, message: str
+) -> None:
+    path = write_project_config(
+        tmp_path,
+        f"""project:
+  type: django
+  profile: rigorous
+commands:
+  check: ./scripts/check
+github:
+  enabled: true
+  use_issues: false
+  {setting}: false
+""",
+    )
+
+    errors = validate_project_data(load_yaml(path), toolkit_root)
+
+    assert message in errors
 
 
 def test_context_includes_source_locations(tmp_path: Path, toolkit_root: Path) -> None:

@@ -7,7 +7,13 @@ from pathlib import Path
 
 from mad_skills import __version__
 from mad_skills.checker import check_project
-from mad_skills.configuration import dump_yaml, load_yaml, resolve_project, validate_project_data
+from mad_skills.configuration import (
+    dump_yaml,
+    github_workflow_enabled,
+    load_yaml,
+    resolve_project,
+    validate_project_data,
+)
 from mad_skills.errors import MadSkillsError
 from mad_skills.github import (
     configure_repository,
@@ -64,6 +70,10 @@ def build_parser() -> argparse.ArgumentParser:
     github_group.add_argument("--github", dest="use_github", action="store_true")
     github_group.add_argument("--no-github", dest="use_github", action="store_false")
     init_parser.set_defaults(use_github=None)
+    issues_group = init_parser.add_mutually_exclusive_group()
+    issues_group.add_argument("--issues", dest="use_issues", action="store_true")
+    issues_group.add_argument("--no-issues", dest="use_issues", action="store_false")
+    init_parser.set_defaults(use_issues=None)
     init_parser.add_argument(
         "--check-command",
         metavar="COMMAND",
@@ -147,6 +157,7 @@ def dispatch(args: argparse.Namespace) -> int:
             project_type=args.type,
             profile=args.profile,
             use_github=args.use_github,
+            use_issues=args.use_issues,
             check_command=args.check_command,
             assume_yes=args.yes,
         )
@@ -168,11 +179,11 @@ def dispatch(args: argparse.Namespace) -> int:
         return 0
     if args.command == "setup-github":
         effective = resolve_project(args.path)
-        if not effective.data["github"].get("use_issues"):
-            raise MadSkillsError("github.use_issues is not enabled for this project")
         github_config = effective.data["github"]
+        if not github_workflow_enabled(github_config):
+            raise MadSkillsError("GitHub workflow is not enabled for this project")
         settings = mismatched_repository_settings(effective.repo_root, github_config)
-        labels = missing_labels(effective.repo_root, github_config)
+        labels = missing_labels(effective.repo_root, github_config) if github_config.get("use_issues") else []
         if not settings and not labels:
             print("GitHub repository settings and labels are already ready.")
             return 0
