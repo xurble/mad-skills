@@ -291,6 +291,22 @@ def test_control_endpoint_rejects_invalid_content_length():
     assert response.status_code == 400
 
 
+def test_control_endpoint_rejects_json_beyond_decoder_recursion_limit():
+    nesting = sys.getrecursionlimit() + 100
+    nested_value = "[" * nesting + "0" + "]" * nesting
+    body = '{"template":"page.html","context":{"nested":' + nested_value + "}}"
+
+    response = Client().post(
+        CREATE_PATH,
+        data=body,
+        content_type="application/json",
+        headers={"X-Codex-Preview-Token": TOKEN},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"error": "Request JSON nesting is too deep."}
+
+
 def test_template_origin_must_be_inside_approved_project_roots():
     response = create_preview(
         Client(),

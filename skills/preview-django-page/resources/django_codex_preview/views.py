@@ -92,6 +92,8 @@ def _decode_payload(request: HttpRequest) -> Any:
 
     try:
         return json.loads(body.decode("utf-8"), parse_constant=reject_constant)
+    except RecursionError as exc:
+        raise InvalidPreview("Request JSON nesting is too deep.") from exc
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise InvalidPreview("Request body must contain valid UTF-8 JSON.") from exc
 
