@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <ul>
+    {% for item in items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+  {% if user.is_staff %}<div id="staff">staff-presentation</div>{% endif %}
+  <form method="post"><button type="submit">Must not submit</button></form>
+{% endblock %}

@@ -19,6 +19,7 @@ mad-skills = "mad_skills.cli:main"
 
 [dependency-groups]
 dev = [
+  "Django>=5.2,<6.1",
   "pytest>=8.3,<9",
   "ruff>=0.9,<1",
 ]
