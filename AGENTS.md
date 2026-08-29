@@ -40,3 +40,7 @@ uv run ruff check .
 
 Inspect `git diff` and preserve unrelated user work before finishing.
 
+## Environment
+
+The gh command should be installed and authenticated.  It needs to run outside the sandbox
+
