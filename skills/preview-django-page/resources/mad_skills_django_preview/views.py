@@ -22,8 +22,8 @@ from .preview import InvalidPreview, PreviewSpec, PreviewUser, parse_payload
 from .store import preview_store
 
 MAX_REQUEST_BYTES = 65_536
-TOKEN_ENVIRONMENT_VARIABLE = "CODEX_PREVIEW_TOKEN"
-TOKEN_HEADER = "X-Codex-Preview-Token"
+TOKEN_ENVIRONMENT_VARIABLE = "MAD_SKILLS_PREVIEW_TOKEN"
+TOKEN_HEADER = "X-Mad-Skills-Preview-Token"
 
 
 class RequestTooLarge(InvalidPreview):
@@ -35,7 +35,7 @@ def _not_found() -> None:
 
 
 def _require_available(request: HttpRequest) -> None:
-    if not settings.DEBUG or getattr(settings, "CODEX_PREVIEW_ENABLED", False) is not True:
+    if not settings.DEBUG or getattr(settings, "MAD_SKILLS_PREVIEW_ENABLED", False) is not True:
         _not_found()
     try:
         peer = ipaddress.ip_address(request.META.get("REMOTE_ADDR", ""))
@@ -99,7 +99,7 @@ def _decode_payload(request: HttpRequest) -> Any:
 
 
 def _approved_template_roots() -> tuple[Path, ...]:
-    configured = getattr(settings, "CODEX_PREVIEW_TEMPLATE_ROOTS", None)
+    configured = getattr(settings, "MAD_SKILLS_PREVIEW_TEMPLATE_ROOTS", None)
     if configured is not None:
         if isinstance(configured, (str, bytes)):
             return ()
@@ -147,7 +147,7 @@ def create_preview(request: HttpRequest) -> HttpResponse:
         return _invalid(str(exc), status=status)
     preview_id = preview_store.create(spec)
     preview_url = request.build_absolute_uri(
-        reverse("django_codex_preview:render", kwargs={"preview_id": preview_id})
+        reverse("mad_skills_django_preview:render", kwargs={"preview_id": preview_id})
     )
     return _security_headers(
         JsonResponse(
@@ -178,10 +178,10 @@ def _template_response(request: HttpRequest, spec: PreviewSpec) -> TemplateRespo
     if not spec.fragment:
         return TemplateResponse(request, spec.template_name, spec.context)
     wrapper_source = (
-        files("django_codex_preview")
-        .joinpath("templates/django_codex_preview/fragment.html")
+        files("mad_skills_django_preview")
+        .joinpath("templates/mad_skills_django_preview/fragment.html")
         .read_text(encoding="utf-8")
     )
     wrapper = engines["django"].from_string(wrapper_source)
-    context = {**spec.context, "django_codex_preview_template": spec.template_name}
+    context = {**spec.context, "mad_skills_preview_template": spec.template_name}
     return TemplateResponse(request, wrapper, context)

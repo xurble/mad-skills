@@ -4,7 +4,7 @@
 
 **Decision:**
 
-Ship `django_codex_preview` as a Python resource inside the
+Ship `mad_skills_django_preview` as a Python resource inside the
 `preview-django-page` skill. Add the resource directory to `PYTHONPATH` only for
 the local preview server; do not publish it or add it to the toolkit's runtime
 package.

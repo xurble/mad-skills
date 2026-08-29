@@ -21,18 +21,18 @@ from django.contrib.staticfiles.handlers import StaticFilesHandler  # noqa: E402
 from django.core import checks  # noqa: E402
 from django.core.handlers.wsgi import WSGIHandler  # noqa: E402
 from django.test import Client, override_settings  # noqa: E402
-from django_codex_preview import views  # noqa: E402
-from django_codex_preview.preview import PreviewUser, parse_payload  # noqa: E402
-from django_codex_preview.store import PreviewStore, preview_store  # noqa: E402
+from mad_skills_django_preview import views  # noqa: E402
+from mad_skills_django_preview.preview import PreviewUser, parse_payload  # noqa: E402
+from mad_skills_django_preview.store import PreviewStore, preview_store  # noqa: E402
 
 TOKEN = "test-token-with-at-least-thirty-two-characters"
-CREATE_PATH = "/__codex_preview__/create/"
+CREATE_PATH = "/__mad_skills_preview__/create/"
 
 
 @pytest.fixture(autouse=True)
 def isolated_preview_store(monkeypatch):
     preview_store.clear()
-    monkeypatch.setenv("CODEX_PREVIEW_TOKEN", TOKEN)
+    monkeypatch.setenv("MAD_SKILLS_PREVIEW_TOKEN", TOKEN)
     yield
     preview_store.clear()
 
@@ -44,7 +44,7 @@ def create_preview(client: Client, payload: dict | None = None, **request_option
     }
     options = {
         "content_type": "application/json",
-        "headers": {"X-Codex-Preview-Token": TOKEN},
+        "headers": {"X-Mad-Skills-Preview-Token": TOKEN},
     }
     options.update(request_options)
     return client.post(CREATE_PATH, data=json.dumps(body), **options)
@@ -118,16 +118,16 @@ def test_fragment_uses_bundled_wrapper_without_project_wrapper():
     rendered = Client().get(preview_path(response))
 
     assert rendered.status_code == 200
-    assert b"data-codex-preview-fragment" in rendered.content
+    assert b"data-mad-skills-preview-fragment" in rendered.content
     assert b'<article class="card"><h2>Card heading</h2><p>Card body</p></article>' in rendered.content
 
 
 @pytest.mark.parametrize(
     ("overrides", "expected_status"),
     [
-        ({"DEBUG": False, "CODEX_PREVIEW_ENABLED": True}, 404),
-        ({"DEBUG": True, "CODEX_PREVIEW_ENABLED": False}, 404),
-        ({"DEBUG": True, "CODEX_PREVIEW_ENABLED": "true"}, 404),
+        ({"DEBUG": False, "MAD_SKILLS_PREVIEW_ENABLED": True}, 404),
+        ({"DEBUG": True, "MAD_SKILLS_PREVIEW_ENABLED": False}, 404),
+        ({"DEBUG": True, "MAD_SKILLS_PREVIEW_ENABLED": "true"}, 404),
     ],
 )
 def test_enablement_gates_repeat_inside_views(overrides, expected_status):
@@ -136,10 +136,10 @@ def test_enablement_gates_repeat_inside_views(overrides, expected_status):
 
 
 def test_enabled_with_debug_false_reports_critical_system_check():
-    with override_settings(DEBUG=False, CODEX_PREVIEW_ENABLED=True):
+    with override_settings(DEBUG=False, MAD_SKILLS_PREVIEW_ENABLED=True):
         findings = checks.run_checks()
 
-    finding = next(item for item in findings if item.id == "django_codex_preview.E001")
+    finding = next(item for item in findings if item.id == "mad_skills_django_preview.E001")
     assert finding.level == checks.CRITICAL
 
 
@@ -159,13 +159,13 @@ def test_creation_requires_json_and_correct_capability_without_cors():
         CREATE_PATH,
         data="{}",
         content_type="application/json",
-        headers={"X-Codex-Preview-Token": "wrong"},
+        headers={"X-Mad-Skills-Preview-Token": "wrong"},
     )
     non_json = client.post(
         CREATE_PATH,
         data="template=page.html",
         content_type="application/x-www-form-urlencoded",
-        headers={"X-Codex-Preview-Token": TOKEN},
+        headers={"X-Mad-Skills-Preview-Token": TOKEN},
     )
     options = client.options(CREATE_PATH, headers={"Origin": "https://example.test"})
 
@@ -183,7 +183,7 @@ def test_unknown_and_expired_preview_ids_return_404(monkeypatch):
     created = create_preview(Client())
     path = preview_path(created)
 
-    assert Client().get("/__codex_preview__/p/unknown/").status_code == 404
+    assert Client().get("/__mad_skills_preview__/p/unknown/").status_code == 404
     now[0] = 11.0
     assert Client().get(path).status_code == 404
     assert len(expiring_store) == 0
@@ -265,13 +265,13 @@ def test_control_endpoint_rejects_oversized_body_and_non_finite_json():
         CREATE_PATH,
         data=huge,
         content_type="application/json",
-        headers={"X-Codex-Preview-Token": TOKEN},
+        headers={"X-Mad-Skills-Preview-Token": TOKEN},
     )
     non_finite = client.post(
         CREATE_PATH,
         data='{"template":"page.html","context":{"value":NaN}}',
         content_type="application/json",
-        headers={"X-Codex-Preview-Token": TOKEN},
+        headers={"X-Mad-Skills-Preview-Token": TOKEN},
     )
 
     assert oversized.status_code == 413
@@ -285,7 +285,7 @@ def test_control_endpoint_rejects_invalid_content_length():
         data=b"{}",
         content_type="application/json",
         CONTENT_LENGTH="invalid",
-        HTTP_X_CODEX_PREVIEW_TOKEN=TOKEN,
+        HTTP_X_MAD_SKILLS_PREVIEW_TOKEN=TOKEN,
     )
 
     assert response.status_code == 400
@@ -300,7 +300,7 @@ def test_control_endpoint_rejects_json_beyond_decoder_recursion_limit():
         CREATE_PATH,
         data=body,
         content_type="application/json",
-        headers={"X-Codex-Preview-Token": TOKEN},
+        headers={"X-Mad-Skills-Preview-Token": TOKEN},
     )
 
     assert response.status_code == 400
@@ -310,7 +310,7 @@ def test_control_endpoint_rejects_json_beyond_decoder_recursion_limit():
 def test_template_origin_must_be_inside_approved_project_roots():
     response = create_preview(
         Client(),
-        {"template": "django_codex_preview/fragment.html", "context": {}},
+        {"template": "mad_skills_django_preview/fragment.html", "context": {}},
     )
 
     assert response.status_code == 400
@@ -347,5 +347,5 @@ def test_preview_security_headers_block_forms_caching_indexing_and_frames():
 def test_preview_root_and_non_get_render_expose_nothing():
     created = create_preview(Client())
 
-    assert Client().get("/__codex_preview__/").status_code == 404
+    assert Client().get("/__mad_skills_preview__/").status_code == 404
     assert Client().post(preview_path(created)).status_code == 404

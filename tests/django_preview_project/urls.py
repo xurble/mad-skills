@@ -3,7 +3,7 @@ from django.urls import include, path
 
 urlpatterns = []
 
-if getattr(settings, "CODEX_PREVIEW_ENABLED", False):
+if getattr(settings, "MAD_SKILLS_PREVIEW_ENABLED", False):
     urlpatterns += [
-        path("__codex_preview__/", include("django_codex_preview.urls")),
+        path("__mad_skills_preview__/", include("mad_skills_django_preview.urls")),
     ]

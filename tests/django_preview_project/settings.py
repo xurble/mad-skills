@@ -6,8 +6,8 @@ SECRET_KEY = "test-only-secret-key"
 DEBUG = True
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
-CODEX_PREVIEW_ENABLED = True
-CODEX_PREVIEW_TEMPLATE_ROOTS = [BASE_DIR / "templates"]
+MAD_SKILLS_PREVIEW_ENABLED = True
+MAD_SKILLS_PREVIEW_TEMPLATE_ROOTS = [BASE_DIR / "templates"]
 
 ROOT_URLCONF = "tests.django_preview_project.urls"
 MIDDLEWARE = [
@@ -16,7 +16,7 @@ MIDDLEWARE = [
 ]
 INSTALLED_APPS = [
     "django.contrib.staticfiles",
-    "django_codex_preview",
+    "mad_skills_django_preview",
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
