@@ -1,9 +1,9 @@
 ---
-name: clean-branches
-description: Clean obsolete Git branches and synchronize the primary branch. Use when explicitly asked to prune merged local or remote branches while syncing main or the default branch, including branches left unmerged by squash merges.
+name: clean-up-branches
+description: Clean up obsolete Git branches and synchronize the primary branch. Use when explicitly asked to clean up, prune, or remove merged local or remote branches while syncing main or the default branch, including branches left unmerged by squash merges.
 ---
 
-# Sync the primary branch and clean obsolete branches
+# Clean up Git branches and sync the primary branch
 
 1. Inspect the repository root, status, current branch, worktrees, remotes, and
    the remote's primary branch. Scope remote cleanup to `origin` unless the user

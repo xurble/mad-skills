@@ -345,7 +345,7 @@ systematic-debugging
 testing
 record-decision
 git-workflow
-clean-branches
+clean-up-branches
 github-pull-request
 ```
 
@@ -406,10 +406,15 @@ activation.
   issue-driven work.
 - `review-change` runs in a separate fresh task and reviews correctness,
   maintainability, complexity, likely defects, data-loss or security risk,
-  architecture, and important missing tests. It presents findings first and posts
-  a pull-request review only after approval. It starts only when the user directly
-  requests review or accepts the offer made after draft PR creation. “No
-  significant issues found” is a valid result.
+  architecture, and important missing tests. It checks whether the reviewed
+  branch has an open pull request and, when one exists, posts line-specific
+  findings as review comments plus any remaining feedback as a pull-request
+  review comment. The review request authorizes those comments; other pull-request
+  state changes still require a separate explicit request except that a result
+  with no unresolved material findings or required follow-up changes a draft PR
+  to ready for review. Without an open pull request, it reports locally. It starts
+  only when the user directly requests review or accepts the offer made after
+  draft PR creation. “No significant issues found” is a valid result.
 - Verification and review are different responsibilities and do not substitute
   for each other.
 
@@ -429,7 +434,7 @@ not automatically delegated to a subagent from the implementation conversation.
 - `git-workflow` inspects status, preserves unrelated work, prevents secret
   commits, uses Conventional Commits by default, encourages focused commits, and
   uses worktrees when parallel or risky work makes them useful.
-- `clean-branches` fast-forwards the primary branch, prunes stale tracking refs,
+- `clean-up-branches` fast-forwards the primary branch, prunes stale tracking refs,
   and deletes only branches proven merged by ancestry or by an exact merged-PR
   head match. It uses forced local deletion only for verified squash merges and
   preserves protected, current, worktree-bound, divergent, and ambiguous
@@ -438,12 +443,12 @@ not automatically delegated to a subagent from the implementation conversation.
   known rationale, important decisions, migrations, security implications,
   tests, and risks. Under rigorous policy, it makes the PR a standalone change
   contract with scope and observable acceptance criteria, opens it as a draft,
-  and offers but does not automatically start fresh-context review. It marks the
-  PR ready when the accepted review cycle completes. An explicit developer
-  override may bypass only that review gate. The skill links an existing issue for
-  issue-driven work, but a PR request alone neither requires nor authorizes
-  creating one. Its default Conventional-Commit title becomes the squash commit
-  title.
+  and offers but does not automatically start fresh-context review. A clean
+  `review-change` result marks the PR ready when the accepted review cycle
+  completes. An explicit developer override may bypass only that review gate. The
+  skill links an existing issue for issue-driven work, but a PR request alone
+  neither requires nor authorizes creating one. Its default Conventional-Commit
+  title becomes the squash commit title.
 
 ### Technology guidance
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Clean Git Branches"
-  short_description: "Sync primary and prune obsolete branches"
-  default_prompt: "Use $clean-branches to sync the primary branch and remove verified obsolete local and origin branches."

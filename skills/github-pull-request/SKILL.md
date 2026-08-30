@@ -46,10 +46,10 @@ GitHub—outside the sandbox with escalation from the outset.
    inherit a profile's non-trivial review gate.
 7. When the user accepts the review offer, use `review-change` in a separate fresh
    task. Keep the PR draft while material findings remain. After fixes, repeat
-   relevant checks and fresh review against the current diff. When the cycle has
-   no unresolved material findings, mark the PR ready with `gh pr ready` and
-   report the transition. If the user declines or does not accept the offer, leave
-   the PR draft.
+   relevant checks and fresh review against the current diff. A clean
+   `review-change` result posts its feedback and marks the draft PR ready. Report
+   that transition. If the user declines or does not accept the offer, leave the
+   PR draft.
 8. Never merge automatically. When the user separately asks to merge, use the
    PR as the merge gate: reload its current title, body, diff, checks, and reviews,
    and stop if hard evidence is missing or the PR does not meet the standalone
