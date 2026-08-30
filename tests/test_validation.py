@@ -12,7 +12,7 @@ def test_toolkit_validates(toolkit_root: Path) -> None:
 def test_every_skill_has_matching_frontmatter(toolkit_root: Path) -> None:
     skill_paths = sorted((toolkit_root / "skills").iterdir())
 
-    assert len(skill_paths) == 18
+    assert len(skill_paths) == 19
     for skill_path in skill_paths:
         name, description = parse_skill(skill_path)
         assert name == skill_path.name

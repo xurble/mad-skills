@@ -345,6 +345,7 @@ systematic-debugging
 testing
 record-decision
 git-workflow
+clean-branches
 github-pull-request
 ```
 
@@ -428,6 +429,11 @@ not automatically delegated to a subagent from the implementation conversation.
 - `git-workflow` inspects status, preserves unrelated work, prevents secret
   commits, uses Conventional Commits by default, encourages focused commits, and
   uses worktrees when parallel or risky work makes them useful.
+- `clean-branches` fast-forwards the primary branch, prunes stale tracking refs,
+  and deletes only branches proven merged by ancestry or by an exact merged-PR
+  head match. It uses forced local deletion only for verified squash merges and
+  preserves protected, current, worktree-bound, divergent, and ambiguous
+  branches.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
   tests, and risks. Under rigorous policy, it makes the PR a standalone change
