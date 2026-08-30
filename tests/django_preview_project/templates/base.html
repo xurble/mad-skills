@@ -1,0 +1,15 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'preview.css' %}">
+    <title>{% block title %}Sample{% endblock %}</title>
+  </head>
+  <body>
+    <div id="processor">{{ processor_marker }}</div>
+    <div id="middleware">{{ middleware_marker }}</div>
+    <div id="user">{% if user.is_authenticated %}{{ user }}{% else %}anonymous{% endif %}</div>
+    {% block content %}{% endblock %}
+  </body>
+</html>

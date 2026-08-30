@@ -27,6 +27,14 @@ def test_general_bundle_includes_reverse_specification(toolkit_root: Path) -> No
     assert "specify-existing-project" in skills
 
 
+def test_django_bundle_includes_template_preview(toolkit_root: Path) -> None:
+    from mad_skills.configuration import resolve_bundles
+
+    _, skills = resolve_bundles(["django"], toolkit_root)
+
+    assert "preview-django-page" in skills
+
+
 def test_repo_local_skill_does_not_require_codex_ui_metadata(tmp_path: Path) -> None:
     skill = tmp_path / "local-helper"
     skill.mkdir()

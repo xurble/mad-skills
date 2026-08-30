@@ -353,7 +353,7 @@ Technology bundles are additive:
 
 ```text
 python = general + python-development
-django = general + python-development + django-development
+django = general + python-development + django-development + preview-django-page
 ios = general + ios-development
 ```
 
@@ -457,6 +457,9 @@ not automatically delegated to a subagent from the implementation conversation.
   logging.
 - `django-development` favors Django-native facilities and existing project
   patterns without forcing DRF, service layers, or one architecture.
+- `preview-django-page` renders project templates and fragments through a
+  development-only Django helper with bounded inert context, loopback and
+  capability checks, expiring memory-only state, and browser verification.
 - `ios-development` inspects platform availability, SwiftUI or UIKit, concurrency,
   persistence, navigation, packages, build configuration, and tests without
   forcing MVVM, coordinators, or clean architecture.

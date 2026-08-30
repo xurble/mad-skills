@@ -1,0 +1,4 @@
+interface:
+  display_name: "Preview Django Page"
+  short_description: "Render Django templates for browser verification"
+  default_prompt: "Use $preview-django-page to render this Django template locally and verify it in the browser."
