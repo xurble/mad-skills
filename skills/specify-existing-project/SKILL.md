@@ -5,6 +5,9 @@ description: Derive a current-state behavioral and product specification from an
 
 # Specify an existing project
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 Treat the implementation as evidence of behavior, not unquestionable evidence of
 intent. Do not turn every accident, bug, dead path, or historical compromise into
 a requirement.
@@ -75,15 +78,18 @@ Question: One concrete question the user can answer.
 Keep assumptions specific, non-overlapping, and decision-relevant. Do not ask the
 user to clarify facts that repository evidence can settle. Order the list by impact,
 then ask the questions in manageable groups rather than presenting a wall of minor
-uncertainties.
+uncertainties. Use the shared 95% confidence threshold for requirements; the
+evidence confidence recorded for individual observations is a separate judgment.
+Revisit confirmation when findings change the agreed scope or intended behavior.
 
 ## Finalize
 
 1. Present the draft and numbered assumptions before writing a repository document.
 2. Incorporate user clarifications, recording which assumptions were confirmed,
    corrected, or intentionally left unresolved.
-3. If unresolved assumptions remain, preserve them visibly in the specification;
-   never convert them silently into facts.
+3. Resolve material requirements before finalization. Preserve remaining
+   non-blocking evidence gaps or explicitly agreed unknowns visibly in the
+   specification; never convert them silently into facts.
 4. Write to the repository's established specification location after approval, or
    propose `docs/specification.md` when no convention exists.
 5. Report the evidence inspected, checks run, remaining gaps, and areas deliberately

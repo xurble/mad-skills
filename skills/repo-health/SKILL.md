@@ -5,6 +5,9 @@ description: Deterministically check whether a repository is correctly wired int
 
 # Check repository health
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 1. Run `mad-skills check` from the repository root.
 2. Report its exact result: `READY`, `READY WITH WARNINGS`, or `NOT READY`.
 3. Explain each finding in project terms without replacing deterministic evidence

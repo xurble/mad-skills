@@ -1,6 +1,7 @@
 name: general
 includes: []
 skills:
+  - clarify-requirements
   - understand-project
   - specify-existing-project
   - repo-health

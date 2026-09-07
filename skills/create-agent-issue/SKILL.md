@@ -5,6 +5,9 @@ description: Turn an existing GitHub issue or user request into an implementatio
 
 # Create an agent-actionable issue
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
@@ -22,10 +25,10 @@ GitHub—outside the sandbox with escalation from the outset.
    - relevant components and patterns, without over-prescribing implementation;
    - `low`, `normal`, or `high` risk and why;
    - migrations, data safety, security, compatibility, and rollback where relevant;
-   - expected verification and unresolved questions.
+   - expected verification and remaining non-blocking unknowns.
 5. For `rigorous` or high-risk work, make tests, rollback/data safety, migration,
-   and security expectations explicit. Stop if a material product decision is
-   unresolved instead of inventing it.
+   and security expectations explicit. In every profile, return to requirements
+   clarification if a material product decision remains unresolved.
 6. Show the complete proposed replacement before mutating GitHub. After approval,
    update the issue body with `gh issue edit --body-file` and apply the configured
    `actionable` and, when justified, `high-risk` labels.

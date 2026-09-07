@@ -5,6 +5,9 @@ description: Select, add, and run proportionate tests for a code change using pr
 
 # Test proportionately
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 1. Load policy with `mad-skills context --format json`; passive use without
    configuration assumes `light`.
 2. Inspect existing test organization, fixtures, tooling, and canonical commands.

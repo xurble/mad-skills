@@ -10,20 +10,21 @@ def test_toolkit_validates(toolkit_root: Path) -> None:
 
 
 def test_every_skill_has_matching_frontmatter(toolkit_root: Path) -> None:
-    skill_paths = sorted((toolkit_root / "skills").iterdir())
+    skill_paths = sorted(path for path in (toolkit_root / "skills").iterdir() if path.is_dir())
 
-    assert len(skill_paths) == 20
+    assert len(skill_paths) == 21
     for skill_path in skill_paths:
         name, description = parse_skill(skill_path)
         assert name == skill_path.name
         assert len(description) >= 20
 
 
-def test_general_bundle_includes_reverse_specification(toolkit_root: Path) -> None:
+def test_general_bundle_includes_requirements_and_reverse_specification(toolkit_root: Path) -> None:
     from mad_skills.configuration import resolve_bundles
 
     _, skills = resolve_bundles(["general"], toolkit_root)
 
+    assert "clarify-requirements" in skills
     assert "specify-existing-project" in skills
 
 

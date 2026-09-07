@@ -5,6 +5,9 @@ description: Create a durable GitHub issue for a feature, improvement, refactor,
 
 # Open an enhancement
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
@@ -21,5 +24,6 @@ GitHub—outside the sandbox with escalation from the outset.
    the effective profile.
 6. Write the body to a temporary file and create it with `gh issue create
    --body-file`, applying the configured `enhancement` label.
-7. A direct request authorizes creation without another confirmation. Return the
-   issue URL and note any unresolved questions.
+7. Once the requirements summary is confirmed, the user's request authorizes
+   creation without a second creation-only approval. Return the issue URL and
+   note any remaining non-blocking unknowns.

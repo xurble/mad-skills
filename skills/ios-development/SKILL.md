@@ -5,6 +5,9 @@ description: Apply pragmatic Swift and iOS implementation and review guidance. U
 
 # Develop for iOS
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 1. Load project policy and inspect deployment target, Swift version, SwiftUI/UIKit,
    project or workspace, scheme, package structure, architecture, persistence,
    and build/test commands before assumptions.

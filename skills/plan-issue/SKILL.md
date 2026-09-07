@@ -5,6 +5,9 @@ description: Investigate an existing GitHub issue and produce a practical implem
 
 # Plan an issue
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
@@ -17,7 +20,8 @@ GitHub—outside the sandbox with escalation from the outset.
 4. Identify current architecture, patterns to reuse, likely files and modules,
    data/migration/API/UI implications, test changes, risks, and open questions.
 5. State the inferred task risk. Treat high risk as rigorous regardless of project
-   profile. Stop on a material unresolved requirement.
+   profile. Resolve material requirements through questions and confirmation
+   before finalizing the plan.
 6. Present a sequenced plan detailed enough for a fresh implementation task but
    avoid speculative line-by-line prescriptions.
 7. Show the plan locally first. After user approval, post it as a GitHub issue

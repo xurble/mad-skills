@@ -5,17 +5,22 @@ description: Implement an actionable GitHub issue against explicit acceptance cr
 
 # Implement an issue
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
 1. Load `mad-skills context --format json`. If unconfigured, ask whether to run
    `mad-skills init`; if declined, use `light` for this task.
-2. Require installed, authenticated `gh`. Load the issue and comments. Stop if it
-   lacks a clear outcome or material requirements remain unresolved.
+2. Require installed, authenticated `gh`. Load the issue and comments. Resolve
+   unclear outcomes or material requirements through questions and confirmation
+   before changing code or workflow labels.
 3. Read `AGENTS.md`, relevant docs and decisions, repository status, current code,
    and tests before editing. Preserve unrelated work.
-4. Classify risk as `low`, `normal`, or `high` and state the evidence. Ask only
-   when ambiguity changes the workflow. High risk always uses rigorous safety.
+4. Classify risk as `low`, `normal`, or `high` and state the evidence. Revisit
+   requirements confirmation if the findings change material constraints or
+   scope. High risk always uses rigorous safety.
 5. Enforce effective policy:
    - rigorous non-trivial work needs an approved written plan, tests, a full
      check, later fresh verification, and a standalone well-specified draft PR

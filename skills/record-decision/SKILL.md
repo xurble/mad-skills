@@ -5,6 +5,9 @@ description: Record a significant project decision and rationale in the configur
 
 # Record a decision
 
+Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
+requirements first; reuse a confirmed summary for the same scope.
+
 1. Load effective policy. Offer `mad-skills init` when project configuration is
    absent. Locate `decisions.log`; if none is configured, propose
    `docs/decisions.md` and ask before creating it.
@@ -18,4 +21,4 @@ description: Record a significant project decision and rationale in the configur
 5. Add the date, decision, context, rationale, alternatives, and consequences or
    constraints. Keep the entry concise enough to remain useful.
 6. Show the proposed entry when rationale or wording requires judgment; a direct,
-   fully specified request authorizes writing it.
+   fully specified request with confirmed requirements authorizes writing it.
