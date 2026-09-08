@@ -10,10 +10,11 @@ Apply [clarify-requirements](../skills/clarify-requirements/SKILL.md) before
 proceeding with requirements capture, investigation, planning, implementation, or
 a request to act after discussion. Use the discussion and repository evidence,
 ask focused questions whenever requirements confidence is below 95%, then present
-a concise summary and wait for explicit confirmation. Read-only investigation
-may continue while answers or confirmation are pending; edits, issue creation,
-and other mutations wait. Reuse confirmed requirements across workflow steps,
-reopening clarification only for material scope changes or new ambiguity.
+a concise summary when useful and proceed once the threshold is reached. Do not
+make the summary a confirmation gate. Read-only investigation may continue while
+answers are pending; edits, issue creation, and other mutations wait. Reuse the
+established requirements across workflow steps, reopening clarification only for
+material scope changes or new ambiguity that lowers confidence below 95%.
 
 ```text
 future work: open-bug / open-enhancement
@@ -33,24 +34,24 @@ committed work: approved chat or issue specification
 ```
 
 Direct natural-language requests such as “open an issue” or “create a PR” authorize
-the corresponding action within confirmed requirements; skill syntax is optional.
-The initial request does not replace confirmation of the requirements summary.
+the corresponding action when the requirements meet the confidence threshold;
+skill syntax is optional. A clear initial request can satisfy that threshold.
 Ambiguous discussion never authorizes a mutation.
 
 A PR request does not authorize or require creating an issue. When a feature has
-confirmed requirements from chat, implementation may proceed directly and the
+clear requirements from chat, implementation may proceed directly and the
 PR must consolidate the accepted design into a durable standalone specification.
 When an existing issue drove the work, the PR retains the issue link and closing
 syntax while still recording the accepted final scope. PR titles use Conventional
 Commits by default so the squash commit keeps the same form. Repository setup
 enables squash-only merges and automatic remote branch deletion by default.
 
-Bug and enhancement capture creates an issue after requirements confirmation,
-without a second creation-only approval. Root cause and other evidence gaps can
-remain explicitly unknown in a confirmed investigation request. Converting an
-existing issue into an implementation contract always previews the replacement
-body first. Planning, verification, and PR review also present their
-result locally before posting an approved comment or review.
+Bug and enhancement capture creates an issue once requirements meet the 95%
+confidence threshold, without a separate creation-only approval. Root cause and
+other evidence gaps can remain explicitly unknown in a clear investigation
+request. Converting an existing issue into an implementation contract always
+previews the replacement body first. Planning, verification, and PR review also
+present their result locally before posting an approved comment or review.
 
 Workflow labels change from `agent-actionable` to `in-progress` to `verified`.
 Classification labels remain. Failed or uncertain verification never applies

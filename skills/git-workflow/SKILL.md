@@ -6,7 +6,7 @@ description: Apply safe Git practices while implementing or preparing a change. 
 # Use Git safely
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Inspect repository root, current branch, status, and relevant diff before acting.
 2. Treat existing modifications and untracked files as user work. Do not discard,

@@ -1,4 +1,4 @@
 interface:
   display_name: "Clarify Requirements"
-  short_description: "Clarify to 95% confidence, then confirm scope"
-  default_prompt: "Use $clarify-requirements to clarify this request to at least 95% confidence and ask me to confirm the requirements summary before proceeding."
+  short_description: "Clarify to 95% confidence, then proceed"
+  default_prompt: "Use $clarify-requirements to clarify this request to at least 95% confidence, then proceed without asking for confirmation unless material ambiguity remains."

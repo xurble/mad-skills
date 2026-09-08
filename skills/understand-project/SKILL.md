@@ -6,7 +6,7 @@ description: Inspect and explain an unfamiliar, inherited, or neglected reposito
 # Understand a project
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Run `mad-skills context --format json`. If the project is unconfigured, use
    `light`/`general` for this read-only task and mention that `mad-skills init`
@@ -30,4 +30,3 @@ requirements first; reuse a confirmed summary for the same scope.
 
 Do not rewrite documentation automatically. If `AGENTS.md` is absent or stale,
 propose precise changes and wait for approval.
-

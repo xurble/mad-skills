@@ -6,7 +6,7 @@ description: Review a diff, branch, commit, or GitHub pull request in a separate
 # Review a change
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 Run independently from implementation.
 
@@ -29,10 +29,10 @@ GitHub—outside the sandbox with escalation from the outset.
    When policy requires a well-specified PR, report a title or body that is not a
    standalone change contract as a merge-blocking workflow gap.
 6. Do not edit code as part of review.
-7. If the reviewed branch has an open PR and the review scope is confirmed, the
-   request to review authorizes posting the feedback there without another
-   approval step. Post actionable findings as inline review comments when they
-   can be anchored to the current diff, and post
+7. If the reviewed branch has an open PR and the review scope meets the 95%
+   confidence threshold, the request to review authorizes posting the feedback
+   there without another approval step. Post actionable findings as inline review
+   comments when they can be anchored to the current diff, and post
    any remaining findings, assumptions, testing gaps, or no-findings result in a
    PR review comment. Also present the result locally and return the PR URL. If no
    open PR exists, present the feedback locally only. Do not approve, request

@@ -6,7 +6,7 @@ description: Preview changed Django templates and fragments through the project'
 # Preview a Django page
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 Use this workflow after changing a Django template or when the user asks to
 preview Django-rendered HTML.

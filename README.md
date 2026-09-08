@@ -8,9 +8,10 @@ project keeps its own facts and conventions in `AGENTS.md` and optional
 `.agent/config.yaml`.
 
 Before starting requested work, the skills clarify requirements to at least 95%
-confidence, then ask you to confirm a concise summary. Read-only investigation
-can continue while answers are pending. Confirmed scope carries across skills;
-material scope changes or new requirements ambiguity reopen clarification.
+confidence, then proceed without a separate confirmation gate. Read-only
+investigation can continue while answers are pending. Established scope carries
+across skills; material scope changes or new requirements ambiguity reopen
+clarification.
 
 ## Quick start
 

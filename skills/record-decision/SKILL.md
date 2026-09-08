@@ -6,7 +6,7 @@ description: Record a significant project decision and rationale in the configur
 # Record a decision
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Load effective policy. Offer `mad-skills init` when project configuration is
    absent. Locate `decisions.log`; if none is configured, propose
@@ -14,11 +14,12 @@ requirements first; reuse a confirmed summary for the same scope.
 2. Record only a real decision: architecture, framework, persistence, sync,
    deployment, compatibility, rejected alternative, or consequential data model.
    Do not log routine implementation details.
-3. Confirm the decision is settled. Distinguish the chosen direction from open
-   questions and avoid reconstructing rationale without evidence.
+3. Establish that the decision is settled. Distinguish the chosen direction from
+   open questions and avoid reconstructing rationale without evidence.
 4. Read the existing log to avoid duplicates and preserve its format. Consult
    `<resolved.toolkit_root>/templates/decision-entry.md` when starting a log.
 5. Add the date, decision, context, rationale, alternatives, and consequences or
    constraints. Keep the entry concise enough to remain useful.
 6. Show the proposed entry when rationale or wording requires judgment; a direct,
-   fully specified request with confirmed requirements authorizes writing it.
+   fully specified request that meets the 95% confidence threshold authorizes
+   writing it.

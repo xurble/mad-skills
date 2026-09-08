@@ -6,7 +6,7 @@ description: Apply pragmatic Python implementation and review guidance. Use for 
 # Develop with Python
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Load policy and inspect supported Python versions, dependency manager,
    `pyproject.toml`, package layout, typing level, linting, and test conventions.
@@ -20,4 +20,3 @@ requirements first; reuse a confirmed summary for the same scope.
    tests, configured lint/type checks, and canonical validation as policy requires.
 6. Preserve compatibility with declared Python versions and avoid relying on the
    machine's incidental global environment.
-

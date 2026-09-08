@@ -28,6 +28,19 @@ def test_general_bundle_includes_requirements_and_reverse_specification(toolkit_
     assert "specify-existing-project" in skills
 
 
+def test_requirements_check_proceeds_at_confidence_threshold(toolkit_root: Path) -> None:
+    skill_root = toolkit_root / "skills" / "clarify-requirements"
+    skill_text = (skill_root / "SKILL.md").read_text(encoding="utf-8")
+    metadata_text = (skill_root / "agents" / "openai.yaml").read_text(encoding="utf-8")
+
+    assert "Below 95%, proactively ask focused questions" in skill_text
+    assert "At 95% confidence or above, proceed without asking" in skill_text
+    assert "do not turn the summary into an approval gate" in skill_text
+    assert "then proceed without asking for confirmation" in metadata_text
+    assert "wait for explicit confirmation" not in skill_text
+    assert "obtain confirmation before proceeding" not in skill_text
+
+
 def test_django_bundle_includes_template_preview(toolkit_root: Path) -> None:
     from mad_skills.configuration import resolve_bundles
 

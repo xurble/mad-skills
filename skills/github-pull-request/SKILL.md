@@ -6,7 +6,7 @@ description: Create a well-specified draft GitHub pull request, offer fresh-cont
 # Create or merge a GitHub pull request
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
@@ -40,8 +40,9 @@ GitHub—outside the sandbox with escalation from the outset.
    Conventional-Commit PR title plus description for the squash commit, and
    automatic remote branch deletion. Report drift and offer `mad-skills
    setup-github`; do not silently change repository settings during PR creation.
-6. A direct request with confirmed requirements authorizes PR creation. Use a
-   body file and return the URL. Open with `gh pr create --draft` and offer a
+6. A direct request whose requirements meet the 95% confidence threshold
+   authorizes PR creation. Use a body file and return the URL. Open with `gh pr
+   create --draft` and offer a
    fresh-context code review when task
    risk is high, or when the change is non-trivial and either policy sets
    `github.open_pull_requests_as_draft_until_reviewed` or effective policy requires

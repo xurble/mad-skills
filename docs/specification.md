@@ -376,24 +376,26 @@ refinement and planning, specifications, implementation, and requests to act aft
 discussion, including ordinary language without a named skill or issue. Every
 workflow uses the same rule in all profiles and in unconfigured projects:
 
-- Use prior discussion, confirmed requirements, and repository evidence.
+- Use prior discussion, settled requirements, and repository evidence.
 - Below 95% confidence in the intended outcome, scope, constraints, and success
   criteria, proactively ask focused questions in manageable groups. Do not ask
   unnecessary questions when already at the threshold. Confidence is an agent
   judgment about understanding requirements, not a measured probability or
   certainty about root cause or implementation.
-- Continue useful read-only investigation while answers or confirmation are
-  pending; hold edits, issue creation or updates, and other mutations.
-- At or above 95%, present a concise requirements summary and wait for explicit
-  user confirmation before proceeding, even when no questions were needed.
-- Reuse confirmed requirements across skills and task steps. Reopen clarification
-  and confirmation for material scope changes or newly discovered requirements
-  ambiguity. Silence never supplies an answer or confirmation.
+- Continue useful read-only investigation while answers are pending; hold edits,
+  issue creation or updates, and other mutations.
+- At or above 95%, proceed without requiring confirmation of a requirements
+  summary. State the understood scope or assumptions when useful, but do not make
+  that summary an approval gate. A clear initial request can meet the threshold.
+- Reuse established requirements across skills and task steps. Reopen
+  clarification for material scope changes or newly discovered requirements
+  ambiguity that lowers confidence below 95%. Silence never supplies an answer.
 
-Unknown evidence can remain explicit in a confirmed investigation or specification
-scope. Material unresolved requirements prevent reaching the threshold. Requirements
-confirmation does not replace separate artifact previews or authorize unrelated
-actions. No consuming repository needs to edit a shared skill or enable this rule.
+Unknown evidence can remain explicit in a sufficiently clear investigation or
+specification scope. Material unresolved requirements prevent reaching the
+threshold. Reaching the threshold does not replace separate artifact previews or
+authorize unrelated actions. No consuming repository needs to edit a shared skill
+or enable this rule.
 
 ### Project understanding and specification
 
@@ -413,9 +415,9 @@ actions. No consuming repository needs to edit a shared skill or enable this rul
 - `open-bug` creates a concise issue for a grounded suspected or confirmed defect.
 - `open-enhancement` creates a concise issue for a grounded feature, improvement,
   refactor, or future idea.
-- A direct request to open either kind of issue creates it after requirements
-  confirmation without a second creation-only approval. Unavailable evidence
-  remains explicitly unknown within the confirmed scope.
+- A direct request to open either kind of issue creates it once requirements meet
+  the 95% confidence threshold, without a separate creation-only approval.
+  Unavailable evidence remains explicitly unknown within the established scope.
 - `create-agent-issue` refines an existing issue into a standalone implementation
   contract with scope, constraints, acceptance criteria, and verification notes.
   A substantial issue-body replacement is previewed before it is applied.
@@ -559,10 +561,9 @@ Verification never closes an issue. An issue closes only when:
 
 Skills may activate implicitly from ordinary language. A clear imperative such as
 “open an issue for this” or “create a PR” authorizes the smallest corresponding
-mutation in the named repository, subject to requirements clarification and
-confirmation. Explicit `$skill-name` syntax is optional. A request to proceed after
-discussion must satisfy the same rule; it can confirm an already presented summary,
-but the initial instruction cannot confirm a summary that has not been shown.
+mutation in the named repository once requirements meet the 95% confidence
+threshold. Explicit `$skill-name` syntax is optional. A clear initial instruction
+can meet the threshold without a separate summary or confirmation exchange.
 
 Tentative discussion, brainstorming, or ambiguous language does not authorize a
 mutation. The agent must ask before changing durable external state when intent is
