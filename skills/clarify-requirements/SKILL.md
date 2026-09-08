@@ -8,6 +8,13 @@ description: Clarify requirements to at least 95% confidence and obtain confirma
 Apply this rule in every project profile, including unconfigured projects, and
 for work requested without an issue or explicit skill invocation.
 
+For an explicitly enabled nightly run or approved setup trial, first apply
+[standing authorization](../nightly-implement/references/authorization.md).
+Trusted project/issue-scoped authorization satisfies the routine confirmation
+gate below: still assess confidence and record the summary, but do not ask again.
+New material ambiguity stops dependent work with the nightly blocked handoff,
+not an unattended question. Outside this mode, the interactive steps below apply.
+
 1. Read the current request, prior discussion, any confirmed requirements, and
    relevant repository evidence. Carry forward settled answers; do not make the
    user repeat them when switching skills or moving from investigation to work

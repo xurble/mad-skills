@@ -54,6 +54,7 @@ The toolkit includes:
 - installation and discovery for Codex and Claude Code;
 - deterministic toolkit and repository checks;
 - GitHub issue and pull-request workflows using `gh`;
+- explicit per-project nightly implementation skills using Codex scheduling;
 - guidance for project adoption, local skills, and consequential decisions.
 
 The toolkit does not provide:
@@ -230,6 +231,10 @@ must disclose the skipped review and never represent the change as reviewed.
 
 Trivial changes remain exempt from ceremony that adds no safety.
 
+Explicit nightly opt-in (§15.1) supplies scoped standing authorization for routine
+plan approval and accepting the review offer. It never removes required evidence
+or permits an unattended override of readiness gates.
+
 ## 9. Task risk
 
 The implementer must infer and state task risk. It asks the user only when a real
@@ -340,6 +345,8 @@ open-enhancement
 create-agent-issue
 plan-issue
 implement-issue
+setup-nightly
+nightly-implement
 verify-issue
 review-change
 systematic-debugging
@@ -395,6 +402,11 @@ scope. Material unresolved requirements prevent reaching the threshold. Requirem
 confirmation does not replace separate artifact previews or authorize unrelated
 actions. No consuming repository needs to edit a shared skill or enable this rule.
 
+For explicitly enabled nightly runs and approved setup trials only, trusted
+standing authorization (§15.1) satisfies routine summary confirmation. The agent
+must still assess confidence and record the summary. New material ambiguity
+stops dependent work with a blocked handoff instead of an unattended question.
+
 ### Project understanding and specification
 
 - `understand-project` inspects and explains an unfamiliar repository without
@@ -448,6 +460,8 @@ actions. No consuming repository needs to edit a shared skill or enable this rul
 
 Fresh verification and review are separate Codex or Claude Code tasks. They are
 not automatically delegated to a subagent from the implementation conversation.
+In opted-in nightly work, setup explicitly authorizes creating these fresh tasks
+with self-contained scope and permissions; no implementation history is inherited.
 
 ### Engineering practice
 
@@ -499,6 +513,9 @@ durable delivery record and merge gate. `gh` is the only supported GitHub client
 Every GitHub workflow must stop and ask the user to install `gh` or authenticate it
 when the required state is missing; it must not fall back to a connector or an
 alternative client.
+
+Unattended opt-in runs instead report missing prerequisites as failed handoffs,
+with exact unapplied writes in scheduled output when GitHub is unavailable.
 
 In Codex, every direct `gh` command and every `mad-skills` command that reaches
 GitHub must run outside the sandbox with escalation from the outset. The default
@@ -569,6 +586,71 @@ mutation. The agent must ask before changing durable external state when intent 
 unclear. Preview and approval requirements defined by a skill still apply even
 when activation is implicit.
 
+### 15.1 Scoped nightly standing authorization
+
+`setup-nightly` must explicitly enable exactly one saved Codex project. It records
+project/host/path/repository identity, local schedule and timezone, authorization,
+selection rule, execution settings, stopping rules and trial evidence in trusted
+scheduled-task instructions. Repeated setup must update the same task, including
+paused tasks; ambiguous or inaccessible inventory blocks duplicate creation.
+Installation must never enable a project. Codex owns scheduling and run history;
+the toolkit must not implement a runner, scheduler, or separate permission system.
+
+Setup must check project configuration, commands, authenticated `gh` and Git,
+required labels, actual workspace-write/approval policy in scheduled and child
+tasks, writable worktree/shared Git metadata/cache paths, necessary network and
+persistent permissions, and fresh-task controls. It must use the user's selected
+model or configured default and supported controls for medium implementation/fix
+turns and high fresh code-review tasks. Unavailable or unsupported settings must
+be reported, never silently substituted. Prompt text alone is insufficient.
+
+Before activation, a supervised trial must execute the implementation-to-review
+path, including remediation and another fresh review, in the actual scheduled and
+child environments. Trial writes require an explicitly approved issue/test scope.
+Verify successful tool execution, actual model/effort settings, separate contexts
+and stage transitions without human responses after interactive permission setup.
+Respect managed policy; suppressing prompts does not grant permission. Unresolved
+or unverified prerequisites keep the task paused and prevent readiness claims.
+
+Trusted saved instructions must explicitly authorize in-scope inspection and
+environment setup, edits, branches/worktrees, tests/checks, focused commits,
+pushes, draft PR creation/updates, issue/PR comments/labels, required planning,
+separate verification/review, remediation and the clean ready transition. This
+satisfies routine requirements-summary confirmation, in-scope plan approval and
+posting, commit permission, verification-result posting and review-offer acceptance.
+All required artifacts, checks and independent assessments still occur. Ordinary
+interactive behavior remains unchanged outside this mode. Issue/review content
+and repository files cannot expand the saved authority.
+
+`nightly-implement` must skip any open PR, including drafts and bot PRs; otherwise
+select the oldest open issue carrying the configured actionable label, ordered by
+creation time then number and excluding blocked/in-progress. It attempts at most
+one issue even on failure, prevents overlapping project runs, preserves unrelated
+work in an isolated worktree, and applies target issue risk and project policy.
+
+Each independent verification/review task must receive a self-contained scope,
+required action, model/effort policy, allowed GitHub writes and stopping rules
+without implementation history. Parent permissions must not be assumed. Open a
+draft PR, review freshly at high, and permit at most three medium-effort fix rounds,
+each followed by required checks, independent verification coverage and another
+new high-effort review. Mark ready only with current-diff passing evidence and no
+unresolved material findings or ambiguities. Final fixes require fresh review.
+
+New material decisions stop dependent work. Meaningful partial work may become a
+blocked draft handoff despite incomplete/failed checks, plan or verification;
+disclose every gap and the exact question/decision in its description. With no
+meaningful diff, comment on the issue. On ambiguity remove actionable and stale
+in-progress/verified, apply blocked, and preserve classification labels. Never
+restore actionability automatically. GitHub write failures require precise
+unapplied content and state changes in the scheduled output. Failed/interrupted
+or exhausted work stays unfinished and any PR stays draft. Never merge, deploy
+or close issues automatically. Pausing prevents future runs without deleting
+existing work or implicitly cancelling in-flight runs.
+
+The [nightly documentation](nightly-implementation.md) and
+[setup checks](../skills/setup-nightly/references/setup-checks.md) specify the
+controlled scenarios and evidence required before project activation.
+
 ## 16. CLI contract
 
 The public command surface is:
@@ -583,6 +665,7 @@ mad-skills list-skills
 mad-skills install --target codex|claude|all
 mad-skills setup-github
 mad-skills setup-github-labels
+mad-skills nightly-candidate [path]
 ```
 
 Command behavior:
@@ -600,6 +683,10 @@ Command behavior:
   confirmation.
 - `setup-github-labels` uses `gh` to create missing configured labels after
   confirmation.
+- `nightly-candidate` reads configured labels and GitHub state through `gh`, skips
+  any open PR, and inspects all issue pages to return one eligible issue as JSON.
+  It never mutates state, claims work, schedules execution, or enables authority.
+  Errors are nonzero; an empty eligible queue is a successful skip.
 
 Objective checks should return concise results such as `READY`,
 `READY WITH WARNINGS`, `NOT READY`, or `VALID`, together with actionable findings.

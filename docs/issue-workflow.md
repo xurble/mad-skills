@@ -65,3 +65,27 @@ runs in a separate Codex or Claude task; the PR is marked ready after all materi
 findings against the current diff are resolved. A developer may explicitly bypass
 the AI-review gate and mark ready or merge, but the agent must disclose that review
 was skipped and must not claim otherwise.
+
+## Explicit nightly opt-in
+
+[Setup nightly](../skills/setup-nightly/SKILL.md) records one project's schedule,
+authorization and tested execution settings in Codex. This is the sole unattended
+exception to the interactive gates above: routine summary confirmation, in-scope
+plan approval/posting, commits/pushes, verification result posting, accepting the
+fresh-review offer, review comments and the clean ready transition are authorized
+at setup. The plan, checks, independent verification and reviews still happen.
+
+Each standalone run skips any open PR, then selects at most one oldest actionable
+issue excluding blocked/in-progress. Implement in an isolated worktree at medium;
+open a draft and review in a separate new high-effort task. Permit at most three
+medium-effort remediation rounds, each followed by checks/verification coverage
+and a fresh high-effort review. Current-diff evidence and no unresolved material
+findings/ambiguity are required for ready. Never merge automatically.
+
+New material ambiguity stops dependent work. Meaningful partial work can become
+a blocked draft PR with missing/failed plan, check and verification stages
+disclosed; otherwise comment on the issue. Remove actionable and stale
+in-progress/verified, apply blocked, and preserve classification labels. Never
+restore actionability automatically. GitHub failures require exact unapplied
+handoff content in the scheduled output. See the [complete setup and run
+contract](nightly-implementation.md), including persistent permissions and trial.

@@ -23,6 +23,7 @@ from mad_skills.github import (
 )
 from mad_skills.initialize import initialize_interactive
 from mad_skills.installer import install, skill_directories
+from mad_skills.nightly import nightly_candidate
 from mad_skills.paths import find_repo_root, find_toolkit_root
 from mad_skills.validation import validate_toolkit
 
@@ -55,6 +56,11 @@ def build_parser() -> argparse.ArgumentParser:
     context_parser = subparsers.add_parser("context", help="show effective project policy")
     context_parser.add_argument("path", nargs="?", type=Path, default=Path.cwd())
     context_parser.add_argument("--format", choices=("yaml", "json"), default="yaml")
+
+    nightly_parser = subparsers.add_parser(
+        "nightly-candidate", help="read one eligible issue as JSON; never execute it"
+    )
+    nightly_parser.add_argument("path", nargs="?", type=Path, default=Path.cwd())
 
     check_parser = subparsers.add_parser("check", help="check repository toolkit readiness")
     check_parser.add_argument("path", nargs="?", type=Path, default=Path.cwd())
@@ -139,6 +145,9 @@ def dispatch(args: argparse.Namespace) -> int:
     if args.command == "context":
         data = resolve_project(args.path).serializable()
         print(json.dumps(data, indent=2) if args.format == "json" else dump_yaml(data), end="\n")
+        return 0
+    if args.command == "nightly-candidate":
+        print(json.dumps(nightly_candidate(args.path), indent=2))
         return 0
     if args.command == "check":
         result = check_project(

@@ -12,7 +12,7 @@ def test_toolkit_validates(toolkit_root: Path) -> None:
 def test_every_skill_has_matching_frontmatter(toolkit_root: Path) -> None:
     skill_paths = sorted(path for path in (toolkit_root / "skills").iterdir() if path.is_dir())
 
-    assert len(skill_paths) == 21
+    assert len(skill_paths) == 23
     for skill_path in skill_paths:
         name, description = parse_skill(skill_path)
         assert name == skill_path.name
@@ -26,6 +26,8 @@ def test_general_bundle_includes_requirements_and_reverse_specification(toolkit_
 
     assert "clarify-requirements" in skills
     assert "specify-existing-project" in skills
+    assert "setup-nightly" in skills
+    assert "nightly-implement" in skills
 
 
 def test_django_bundle_includes_template_preview(toolkit_root: Path) -> None:

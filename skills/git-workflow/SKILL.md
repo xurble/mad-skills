@@ -8,6 +8,12 @@ description: Apply safe Git practices while implementing or preparing a change. 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse a confirmed summary for the same scope.
 
+For explicitly enabled nightly work,
+[standing authorization](../nightly-implement/references/authorization.md)
+provides the request for focused commits and branch pushes within the selected
+issue. Use an isolated worktree. All unrelated-work protections and prohibitions
+on destructive operations below remain in force.
+
 1. Inspect repository root, current branch, status, and relevant diff before acting.
 2. Treat existing modifications and untracked files as user work. Do not discard,
    overwrite, stage, or reformat unrelated changes.
