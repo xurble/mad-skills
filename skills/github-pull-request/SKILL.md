@@ -8,6 +8,23 @@ description: Create a well-specified draft GitHub pull request, offer fresh-cont
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
 
+For explicitly enabled nightly work, apply
+[standing authorization](../nightly-implement/references/authorization.md).
+It authorizes in-scope draft creation/updates, accepts the fresh-review offer,
+and permits the clean ready transition without additional prompts. Never bypass
+nightly readiness requirements. Missing capabilities produce a handoff rather
+than an unattended setup prompt; interactive behavior below remains unchanged.
+
+**Nightly blocked/failed draft exception:** meaningful partial changes may be
+pushed and handed off in a draft even when required tests/checks, planning, or
+verification are incomplete or failed. Disclose those gaps, completed work,
+remaining actions, and the exact ambiguity/decision or failure in the standalone
+description. Link the source issue with `Refs #N` rather than closing syntax for
+this incomplete handoff. With no meaningful changes, comment on the issue instead.
+This overrides only the normal creation prerequisites in step 3, never the
+current-diff checks, verification and fresh-review requirements for ready state.
+If GitHub writes fail, report their exact unapplied content in the run output.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 

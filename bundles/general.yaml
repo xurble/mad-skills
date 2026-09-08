@@ -10,6 +10,8 @@ skills:
   - create-agent-issue
   - plan-issue
   - implement-issue
+  - setup-nightly
+  - nightly-implement
   - verify-issue
   - review-change
   - systematic-debugging

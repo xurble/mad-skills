@@ -1,6 +1,6 @@
 ---
 name: review-change
-description: Review a diff, branch, commit, or GitHub pull request in a separate fresh task for material correctness, maintainability, risk, and test problems. Use only when the user directly requests review or accepts an offered rigorous PR review; do not start merely because a PR exists.
+description: Review a diff, branch, commit, or GitHub pull request in a separate fresh task for material correctness, maintainability, risk, and test problems. Use on a direct review request, an accepted review offer, or trusted nightly standing authorization; not merely because a PR exists.
 ---
 
 # Review a change
@@ -9,6 +9,17 @@ Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
 
 Run independently from implementation.
+
+For explicitly enabled nightly work, apply
+[standing authorization](../nightly-implement/references/authorization.md).
+Require a new task with self-contained scope, allowed GitHub writes and actual
+high effort on the setup-selected/default model; never inherit implementation
+history or resume an earlier reviewer. The saved opt-in accepts the review offer
+and posting/clean-readiness actions without another prompt. Recheck current head,
+required checks and independent verification coverage before marking ready; a
+clean review alone is insufficient. Missing capabilities, unresolved findings or
+ambiguity leave a draft and return a handoff. Ordinary interactive behavior below
+is unchanged.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.

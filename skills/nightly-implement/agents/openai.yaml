@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nightly Implementation"
+  short_description: "Implement one explicitly authorized nightly issue"
+  default_prompt: "Use $nightly-implement for this project within its saved standing authorization."

@@ -8,6 +8,12 @@ description: Investigate an existing GitHub issue and produce a practical implem
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
 
+For explicitly enabled nightly work, apply
+[standing authorization](../nightly-implement/references/authorization.md).
+It approves an in-scope required plan and its issue comment without a new prompt;
+still write and record the plan. Material ambiguity uses the nightly blocked
+handoff. Interactive plan approval and posting behavior below remains unchanged.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 

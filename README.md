@@ -12,6 +12,8 @@ confidence, then proceed without a separate confirmation gate. Read-only
 investigation can continue while answers are pending. Established scope carries
 across skills; material scope changes or new requirements ambiguity reopen
 clarification.
+An explicitly enabled [nightly workflow](docs/nightly-implementation.md) can use
+scoped standing authorization for routine gates after supervised setup.
 
 ## Quick start
 
@@ -63,6 +65,7 @@ mad-skills list-skills            List shared skills
 mad-skills install --target ...   Install Codex/Claude skill links
 mad-skills setup-github           Apply configured merge settings and labels with gh
 mad-skills setup-github-labels    Create missing configured labels with gh
+mad-skills nightly-candidate     Read the next eligible issue as JSON; no writes
 ```
 
 GitHub workflows deliberately require the `gh` CLI. They stop with an actionable
@@ -76,6 +79,7 @@ reaches GitHub outside the sandbox with escalation from the outset.
 - [Adding a project](docs/adding-a-project.md)
 - [Configuration](docs/configuration.md)
 - [Issue workflow](docs/issue-workflow.md)
+- [Opt-in nightly implementation](docs/nightly-implementation.md)
 - [Creating skills](docs/creating-skills.md)
 - [Promoting local skills](docs/promoting-local-skills.md)
 - [Updating skills](docs/updating-skills.md)

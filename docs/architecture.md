@@ -45,6 +45,21 @@ The CLI checks objective facts—schema, paths, installation, labels, and comman
 Skills handle judgment—risk classification, issue quality, implementation, and
 review. The project and GitHub remain sources of truth; there is no workflow engine.
 
+## Opt-in scheduled work
+
+`setup-nightly` and `nightly-implement` provide a bounded exception to interactive
+approval and review-offer gates. Trusted Codex task instructions carry explicit
+authorization for one project and one selected issue per run. Codex owns schedules,
+task model/effort controls, permissions, worktrees and run history. The CLI adds
+only read-only deterministic candidate selection; it never runs a workflow,
+stores permission grants, or enables schedules during installation.
+
+Required evidence and independent assessments remain mandatory. Implementation
+and fixes use medium effort; fresh code reviews use high on the selected/default
+model. Setup remains paused until an actual scheduled/child-task trial, including
+remediation, proves the required operations work unattended. See the
+[nightly contract](nightly-implementation.md). Other hosts keep interactive skills.
+
 ## Portability
 
 Skills use the common `SKILL.md` format with only `name` and `description` in

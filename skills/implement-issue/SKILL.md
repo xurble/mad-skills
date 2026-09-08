@@ -8,6 +8,15 @@ description: Implement an actionable GitHub issue against explicit acceptance cr
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
 
+For explicitly enabled nightly work, apply
+[standing authorization](../nightly-implement/references/authorization.md).
+It covers routine scope/plan approval, focused commits, GitHub writes, separate
+verification/review, and remediation without additional prompts. Required
+artifacts, checks and independent assessments still occur. Follow
+`nightly-implement` for effort controls, bounded review rounds and blocked/failed
+draft handoffs. Missing configuration/capabilities or material ambiguity stop the
+run with a documented handoff rather than unattended setup/clarification prompts.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 

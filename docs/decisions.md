@@ -1,5 +1,51 @@
 # Decision log
 
+## 2026-09-08 — Scope unattended authorization to one Codex project task
+
+**Decision:**
+
+Add explicit per-project nightly setup and execution skills. Store standing
+authorization and trial evidence in trusted Codex scheduled-task instructions;
+leave scheduling, permissions, task controls and history to Codex. Implement and
+remediate at medium effort, and review in new independent tasks at high effort
+using the selected model or configured default. Never merge automatically.
+
+**Context:**
+
+Interactive approval and review-offer gates, plus questions raised by new material
+ambiguity, can otherwise stop unattended issue work. A reusable skill needs both
+scoped authority and proven tool permissions;
+an actionable issue or an approval-suppression setting supplies neither alone.
+
+**Rationale:**
+
+One explicitly selected project and at most one issue per run bound the authority.
+A supervised trial, including remediation and fresh review in actual scheduled
+and child environments, establishes that required actions succeed without human
+responses. Current-diff checks, verification and review remain mandatory.
+
+**Alternatives considered:**
+
+- A central runner or toolkit permission registry: rejected as duplicate native
+  infrastructure and an additional security boundary.
+- Remove interactive gates globally or treat issue text as authorization:
+  rejected because scope could expand without explicit opt-in.
+- Use prompt-only effort instructions or choose another model automatically:
+  rejected because neither honors the selected model and actual execution policy.
+
+**Consequences and constraints:**
+
+- This narrowly qualifies the 2026-08-23 prohibition on automatically launching
+  review: explicit nightly opt-in accepts the offer in advance; ordinary
+  interactive workflows retain that gate.
+- No project is enabled during installation. Repeated setup updates the same
+  paused/active task and cannot claim ready until its full trial passes.
+- New material ambiguities produce blocked draft/issue handoffs; partial draft
+  handoffs disclose incomplete checks without weakening ready requirements.
+- Required runtime capabilities or permissions may be unavailable. Report that
+  limitation and keep setup paused instead of inventing unsupported controls.
+- The only new CLI behavior is deterministic read-only issue selection.
+
 ## 2026-08-29 — Bundle the Django preview helper inside its skill
 
 **Decision:**

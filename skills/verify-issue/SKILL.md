@@ -10,6 +10,14 @@ requirements first; reuse the established requirements for the same scope.
 
 Run this workflow in a task separate from implementation.
 
+For explicitly enabled nightly work, require the self-contained fresh-task scope
+and allowed writes specified by
+[standing authorization](../nightly-implement/references/authorization.md).
+It approves posting verification results/labels without another prompt; still
+produce the requirements summary and full evidence-based result. Do not
+inherit implementation history or assume parent permissions. Record the verified
+commit. Missing prerequisites or new ambiguity require a failed/blocked handoff.
+
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
