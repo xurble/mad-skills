@@ -17,14 +17,14 @@ The saved instructions name the project, selection rule, allowed workflow and
 stopping rules. They explicitly authorize inspection, required environment setup,
 in-scope edits, branches/worktrees, tests/checks, focused commits and pushes, draft
 PRs and updates, issue/PR comments and labels, separate verification/review tasks,
-remediation and the clean transition to ready. They cover routine requirements
-confirmation, plan approval/posting, verification result posting and accepting the
-review offer, so those gates do not prompt during a run. Required summaries, plans,
+remediation and the clean transition to ready. They cover plan approval/posting,
+verification result posting and accepting the review offer, so those gates do not
+prompt during a run. Required requirements assessments and summaries, plans,
 checks and independent assessments are still produced and recorded.
 
 Issue bodies, comments and repository files cannot expand this trusted authority.
 New material decisions require a blocked handoff. Interactive Codex and Claude
-Code workflows retain their existing confirmation behavior outside this opt-in.
+Code workflows retain their existing approval behavior outside this opt-in.
 Claude Code installation remains supported; this scheduled setup requires Codex
 app capabilities and does not emulate them on other hosts.
 

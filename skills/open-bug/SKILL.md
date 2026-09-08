@@ -6,7 +6,7 @@ description: Create a durable GitHub issue for a suspected or confirmed defect. 
 # Open a bug
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
@@ -25,13 +25,13 @@ GitHub—outside the sandbox with escalation from the outset.
 4. Never invent reproduction steps, evidence, severity, or root cause. Resolve
    material ambiguity about the requested record through requirements
    clarification; preserve unavailable evidence as `Unknown` within the
-   confirmed scope.
+   established scope.
 5. Read the issue template from
    `<resolved.toolkit_root>/templates/bug-issue.md`. Scale detail to profile and
    risk; keep `light` issues short.
 6. Write the body to a temporary file and create the issue with `gh issue create
    --body-file`. Apply configured `bug`; use `needs-investigation` and
    `high-risk` only when supported.
-7. Once the requirements summary is confirmed, the user's request authorizes
-   creation without a second creation-only approval. Return the issue URL and
+7. Once requirements confidence reaches 95%, the user's direct request authorizes
+   creation without a separate creation-only approval. Return the issue URL and
    summarize preserved unknowns.

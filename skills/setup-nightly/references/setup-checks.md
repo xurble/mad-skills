@@ -51,8 +51,8 @@ complete without human responses after configuration is resolved.
    cannot run a paused task without enabling future runs, leave setup blocked
    until a supported supervised control is available. Do not claim an ordinary
    interactive chat tests the actual scheduled environment.
-3. Exercise inspection and dependency setup, isolated worktree/branch, routine
-   requirements confirmation and plan approval without prompts, plan posting,
+3. Exercise inspection and dependency setup, isolated worktree/branch, requirements
+   assessment/summary and plan approval without prompts, plan posting,
    edits, tests/checks, focused commit, push, new independent verification and
    result posting/labels, draft PR creation, new high-effort review and comments.
    Ensure each fresh task receives the self-contained authorization and actual

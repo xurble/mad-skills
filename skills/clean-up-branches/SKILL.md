@@ -6,7 +6,7 @@ description: Clean up obsolete Git branches and synchronize the primary branch. 
 # Clean up Git branches and sync the primary branch
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Inspect the repository root, status, current branch, worktrees, remotes, and
    the remote's primary branch. Scope remote cleanup to `origin` unless the user
@@ -29,9 +29,10 @@ requirements first; reuse a confirmed summary for the same scope.
    pull request, commits added after the merged pull request, missing merge
    evidence, or ambiguous repository ownership.
 5. Show the exact local and remote deletion sets before mutating them. A direct
-   request with confirmed scope authorizes deletion of only the verified set; if
-   the skill was selected without an explicit cleanup request, ask for approval
-   first. Never remove a worktree or delete an uncertain branch.
+   request with scope meeting the 95% confidence threshold authorizes deletion of
+   only the verified set; if the skill was selected without an explicit cleanup
+   request, ask for approval first. Never remove a worktree or delete an uncertain
+   branch.
 6. Delete ordinary merged local branches with `git branch -d`. Use
    `git branch -D` only for a locally verified squash-merged branch whose exact
    tip passed the pull-request check. Delete a verified remote branch with

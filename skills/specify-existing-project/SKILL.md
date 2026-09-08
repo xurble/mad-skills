@@ -6,7 +6,7 @@ description: Derive a current-state behavioral and product specification from an
 # Specify an existing project
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 Treat the implementation as evidence of behavior, not unquestionable evidence of
 intent. Do not turn every accident, bug, dead path, or historical compromise into
@@ -18,7 +18,7 @@ a requirement.
    assumes `light`.
 2. Read `AGENTS.md`, existing documentation, decisions, issues, and repository
    structure. Use `$understand-project` first when the repository is unfamiliar.
-3. Confirm the requested specification scope: whole product, subsystem, workflow,
+3. Establish the requested specification scope: whole product, subsystem, workflow,
    API, or migration. For a large repository, propose a bounded first scope rather
    than claiming exhaustive coverage.
 4. Inspect repository status and remain read-only during investigation. Do not
@@ -80,7 +80,8 @@ user to clarify facts that repository evidence can settle. Order the list by imp
 then ask the questions in manageable groups rather than presenting a wall of minor
 uncertainties. Use the shared 95% confidence threshold for requirements; the
 evidence confidence recorded for individual observations is a separate judgment.
-Revisit confirmation when findings change the agreed scope or intended behavior.
+Reassess requirements confidence when findings change the established scope or
+intended behavior, and ask only if it falls below 95%.
 
 ## Finalize
 
@@ -94,4 +95,3 @@ Revisit confirmation when findings change the agreed scope or intended behavior.
    propose `docs/specification.md` when no convention exists.
 5. Report the evidence inspected, checks run, remaining gaps, and areas deliberately
    excluded from the specification.
-

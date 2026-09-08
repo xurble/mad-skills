@@ -6,7 +6,7 @@ description: Apply safe Git practices while implementing or preparing a change. 
 # Use Git safely
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 For explicitly enabled nightly work,
 [standing authorization](../nightly-implement/references/authorization.md)

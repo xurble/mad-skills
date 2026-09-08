@@ -6,15 +6,15 @@ description: Independently verify a completed change against its PR, GitHub issu
 # Verify a change
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 Run this workflow in a task separate from implementation.
 
 For explicitly enabled nightly work, require the self-contained fresh-task scope
 and allowed writes specified by
 [standing authorization](../nightly-implement/references/authorization.md).
-It approves routine summary confirmation and posting verification results/labels
-without another prompt; still produce the full evidence-based result. Do not
+It approves posting verification results/labels without another prompt; still
+produce the requirements summary and full evidence-based result. Do not
 inherit implementation history or assume parent permissions. Record the verified
 commit. Missing prerequisites or new ambiguity require a failed/blocked handoff.
 

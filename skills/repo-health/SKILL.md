@@ -6,7 +6,7 @@ description: Deterministically check whether a repository is correctly wired int
 # Check repository health
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Run `mad-skills check` from the repository root.
 2. Report its exact result: `READY`, `READY WITH WARNINGS`, or `NOT READY`.
@@ -21,4 +21,3 @@ requirements first; reuse a confirmed summary for the same scope.
 
 If the `mad-skills` command is missing, stop and ask the user to install the
 toolkit. Do not emulate the checker with guesses.
-

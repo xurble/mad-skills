@@ -27,7 +27,8 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > Within that issue's accepted scope I give standing authorization for repository
 > inspection, required environment/dependency setup [commands and constraints],
 > in-scope edits, branches and isolated worktrees [tested locations], tests/checks
-> [commands], required requirements summary and planning without reconfirmation,
+> [commands], required requirements assessment, summary and planning without an
+> added approval gate,
 > posting the plan, focused commits, branch pushes, draft PR creation and updates,
 > issue/PR comments and labels, separate verification and fresh review tasks,
 > posting their results, remediation, and the clean transition to ready. Record

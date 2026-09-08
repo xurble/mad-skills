@@ -12,8 +12,9 @@ using the selected model or configured default. Never merge automatically.
 
 **Context:**
 
-Interactive confirmation and review-offer gates otherwise stop unattended issue
-work. A reusable skill needs both scoped authority and proven tool permissions;
+Interactive approval and review-offer gates, plus questions raised by new material
+ambiguity, can otherwise stop unattended issue work. A reusable skill needs both
+scoped authority and proven tool permissions;
 an actionable issue or an approval-suppression setting supplies neither alone.
 
 **Rationale:**

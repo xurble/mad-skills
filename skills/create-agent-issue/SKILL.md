@@ -6,7 +6,7 @@ description: Turn an existing GitHub issue or user request into an implementatio
 # Create an agent-actionable issue
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.

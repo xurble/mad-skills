@@ -26,7 +26,8 @@ the real thread ID after asynchronous setup before continuing or waiting on it.
 > not edit code here. Temporary approvals in the parent are not permissions here.
 >
 > Standing authorization covers in-scope inspection, required safe environment
-> setup/tests/checks, requirements summary without reconfirmation, and gh comments
+> setup/tests/checks, requirements assessment and summary without an added approval
+> gate, and gh comments
 > on [exact issue/PR]. For verification, post findings and apply configured
 > [in-progress → verified] labels only if all material acceptance criteria pass.
 > For review, post inline/summary feedback using COMMENT, then mark the draft PR

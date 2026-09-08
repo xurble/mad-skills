@@ -6,7 +6,7 @@ description: Implement an actionable GitHub issue against explicit acceptance cr
 # Implement an issue
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 For explicitly enabled nightly work, apply
 [standing authorization](../nightly-implement/references/authorization.md).
@@ -23,13 +23,13 @@ GitHub—outside the sandbox with escalation from the outset.
 1. Load `mad-skills context --format json`. If unconfigured, ask whether to run
    `mad-skills init`; if declined, use `light` for this task.
 2. Require installed, authenticated `gh`. Load the issue and comments. Resolve
-   unclear outcomes or material requirements through questions and confirmation
-   before changing code or workflow labels.
+   unclear outcomes or material requirements through focused questions until
+   requirements confidence reaches 95% before changing code or workflow labels.
 3. Read `AGENTS.md`, relevant docs and decisions, repository status, current code,
    and tests before editing. Preserve unrelated work.
-4. Classify risk as `low`, `normal`, or `high` and state the evidence. Revisit
-   requirements confirmation if the findings change material constraints or
-   scope. High risk always uses rigorous safety.
+4. Classify risk as `low`, `normal`, or `high` and state the evidence. Reassess
+   requirements confidence if the findings change material constraints or scope,
+   and ask only if it falls below 95%. High risk always uses rigorous safety.
 5. Enforce effective policy:
    - rigorous non-trivial work needs an approved written plan, tests, a full
      check, later fresh verification, and a standalone well-specified draft PR
@@ -37,9 +37,9 @@ GitHub—outside the sandbox with escalation from the outset.
      workflow's input, not a universal prerequisite;
    - normal meaningful changes normally need tests and later fresh review;
    - light work uses focused checks and a final diff inspection.
-6. After confirming actionability, replace configured `actionable`/`verified`
-   workflow labels with `in-progress`. Preserve `bug`, `enhancement`, and
-   `high-risk` classification labels.
+6. After determining the issue is actionable, replace configured
+   `actionable`/`verified` workflow labels with `in-progress`. Preserve `bug`,
+   `enhancement`, and `high-risk` classification labels.
 7. Use a focused branch when a PR is required. Use a worktree for parallel work,
    unrelated dirty changes, substantial tasks, or risky experiments; never stash
    or overwrite unrelated work silently.

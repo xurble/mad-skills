@@ -6,7 +6,7 @@ description: Apply pragmatic Django-specific implementation and review guidance.
 # Develop with Django
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Load project policy and read Django-specific repository guidance. Inspect the
    installed Django version, app boundaries, settings layout, URL patterns,
@@ -22,4 +22,3 @@ requirements first; reuse a confirmed summary for the same scope.
    paths proportionately. Run the project's configured commands.
 6. Do not force DRF, Django Ninja, repositories, services, or another architecture
    the project has not chosen.
-

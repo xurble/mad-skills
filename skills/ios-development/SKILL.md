@@ -6,7 +6,7 @@ description: Apply pragmatic Swift and iOS implementation and review guidance. U
 # Develop for iOS
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
-requirements first; reuse a confirmed summary for the same scope.
+requirements first; reuse the established requirements for the same scope.
 
 1. Load project policy and inspect deployment target, Swift version, SwiftUI/UIKit,
    project or workspace, scheme, package structure, architecture, persistence,
@@ -21,4 +21,3 @@ requirements first; reuse a confirmed summary for the same scope.
    configured canonical check; rigorous projects always provide `commands.check`.
 6. Do not impose MVVM, coordinators, repositories, clean architecture, or a
    wholesale project-file rewrite without project evidence.
-
