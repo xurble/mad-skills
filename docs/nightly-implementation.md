@@ -5,7 +5,7 @@ choose a nightly time and timezone. Model selection is optional: setup uses the
 configured default when none is selected and verifies medium and high effort are
 available. Installing or updating `mad-skills` never enables a project.
 
-Setup prepares one standalone Codex scheduled task, initially paused. Repeating
+Setup prepares and activates one standalone Codex scheduled task. Repeating
 setup finds and updates the same task by project identity and recorded task ID,
 including paused tasks; ambiguous or inaccessible inventory blocks creation.
 Codex manages scheduling, worktrees and run history. There is no central runner,
@@ -28,30 +28,26 @@ Code workflows retain their existing approval behavior outside this opt-in.
 Claude Code installation remains supported; this scheduled setup requires Codex
 app capabilities and does not emulate them on other hosts.
 
-## Readiness requires a real trial
+## Setup and activation
 
 Setup checks configured commands/labels, authenticated `gh` and Git, network,
-writable worktree/shared Git metadata/cache paths, effective workspace-write and
-approval settings in the scheduled and child environments, persistent command
-permissions and fresh-task creation/effort controls. Permission changes happen
+writable worktree/shared Git metadata/cache paths, configured workspace-write and
+approval settings for the scheduled task and fresh child tasks, persistent command
+permissions, and fresh-task creation/effort controls. Permission changes happen
 interactively through supported Codex controls and respect managed policy.
 Suppressing prompts does not grant access; a parent's temporary approvals do not
-prove children or schedules can execute those commands.
+grant permissions to children or scheduled runs.
 
-Before activation, a supervised trial uses an explicitly approved issue or test
-scope in the actual paused scheduled task's environment. It must execute the
-implementation → checks → independent verification → draft PR → fresh review →
-medium-effort remediation → checks/verification → new high-effort review → ready
-path without human responses. Record real task IDs, actual settings, successful
-commands and stage transitions. Resolve missing permissions interactively and
-repeat the affected path. Unsupported task controls, unresolved failures or
-unverified stages keep setup paused and **not ready**. The trial never merges or
-closes issues; an open trial PR causes subsequent runs to skip until human handling.
+After those prerequisites and the saved authorization are configured, setup
+activates the task and reads back its identity, recurrence, timezone, model,
+medium effort and prompt. It does not require a designated test issue, Run now,
+or an implementation-through-review trial. If a later scheduled run exposes a
+missing permission, unavailable control or environmental failure, that run leaves
+the normal failed/blocked handoff for interactive troubleshooting. It cannot
+broaden permissions, skip a required stage or try a second issue.
 
 The [setup checklist](../skills/setup-nightly/references/setup-checks.md) contains
-the detailed trial and failure scenarios. Unit tests and prompt walkthroughs are
-useful but cannot replace this project-specific execution evidence. Changed host,
-model, permissions, commands or workflow may invalidate a prior trial.
+the detailed prerequisite and readback checks.
 
 ## Each run
 

@@ -1,5 +1,8 @@
 # Issue #6 implementation plan
 
+Historical note: the supervised-trial activation gate in this original plan was
+superseded by the 2026-09-09 decision in `docs/decisions.md`.
+
 Implement the accepted issue contract as two shared skills, with Codex owning
 scheduling, task controls, permissions, and run history. Risk is high because
 standing authorization permits unattended code and GitHub writes. No application

@@ -1,6 +1,6 @@
 ---
 name: setup-nightly
-description: Explicitly enable, update, or pause nightly issue implementation for one selected project using a Codex scheduled task. Check persistent permissions and run a supervised trial before enabling unattended work; never opt in projects during installation.
+description: Explicitly enable, update, or pause nightly issue implementation for one selected project using a Codex scheduled task. Check configuration and persistent permissions before activation; never opt in projects during installation.
 ---
 
 # Set up one project's nightly implementation
@@ -8,13 +8,13 @@ description: Explicitly enable, update, or pause nightly issue implementation fo
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) interactively.
 This skill requires supported Codex app scheduling and fresh-task controls;
 other hosts may read the skills but must not invent a scheduler or Claude fallback.
-Read [setup and trial checks](references/setup-checks.md) and the
+Read [setup checks](references/setup-checks.md) and the
 [saved task template](references/scheduled-task.md).
 
 1. Resolve exactly one explicitly selected saved project using Codex's project
    inventory. Confirm its canonical path, host, Git remote/repository, nightly
-   local time and IANA timezone, optional model choice, and approved trial issue
-   or designated test scope. Do not discover/enable other projects automatically.
+   local time and IANA timezone, and optional model choice. Do not discover or
+   enable other projects automatically.
    Explicitly request standalone project runs and separate verification/review
    tasks as part of the opt-in; a thread heartbeat is not this workflow.
 2. Load effective project configuration and required commands/labels. Complete
@@ -32,37 +32,32 @@ Read [setup and trial checks](references/setup-checks.md) and the
    including notification preferences. Never write automation TOML directly.
 4. Prepare the complete saved instructions from the template, filling every
    project/selection/workflow/stop field, chosen time/timezone, model provenance,
-   permissions and trial scope. Present this concrete authorization and task
-   configuration for approval before the first trial or activating wider scope.
-   On repeat setup, reuse settled authorization; confirm material expansions.
-5. Use supported app controls to create/update **one paused standalone** task on
-   that project. Use `list_projects` IDs and `automation_update` with cron kind,
-   local execution, the approved schedule, and actual `reasoningEffort: medium`.
+   and permission setting. Present this concrete authorization and task
+   configuration for approval before activation. On repeat setup, reuse settled
+   authorization; confirm material expansions.
+5. Verify schedule/timezone semantics in the app, including daylight-saving
+   behavior. If the available control cannot represent the selected timezone,
+   report that and resolve it interactively; do not silently schedule UTC or the
+   host's timezone.
+6. For an enable/setup request, use supported app controls to create/update **one
+   active standalone** task on that project. A settings-only update preserves the
+   existing paused/active state unless the user requests activation. Use
+   `list_projects` IDs and `automation_update` with cron kind, local execution,
+   the approved schedule, and actual `reasoningEffort: medium`.
    For updates use its resolved ID and full preserved fields. When model is
    omitted by the user, use the configured default; if a required model field
    needs a concrete value, resolve and record that default through supported
    settings rather than choosing another. Validate both medium and high support
    on the actual host; unsupported/unavailable values stop setup.
-6. Verify schedule/timezone semantics in the app, including daylight-saving
-   behavior. If the available control cannot represent the selected timezone,
-   report that and resolve it interactively; do not silently schedule UTC or the
-   host's timezone. Read back project binding, paused state, schedule, model and
-   effort. A prompt saying “medium” or a successful create call alone is not proof.
-7. Run the supervised trial using the actual paused scheduled task's supported
-   Run now control and its saved trial-scope instructions. Exercise fresh child
-   tasks and a remediation round as specified in setup checks. Fix permissions
-   interactively, then repeat the affected path without human responses. A
-   successful interactive parent turn or simulated command log is insufficient.
-   Unsupported Run now, child controls, effort inspection, or unresolved trial
-   failures keep the task paused and the project **not ready**.
-8. Save trial evidence in trusted setup instructions/run records. After the whole
-   expected path passes unattended, replace the trial scope with the approved
-   production selection rule and activate this same task ID. Read back its full
-   configuration and report the project, schedule/timezone, model/default source,
-   medium implementation/high review settings, authorization, trial evidence,
-   task ID and readiness. An update invalidating tested prerequisites requires
-   another trial before activation. Repeating unchanged setup reuses valid trial
-   evidence and updates the existing task without duplicating it.
+7. Read back project binding, intended active/paused state, schedule, timezone,
+   model, effort and saved prompt. A prompt saying “medium” or a successful create
+   call alone is not
+   proof. If the readback differs materially, pause the task and report the exact
+   mismatch. Otherwise report the project, schedule/timezone, model/default source,
+   medium implementation/high review settings, authorization, setup evidence,
+   task ID and readiness. Do not require or launch a supervised trial; activation
+   completes setup, and failures from a later scheduled run use the normal
+   failed/blocked handoff for interactive troubleshooting.
 
 For a pause request, locate the existing task by the same identity checks and
 pause it through Codex controls. Pausing stops future scheduled runs; it does not

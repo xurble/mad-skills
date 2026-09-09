@@ -90,4 +90,4 @@ disclosed; otherwise comment on the issue. Remove actionable and stale
 in-progress/verified, apply blocked, and preserve classification labels. Never
 restore actionability automatically. GitHub failures require exact unapplied
 handoff content in the scheduled output. See the [complete setup and run
-contract](nightly-implementation.md), including persistent permissions and trial.
+contract](nightly-implementation.md), including persistent permission setup.

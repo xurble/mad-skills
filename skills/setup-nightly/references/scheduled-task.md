@@ -15,18 +15,17 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > authorizes new separate tasks for independent verification and fresh code review
 > in this workflow, without inheriting the implementation conversation.
 >
-> [During trial: operate only on exact issue URL or designated test scope and its
-> explicit allowed changes. Do not select a production issue. Record trial mode.]
-> [After trial: Skip the project if any open PR exists, including drafts and bot
+> Skip the project if any open PR exists, including drafts and bot
 > PRs. Otherwise use mad-skills nightly-candidate to select the oldest open issue
 > with actionable label [name], ordered by creation time then issue number,
 > excluding blocked [name] and in-progress [name]. Other workflow/classification
 > label mappings: [names]. Attempt at most one issue per run, even on failure.
-> Do not overlap active runs or reset an interrupted run's issue/attempt count.]
+> Do not overlap active runs or reset an interrupted run's issue/attempt count.
 >
 > Within that issue's accepted scope I give standing authorization for repository
 > inspection, required environment/dependency setup [commands and constraints],
-> in-scope edits, branches and isolated worktrees [tested locations], tests/checks
+> in-scope edits, branches and isolated worktrees [approved writable locations],
+> tests/checks
 > [commands], required requirements assessment, summary and planning without an
 > added approval gate,
 > posting the plan, focused commits, branch pushes, draft PR creation and updates,
@@ -39,9 +38,9 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > Model [explicit selection, or resolved configured default and source]. Apply
 > medium reasoning effort to implementation and every fix turn through supported
 > Codex task controls. Apply high to each fresh code-review task. Verification
-> uses [same model and setup-tested effort]. Check actual settings, including
+> uses [same model and setup-recorded effort]. Check actual settings, including
 > children; prose is not a setting. Never silently substitute a model or effort.
-> Use workspace-write with setup-tested persistent command permissions. Effective
+> Use workspace-write with setup-inspected persistent command permissions. Effective
 > approval/sandbox policy, writable Git/worktree/cache paths, authentication,
 > network and fresh-task capabilities: [non-secret evidence and supported settings
 > references]. Do not assume parent approvals transfer or grant new permissions.
@@ -66,8 +65,8 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > scheduled run output. Never merge, deploy, close issues, change permissions or
 > the schedule, expand this project scope, or attempt a second issue.
 >
-> Trial evidence: [date, scope, schedule configuration, run and child task IDs,
-> actual model/effort/environment evidence, stage outcomes, remediation/fresh
-> re-review, current commit and check/verification records, unresolved gaps].
+> Setup evidence: [date/reference, schedule configuration, actual
+> model/effort/environment settings, persistent permission configuration and
+> unresolved gaps]. No trial run is required before activation.
 > Report outcome, issue/PR, commit/worktree, stages/checks/independent findings,
 > model/efforts, remediation count and remaining work in each scheduled run.

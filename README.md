@@ -13,7 +13,7 @@ investigation can continue while answers are pending. Established scope carries
 across skills; material scope changes or new requirements ambiguity reopen
 clarification.
 An explicitly enabled [nightly workflow](docs/nightly-implementation.md) can use
-scoped standing authorization for routine gates after supervised setup.
+scoped standing authorization for routine gates after explicit setup.
 
 ## Quick start
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Set Up Nightly Implementation"
   short_description: "Enable nightly implementation for one project"
-  default_prompt: "Use $setup-nightly to configure one project's nightly scheduled task with explicit authorization and a supervised trial."
+  default_prompt: "Use $setup-nightly to configure and activate one project's nightly scheduled task with explicit authorization."

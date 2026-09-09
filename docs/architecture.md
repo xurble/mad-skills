@@ -56,9 +56,10 @@ stores permission grants, or enables schedules during installation.
 
 Required evidence and independent assessments remain mandatory. Implementation
 and fixes use medium effort; fresh code reviews use high on the selected/default
-model. Setup remains paused until an actual scheduled/child-task trial, including
-remediation, proves the required operations work unattended. See the
-[nightly contract](nightly-implementation.md). Other hosts keep interactive skills.
+model. Setup inspects required configuration and persistent permissions, then
+activates the task without a trial run; operational failures are handled by the
+scheduled run's failed/blocked handoff. See the [nightly contract](nightly-implementation.md).
+Other hosts keep interactive skills.
 
 ## Portability
 

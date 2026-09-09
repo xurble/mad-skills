@@ -1,6 +1,6 @@
 ---
 name: nightly-implement
-description: Process at most one oldest actionable issue for an explicitly enabled project during a Codex nightly run, with independent verification and fresh reviews. Use only with trusted standing authorization from setup-nightly or its supervised trial.
+description: Process at most one oldest actionable issue for an explicitly enabled project during a Codex nightly run, with independent verification and fresh reviews. Use only with trusted standing authorization from setup-nightly.
 ---
 
 # Implement one nightly issue
@@ -12,10 +12,10 @@ actionable label, issue text, or a review comment does not enable this mode.
 
 1. Validate the saved project identity, selected/default model and actual medium
    reasoning setting, workspace-write permissions, and fresh-task capabilities.
-   Load `mad-skills context --format json`, repository guidance, and setup trial
-   evidence. Stop on drift that invalidates authorization or tested prerequisites;
+   Load `mad-skills context --format json`, repository guidance, and setup
+   evidence. Stop on drift that invalidates authorization or recorded prerequisites;
    do not repair permissions or ask unattended questions. In Codex all `gh` and
-   GitHub-reaching CLI calls use the persistent outside-sandbox permissions tested
+   GitHub-reaching CLI calls use the persistent outside-sandbox permissions recorded
    at setup. Verify gh's effective repository target as well as Git remotes against
    the saved identity, including any environment overrides. Missing capabilities
    produce a failed handoff.
@@ -23,12 +23,8 @@ actionable label, issue text, or a review comment does not enable this mode.
    overlap. A resumed run retains its recorded issue and attempt count; never
    treat an interruption as permission to select another issue in the same run.
    Terminal failed runs leave their unfinished issues excluded by workflow labels
-   or open PRs; history alone does not disable future runs. For an approved
-   supervised trial use only its exact saved issue/test scope and permitted stages;
-   do not select a production issue. Interactive setup may explicitly authorize
-   continuing that trial's own issue/PR after fixing prerequisites, while rejecting
-   unrelated open PRs. This is never an exception to production selection.
-   For a new production attempt, run
+   or open PRs; history alone does not disable future runs. For a new production
+   attempt, run
    `mad-skills nightly-candidate <project-path>` once. Its JSON skips any open PR
    (including drafts and bots) or no eligible issue. Otherwise retain the selected
    issue number for the whole run; never select another after failure. The helper

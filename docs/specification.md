@@ -404,7 +404,7 @@ threshold. Reaching the threshold does not replace separate artifact previews or
 authorize unrelated actions. No consuming repository needs to edit a shared skill
 or enable this rule.
 
-For explicitly enabled nightly runs and approved setup trials only, the agent must
+For explicitly enabled nightly runs only, the agent must
 still assess confidence and record the summary. New material ambiguity stops
 dependent work with a blocked handoff instead of an unattended question.
 
@@ -590,7 +590,7 @@ when activation is implicit.
 
 `setup-nightly` must explicitly enable exactly one saved Codex project. It records
 project/host/path/repository identity, local schedule and timezone, authorization,
-selection rule, execution settings, stopping rules and trial evidence in trusted
+selection rule, execution settings, stopping rules and setup evidence in trusted
 scheduled-task instructions. Repeated setup must update the same task, including
 paused tasks; ambiguous or inaccessible inventory blocks duplicate creation.
 Installation must never enable a project. Codex owns scheduling and run history;
@@ -604,13 +604,12 @@ model or configured default and supported controls for medium implementation/fix
 turns and high fresh code-review tasks. Unavailable or unsupported settings must
 be reported, never silently substituted. Prompt text alone is insufficient.
 
-Before activation, a supervised trial must execute the implementation-to-review
-path, including remediation and another fresh review, in the actual scheduled and
-child environments. Trial writes require an explicitly approved issue/test scope.
-Verify successful tool execution, actual model/effort settings, separate contexts
-and stage transitions without human responses after interactive permission setup.
-Respect managed policy; suppressing prompts does not grant permission. Unresolved
-or unverified prerequisites keep the task paused and prevent readiness claims.
+Setup must activate the task after prerequisite inspection and configuration
+readback; it must not require or launch a supervised trial, designated test issue,
+or Run now execution. Respect managed policy; suppressing prompts does not grant
+permission. A later scheduled run that encounters an unmet prerequisite must use
+the ordinary failed/blocked handoff without broadening permissions, skipping a
+stage or selecting a second issue.
 
 Trusted saved instructions must explicitly authorize in-scope inspection and
 environment setup, edits, branches/worktrees, tests/checks, focused commits,
@@ -649,7 +648,8 @@ existing work or implicitly cancelling in-flight runs.
 
 The [nightly documentation](nightly-implementation.md) and
 [setup checks](../skills/setup-nightly/references/setup-checks.md) specify the
-controlled scenarios and evidence required before project activation.
+configuration evidence required before project activation and failure handling
+for later scheduled runs.
 
 ## 16. CLI contract
 

@@ -8,7 +8,7 @@ description: Clarify requirements to at least 95% confidence before proceeding. 
 Apply this rule in every project profile, including unconfigured projects, and
 for work requested without an issue or explicit skill invocation.
 
-For an explicitly enabled nightly run or approved setup trial, first apply
+For an explicitly enabled nightly run, first apply
 [standing authorization](../nightly-implement/references/authorization.md).
 Still assess confidence and record the requirements summary. New material
 ambiguity stops dependent work with the nightly blocked handoff instead of an

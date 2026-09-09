@@ -1,6 +1,48 @@
 # Decision log
 
+## 2026-09-09 — Activate nightly tasks without a setup trial
+
+**Decision:**
+
+After explicit one-project authorization and prerequisite/configuration checks,
+`setup-nightly` activates the scheduled task directly. Setup does not require a
+designated test issue, Run now execution, remediation exercise, or other
+supervised trial.
+
+**Context:**
+
+The full implementation-through-review trial made initial setup burdensome. The
+owner prefers to complete setup once and troubleshoot from a real overnight run
+if an environmental, permission, or tool-control failure occurs.
+
+**Rationale:**
+
+The saved authorization, one-issue bound, no-merge rule, prerequisite inspection,
+configuration readback, and failed/blocked handoff continue to limit unattended
+work. A mandatory end-to-end rehearsal adds substantial setup cost without being
+required by the owner for this personal toolkit.
+
+**Alternatives considered:**
+
+- Keep the supervised trial as a hard activation gate: rejected because its setup
+  cost outweighs the desired assurance.
+- Make the trial optional: rejected because setup should finish and leave the
+  active schedule without another decision or execution step.
+
+**Consequences and constraints:**
+
+- The first scheduled run may reveal permission or environment failures that a
+  trial would have caught earlier.
+- Such failures use the existing failed/blocked handoff and never permit broader
+  access, skipped checks, a second issue, merge, deployment, or issue closure.
+- Setup still verifies task identity, schedule/timezone, model/effort settings,
+  authorization text, and configured persistent permissions before reporting
+  readiness.
+
 ## 2026-09-08 — Scope unattended authorization to one Codex project task
+
+**Status:** Superseded in part by the 2026-09-09 decision removing the setup-trial
+activation gate.
 
 **Decision:**
 

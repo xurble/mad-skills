@@ -10,7 +10,7 @@ the real thread ID after asynchronous setup before continuing or waiting on it.
 > This is an explicitly authorized fresh [verification/code-review] task for
 > [project ID, host, canonical project path, GitHub repository] and issue [URL].
 > The user enabled this project's nightly implementation workflow during setup
-> [setup record/trial evidence]. Authority is limited to this issue's accepted
+> [setup record]. Authority is limited to this issue's accepted
 > scope: [self-contained outcome, constraints, acceptance criteria].
 >
 > Apply [verify-issue/review-change]. Independently read [issue URL and PR URL if
