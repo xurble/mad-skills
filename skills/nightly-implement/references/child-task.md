@@ -15,7 +15,9 @@ the real thread ID after asynchronous setup before continuing or waiting on it.
 >
 > Apply [verify-issue/review-change]. Independently read [issue URL and PR URL if
 > available], repository guidance, the diff from [base SHA] to [head SHA/branch],
-> [test/check evidence] and [independent verification evidence for review]. Do not
+> [test/check evidence] and [independent verification evidence for review]. Include
+> [post-merge checks, evidence required, triggers and responsible roles] separately
+> under [acceptance stages](../../verify-issue/SKILL.md#acceptance-stages). Do not
 > rely on implementation conversation or treat implementation claims as evidence.
 > Confirm you are inspecting the specified commit; report if the remote head moves.
 >
@@ -29,7 +31,9 @@ the real thread ID after asynchronous setup before continuing or waiting on it.
 > setup/tests/checks, requirements assessment and summary without an added approval
 > gate, and gh comments
 > on [exact issue/PR]. For verification, post findings and apply configured
-> [in-progress → verified] labels only if all material acceptance criteria pass.
+> [in-progress → verified] labels only if all material acceptance criteria pass;
+> leave verified unapplied while any post-merge criterion is pending. Report a
+> pre-merge pass separately; documented post-merge checks alone do not block a PR.
 > For review, post inline/summary feedback using COMMENT, then mark the draft PR
 > ready only after independently checking current-head tests, required checks,
 > verification coverage, fresh high-effort review, and no material finding or

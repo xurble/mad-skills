@@ -49,9 +49,11 @@ GitHub—outside the sandbox with escalation from the outset.
    open PR exists, present the feedback locally only. Do not approve, request
    changes, merge, or otherwise change PR state except for the clean-review
    transition below without a separate explicit request.
-8. Report the review cycle complete only when the current diff has no unresolved
-   material findings or required follow-up. After posting that result to an open
+8. Apply [acceptance stages](../verify-issue/SKILL.md#acceptance-stages): documented
+   post-merge checks alone do not block readiness or mean the issue is complete.
+   Report the review cycle complete only when the current diff has no unresolved
+   material findings or required pre-merge follow-up. After posting that result to an open
    PR, change it from draft to ready with `gh pr ready` and report the transition;
-   leave an already-ready PR unchanged. If findings or required follow-up remain,
+   leave an already-ready PR unchanged. If findings or required pre-merge follow-up remain,
    keep a draft PR in draft. If fixes change the diff, require a fresh review pass
    before reporting completion.
