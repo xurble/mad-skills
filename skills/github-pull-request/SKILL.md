@@ -40,7 +40,10 @@ GitHub—outside the sandbox with escalation from the outset.
 3. Stop if required tests or `commands.check` failed, if the branch is not pushed,
    or if policy-required planning or verification is missing. A missing fresh code
    review does not block draft PR creation; it keeps the PR in draft. Report other
-   exact blockers. Never create or require an issue merely because the user
+   exact blockers. Apply [acceptance stages](../verify-issue/SKILL.md#acceptance-stages)
+   for checks that inherently require merge/deployment/release; document their
+   follow-up rather than blocking PR creation or readiness solely on timing.
+   Never create or require an issue merely because the user
    requested a PR; treat a missing issue as a blocker only when effective project
    policy explicitly requires one.
 4. When policy requires a well-specified PR or task risk is high, make its title
@@ -48,9 +51,11 @@ GitHub—outside the sandbox with escalation from the outset.
    chat or an issue. State the desired outcome and motivation, scope and material
    non-goals, observable acceptance criteria, what changed, important decisions,
    validation evidence, and relevant migrations, data/security implications,
-   rollout, and known risks. Keep inapplicable sections out and do not invent
-   rationale. For issue-driven work, include `Closes #N`, but consolidate the
-   accepted final specification in the PR instead of making reviewers reconstruct
+   rollout, and known risks. Include pending post-merge checks with their evidence,
+   trigger and responsible role; use `Refs #N` instead of `Closes #N` while any
+   acceptance check remains pending. Keep inapplicable sections out and do not invent
+   rationale. For fully verified issue-driven work, include `Closes #N`, but
+   consolidate the accepted final specification in the PR instead of making reviewers reconstruct
    it from the issue history.
 5. Confirm the repository supports `github.merge_method` and
    `github.delete_branch_on_merge`. The defaults are squash-only merging, a

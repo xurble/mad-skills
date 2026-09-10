@@ -31,16 +31,42 @@ GitHub—outside the sandbox with escalation from the outset.
    supply the accepted specification and acceptance criteria explicitly in this
    fresh task. Reconstruct the contract independently; do not rely on the
    implementation conversation.
-3. For every acceptance criterion classify `verified`, `failed`, or `unable to
-   verify`, citing code, test, or observed-behavior evidence.
+3. Separate pre-merge criteria from inherently post-merge checks using
+   [acceptance stages](#acceptance-stages). For every criterion classify `verified`,
+   `failed`, `unable to verify`, or `pending post-merge`, citing evidence or the
+   required follow-up. State whether pre-merge verification passes separately
+   from whether the entire issue is complete.
 4. Check missing behavior, regressions, edge cases, scope creep, debug artifacts,
    migration/data safety, security boundaries, and test adequacy proportionate to
    risk. Run safe focused checks; run `mad-skills check --full` when policy requires.
 5. Do not repeat implementation claims as evidence and do not edit code.
 6. Present the complete verification result before changing GitHub. When a source
    issue or PR exists, comment the result there only after approval. Only for an
-   issue-driven change whose material criteria all pass, remove `in-progress` and
-   apply `verified`; otherwise do not change issue labels. For issue-less work
+   issue-driven change whose material criteria all pass (none pending), remove
+   `in-progress` and apply `verified`; otherwise do not change issue labels. For issue-less work
    verified before PR creation, return the result locally for the PR handoff.
 7. Never merge a PR or close an issue. Issue closure occurs only through a merged
    linked PR or the user's explicit request.
+
+## Acceptance stages
+
+A criterion that inherently needs the change merged, deployed, or released is a
+follow-up, not a prerequisite to creating or readying its PR. For example, a
+CodeQL scan of the updated default branch can only confirm the change after
+merge. Preserve that criterion as `pending post-merge`; do not block implementation
+or relabel the issue `blocked` solely because that event has not happened.
+
+Record each pending check in verification results and the PR: why it must wait,
+what evidence will satisfy it, its trigger, and the responsible person or role
+(for example, the maintainer after a human merge). Independently verify everything
+testable on the current diff first, including available PR CI/scan results before
+readiness. A pre-merge verification pass with these documented follow-ups permits
+normal PR creation and readiness under the existing check and fresh-review gates;
+it does not mean the whole issue is verified. Leave `verified` unapplied and avoid
+auto-closing issue references while acceptance checks remain pending.
+
+Do not defer a failing or unavailable pre-merge check as post-merge, silently drop
+criteria, or override an explicit requirement that evidence must exist before
+merge. Those remain blockers at their applicable gate. Unclear product behavior
+or safety requirements still need clarification. Pending follow-ups authorize no
+merge, deployment, release, automatic monitoring, or issue closure.

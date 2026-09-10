@@ -35,7 +35,11 @@ task controls, not inferred from prompt wording. Use the setup-selected model or
 resolved configured default consistently; do not substitute a model or effort if
 unavailable. Missing evidence or capability means a failed/blocked handoff.
 
-Only mark ready when the **current diff** has required passing checks, independent
+Use [acceptance stages](../../verify-issue/SKILL.md#acceptance-stages) to distinguish
+pre-merge gates from documented post-merge follow-ups. Pending post-merge checks
+alone do not trigger a blocked handoff or prevent readiness; they remain unverified.
+
+Only mark ready when the **current diff** has required passing pre-merge checks, independent
 verification coverage, a completed fresh high-effort review with no unresolved
 material findings, and no open ambiguity. Recheck current head and required CI
 before `gh pr ready`. Changed commits invalidate earlier review; changed behavior
