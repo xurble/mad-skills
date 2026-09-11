@@ -19,8 +19,17 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > PRs. Otherwise use mad-skills nightly-candidate to select the oldest open issue
 > with actionable label [name], ordered by creation time then issue number,
 > excluding blocked [name] and in-progress [name]. Other workflow/classification
-> label mappings: [names]. Attempt at most one issue per run, even on failure.
-> Do not overlap active runs or reset an interrupted run's issue/attempt count.
+> label mappings, including needs-investigation: [names]. Before claiming a
+> candidate, assess whether its requirements are actionable. If it needs human
+> clarification, I authorize an issue comment recording the exact missing
+> decision, removal of actionable and stale verified labels, and addition of the
+> configured needs-investigation label, preserving classification labels. Verify
+> those writes, then rerun nightly-candidate to screen the next oldest candidate.
+> Continue until one is actionable or no eligible issues remain; stop if any open
+> PR appears or a required read/write fails. Record rejections and never revisit
+> one in the same run. Attempt implementation of at most one issue per run, even
+> on failure. Do not overlap active runs or reset an interrupted run's phase,
+> candidate/rejection history or implementation attempt count.
 >
 > Within that issue's accepted scope I give standing authorization for repository
 > inspection, required environment/dependency setup [commands and constraints],
@@ -53,7 +62,8 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > unresolved material review findings or ambiguity. Final fixes require fresh
 > review. Leave exhausted, failed, or interrupted work unfinished and any PR draft.
 >
-> Make routine engineering choices autonomously. Stop dependent work for a new
+> Make routine engineering choices autonomously. Before claiming, use the
+> clarification screening above. After claiming, stop dependent work for a new
 > material decision, scope expansion, unavailable capability, permission denial,
 > or unrecoverable failure. Do not ask an unattended clarification question. With
 > meaningful partial changes, create/update a blocked draft handoff PR even when
@@ -63,10 +73,11 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > apply blocked. Never restore actionability automatically. If GitHub writes fail,
 > report exact unapplied comments, description, labels and state changes in the
 > scheduled run output. Never merge, deploy, close issues, change permissions or
-> the schedule, expand this project scope, or attempt a second issue.
+> the schedule, expand this project scope, or implement a second issue.
 >
 > Setup evidence: [date/reference, schedule configuration, actual
 > model/effort/environment settings, persistent permission configuration and
 > unresolved gaps]. No trial run is required before activation.
-> Report outcome, issue/PR, commit/worktree, stages/checks/independent findings,
+> Report outcome, rejected candidates and clarification reasons, issue/PR,
+> commit/worktree, stages/checks/independent findings,
 > model/efforts, remediation count and remaining work in each scheduled run.

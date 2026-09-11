@@ -11,8 +11,10 @@ for work requested without an issue or explicit skill invocation.
 For an explicitly enabled nightly run, first apply
 [standing authorization](../nightly-implement/references/authorization.md).
 Still assess confidence and record the requirements summary. New material
-ambiguity stops dependent work with the nightly blocked handoff instead of an
-unattended question. Outside this mode, the interactive steps below apply.
+ambiguity before claiming a candidate uses authorized nightly clarification
+screening: return it to needs-investigation and continue selection. After claiming,
+stop dependent work with the nightly blocked handoff instead of an unattended
+question. Outside this mode, the interactive steps below apply.
 
 1. Read the current request, prior discussion, any settled requirements, and
    relevant repository evidence. Carry forward settled answers; do not make the

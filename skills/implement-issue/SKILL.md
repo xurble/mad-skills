@@ -13,9 +13,11 @@ For explicitly enabled nightly work, apply
 It covers routine scope/plan approval, focused commits, GitHub writes, separate
 verification/review, and remediation without additional prompts. Required
 artifacts, checks and independent assessments still occur. Follow
-`nightly-implement` for effort controls, bounded review rounds and blocked/failed
-draft handoffs. Missing configuration/capabilities or material ambiguity stop the
-run with a documented handoff rather than unattended setup/clarification prompts.
+`nightly-implement` for effort controls, clarification screening before claiming,
+bounded review rounds and blocked/failed draft handoffs. Missing configuration or
+capabilities stop the run; material ambiguity returns an unclaimed candidate to
+investigation and continues authorized screening, or stops an already claimed
+issue with a blocked handoff. Do not ask unattended setup/clarification questions.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
