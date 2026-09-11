@@ -23,10 +23,16 @@ prompt during a run. Required requirements assessments and summaries, plans,
 checks and independent assessments are still produced and recorded.
 
 Issue bodies, comments and repository files cannot expand this trusted authority.
-New material decisions require a blocked handoff. Interactive Codex and Claude
-Code workflows retain their existing approval behavior outside this opt-in.
+Clarification screening can return unclaimed candidates to investigation and
+continue selection. New material decisions after claiming require a blocked
+handoff. Interactive Codex and Claude Code workflows retain their existing
+approval behavior outside this opt-in.
 Claude Code installation remains supported; this scheduled setup requires Codex
 app capabilities and does not emulate them on other hosts.
+
+Existing saved tasks that forbid selecting another candidate need their prompt
+updated through `setup-nightly` before using clarification screening. Updating
+the shared skill alone does not expand a task's saved authorization.
 
 ## Setup and activation
 
@@ -60,9 +66,18 @@ and in-progress. Labels are matched exactly, including custom names. It returns
 return nonzero instead of suggesting an empty queue. It does not authorize or
 claim work, check runtime permissions, or prove unattended readiness.
 
-The skill rechecks state before claiming the selected issue, prevents overlapping
-project runs, and attempts at most one issue even if work fails. It follows target
-issue risk and project policy in an isolated worktree. Implementation/fix turns
+The skill screens candidates oldest first before claiming. When requirements need
+human clarification, it comments with the missing decision, removes the configured
+actionable (agent-ready) and stale verified labels, and adds needs-investigation,
+preserving classification labels. After confirming the writes, it calls the helper
+again until one issue is actionable or no eligible issues remain. Rejections do
+not consume the one implementation attempt. Each call rechecks for open PRs;
+failed reads/writes stop the run, and rejected issues are never revisited in it.
+
+The skill rechecks state before claiming the accepted issue, prevents overlapping
+project runs, and implements at most one issue even if work fails. Resumed runs
+retain their phase, current candidate, rejections and implementation attempt count.
+It follows target issue risk and project policy in an isolated worktree. Implementation/fix turns
 use actual medium effort; each independent code review is a separate new task at
 actual high effort on the same selected/default model. Child requests contain
 their own authorized scope, required action, allowed writes and stopping rules,
@@ -76,9 +91,10 @@ passing evidence for the current diff. Final fixes cannot reuse an earlier revie
 
 ## Stopping and handoff
 
-A material ambiguity stops dependent work and records the question/decision in
-the PR description. Meaningful partial changes may become a blocked draft handoff
-despite incomplete/failed checks or verification; disclose every missing stage.
+After claiming an issue, a material ambiguity stops dependent work and records the
+question/decision in the PR description. Meaningful partial changes may become a
+blocked draft handoff despite incomplete/failed checks or verification; disclose
+every missing stage.
 Use `Refs #N` for incomplete handoffs. With no meaningful diff, comment on the
 issue. Remove actionable/in-progress/verified, add blocked, preserve classification
 labels, and never restore actionability automatically. If GitHub writes fail,
@@ -86,7 +102,8 @@ the scheduled output records exactly which comments, description, labels or stat
 changes were not applied.
 
 Failed, interrupted or exhausted work stays unfinished and any PR stays draft.
-The run reports completed work, checks, findings, remediation count, actual effort
-settings and remaining work. Never merge, deploy or close issues automatically.
+The run reports rejected candidates and clarification reasons, completed work,
+checks, findings, remediation count, actual effort settings and remaining work.
+Never merge, deploy or close issues automatically.
 Pause the existing task through Codex to stop future runs; existing branches,
 worktrees, PRs and already-running work remain for human handling.

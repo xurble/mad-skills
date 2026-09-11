@@ -405,8 +405,10 @@ authorize unrelated actions. No consuming repository needs to edit a shared skil
 or enable this rule.
 
 For explicitly enabled nightly runs only, the agent must
-still assess confidence and record the summary. New material ambiguity stops
-dependent work with a blocked handoff instead of an unattended question.
+still assess confidence and record the summary. When authorized, clarification
+before claiming a candidate returns it to investigation and continues nightly
+selection. After claiming, new material ambiguity stops dependent work with a
+blocked handoff instead of an unattended question.
 
 ### Project understanding and specification
 
@@ -597,7 +599,8 @@ Installation must never enable a project. Codex owns scheduling and run history;
 the toolkit must not implement a runner, scheduler, or separate permission system.
 
 Setup must check project configuration, commands, authenticated `gh` and Git,
-required labels, actual workspace-write/approval policy in scheduled and child
+required labels (including distinct actionable and needs-investigation mappings),
+actual workspace-write/approval policy in scheduled and child
 tasks, writable worktree/shared Git metadata/cache paths, necessary network and
 persistent permissions, and fresh-task controls. It must use the user's selected
 model or configured default and supported controls for medium implementation/fix
@@ -617,14 +620,27 @@ pushes, draft PR creation/updates, issue/PR comments/labels, required planning,
 separate verification/review, remediation and the clean ready transition. This
 satisfies in-scope plan approval and posting, commit permission,
 verification-result posting and review-offer acceptance.
+Clarification screening must also be explicitly authorized: comment on unclaimed
+candidates, remove configured actionable and stale verified labels, add
+needs-investigation, and continue selection. Existing saved instructions forbidding
+another candidate must be updated through `setup-nightly` before screening;
+shared skill updates alone do not expand saved authority.
 All required artifacts, checks and independent assessments still occur. Ordinary
 interactive behavior remains unchanged outside this mode. Issue/review content
 and repository files cannot expand the saved authority.
 
 `nightly-implement` must skip any open PR, including drafts and bot PRs; otherwise
 select the oldest open issue carrying the configured actionable label, ordered by
-creation time then number and excluding blocked/in-progress. It attempts at most
-one issue even on failure, prevents overlapping project runs, preserves unrelated
+creation time then number and excluding blocked/in-progress. Before claiming,
+screen requirements. If clarification is needed, record the exact missing decision
+in an issue comment, remove actionable and stale verified labels, and add
+needs-investigation while preserving classification labels. Verify the writes and
+repeat selection until one issue is actionable or none remain, without a fixed
+rejection limit. Stop if any open PR appears or a required read/write fails. Never
+revisit a rejected candidate in the same run; retain the phase, candidate and
+rejection history on resume. Rejections do not consume the single implementation
+attempt. Once claimed, retain that issue even on ambiguity or failure.
+The skill prevents overlapping project runs, preserves unrelated
 work in an isolated worktree, and applies target issue risk and project policy.
 
 Each independent verification/review task must receive a self-contained scope,
@@ -635,9 +651,9 @@ each followed by required checks, independent verification coverage and another
 new high-effort review. Mark ready only with current-diff passing evidence and no
 unresolved material findings or ambiguities. Final fixes require fresh review.
 
-New material decisions stop dependent work. Meaningful partial work may become a
-blocked draft handoff despite incomplete/failed checks, plan or verification;
-disclose every gap and the exact question/decision in its description. With no
+After claiming, new material decisions stop dependent work. Meaningful partial
+work may become a blocked draft handoff despite incomplete/failed checks, plan or
+verification; disclose every gap and the exact question/decision in its description. With no
 meaningful diff, comment on the issue. On ambiguity remove actionable and stale
 in-progress/verified, apply blocked, and preserve classification labels. Never
 restore actionability automatically. GitHub write failures require precise

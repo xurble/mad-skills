@@ -13,7 +13,13 @@ from mad_skills.errors import MadSkillsError
 from mad_skills.nightly import nightly_candidate, oldest_actionable
 from tests.conftest import write_project_config
 
-LABELS = {"actionable": "ready, please", "blocked": "needs decision", "in_progress": "doing", "verified": "done"}
+LABELS = {
+    "actionable": "ready, please",
+    "needs_investigation": "needs clarification",
+    "blocked": "needs decision",
+    "in_progress": "doing",
+    "verified": "done",
+}
 
 
 def issue(number: int, created: str = "2026-08-01T12:00:00Z", **overrides: object) -> dict:
@@ -38,6 +44,7 @@ github:
   use_issues: true
   labels:
     actionable: 'ready, please'
+    needs_investigation: needs clarification
     blocked: needs decision
     in_progress: doing
     verified: done
@@ -132,6 +139,29 @@ def test_no_eligible_issue_is_a_successful_skip(gh_project: Path) -> None:
     assert nightly_candidate(gh_project) == {"status": "skip", "reason": "no_actionable_issue", "issue": None}
 
 
+def test_reselection_advances_after_clarification_retags_until_queue_is_empty(
+    gh_project: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    pages = [[issue(1), issue(2)], [issue(3)]]
+    for candidate in [*pages[0], *pages[1]]:
+        monkeypatch.setenv("NIGHTLY_ISSUES", json.dumps(pages))
+        assert nightly_candidate(gh_project)["issue"]["number"] == candidate["number"]
+        # Simulate the label state after the skill confirms a clarification handoff.
+        candidate["labels"] = [{"name": "bug"}, {"name": LABELS["needs_investigation"]}]
+    monkeypatch.setenv("NIGHTLY_ISSUES", json.dumps(pages))
+    assert nightly_candidate(gh_project) == {"status": "skip", "reason": "no_actionable_issue", "issue": None}
+
+
+def test_reselection_stops_when_an_open_pr_appears(
+    gh_project: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("NIGHTLY_ISSUES", json.dumps([[issue(1), issue(2)]]))
+    assert nightly_candidate(gh_project)["issue"]["number"] == 1
+    monkeypatch.setenv("NIGHTLY_PRS", json.dumps([{"number": 10}]))
+    monkeypatch.setenv("NIGHTLY_ISSUES", "issues must not be read after a PR appears")
+    assert nightly_candidate(gh_project) == {"status": "skip", "reason": "open_pr", "issue": None}
+
+
 @pytest.mark.parametrize("env,value", [("NIGHTLY_GH_FAIL", "1"), ("NIGHTLY_PRS", "null"),
                                        ("NIGHTLY_PRS", "invalid"), ("NIGHTLY_ISSUES", "{}"),
                                        ("NIGHTLY_AUTH_EXIT", "1")])
@@ -147,6 +177,8 @@ def test_cli_read_failures_return_error_not_a_skip_or_second_attempt(
 
 @pytest.mark.parametrize("config", ["project: {type: general}", "github: {use_issues: false}",
                                     "github: {use_issues: true, labels: {blocked: agent-actionable}}",
+                                    "github: {use_issues: true, labels: {needs_investigation: agent-actionable}}",
+                                    "github: {use_issues: true, labels: {needs_investigation: ' '}}",
                                     "github: {use_issues: true, labels: {verified: ' '}}"])
 def test_missing_or_conflicting_configuration_stops_before_gh(
     gh_project: Path, config: str
