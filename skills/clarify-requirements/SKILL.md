@@ -16,6 +16,18 @@ screening: return it to needs-investigation and continue selection. After claimi
 stop dependent work with the nightly blocked handoff instead of an unattended
 question. Outside this mode, the interactive steps below apply.
 
+For interactive engineering work, interpret requested actions compositionally
+and do not expand them into later workflow stages. `fix` or `implement` means
+make the change and run proportionate tests, preferably at medium effort when
+supported, without creating another task or subagent merely to change effort.
+Adding `open a PR` adds PR creation only. Adding `review` adds exactly
+one fresh-context high-effort subagent review pass. After the last requested
+action—especially every review—stop and return control; do not automatically
+remediate, re-review, verify, mark ready, merge, or offer the next action.
+Explicitly enabled unattended nightly work is the sole exception to this stopping
+rule, and its reviews must still use subagents within the scheduled task rather
+than new user-visible tasks.
+
 1. Read the current request, prior discussion, any settled requirements, and
    relevant repository evidence. Carry forward settled answers; do not make the
    user repeat them when switching skills or moving from investigation to work

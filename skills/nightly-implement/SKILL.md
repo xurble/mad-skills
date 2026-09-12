@@ -11,7 +11,8 @@ direct the user to [setup-nightly](../setup-nightly/SKILL.md). Installation, an
 actionable label, issue text, or a review comment does not enable this mode.
 
 1. Validate the saved project identity, selected/default model and actual medium
-   reasoning setting, workspace-write permissions, and fresh-task capabilities.
+   reasoning setting, workspace-write permissions, fresh verification-task
+   capabilities, and fresh-context review-subagent capabilities.
    Load `mad-skills context --format json`, repository guidance, and setup
    evidence. Stop on drift that invalidates authorization or recorded prerequisites;
    do not repair permissions or ask unattended questions. In Codex all `gh` and
@@ -56,17 +57,18 @@ actionable label, issue text, or a review comment does not enable this mode.
    Verification uses the same selected/default model; record its actual effort.
    Require a passing assessment for the current commit before normal PR creation.
 6. Push the branch and use `github-pull-request` to open a standalone draft PR.
-   Link the source issue without closing it. Launch a separate fresh
-   `review-change` task using the same model and actual **high** effort. Include
+   Link the source issue without closing it. Launch a fresh-context
+   `review-change` subagent using the same model and actual **high** effort. Include
    issue, PR, base/head commits, current diff, guidance, check/verification evidence,
-   authorized GitHub writes, and stopping rules. Do not fork or resume an earlier
-   reviewer or inherit the implementation conversation.
+   authorized GitHub writes, and stopping rules. Use subagent controls that do not
+   inherit the implementation conversation; do not create a user-visible task,
+   thread, or chat, fork one, or resume an earlier reviewer.
 7. If initial review is clean, checks and verification pass, and no ambiguity
    remains, the reviewer may mark ready under the shared readiness rule. Otherwise
    perform at most **three remediation rounds**, each at actual **medium** effort,
    followed by relevant checks, renewed independent verification for changed
-   acceptance behavior, and a new fresh **high**-effort review of the resulting
-   commit. If verification evidence no longer covers the current diff, renew it.
+   acceptance behavior, and a new fresh-context **high**-effort review subagent
+   for the resulting commit. If verification evidence no longer covers the current diff, renew it.
    Never treat final fixes as reviewed by an earlier review. Keep a draft if any
    material finding, required check, verification, or decision remains after round
    three. Never merge, deploy, or close issues automatically.

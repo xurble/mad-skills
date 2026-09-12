@@ -12,8 +12,10 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > added after initial creation]. Setup approved by the user on [date/reference].
 >
 > Use $nightly-implement. This is a standalone project run. The user explicitly
-> authorizes new separate tasks for independent verification and fresh code review
-> in this workflow, without inheriting the implementation conversation.
+> authorizes new separate tasks for independent verification and fresh-context
+> subagents for code review in this workflow, without inheriting the
+> implementation conversation. Code review must not create a new user-visible
+> task, thread, or chat.
 >
 > Skip the project if any open PR exists, including drafts and bot
 > PRs. Otherwise use mad-skills nightly-candidate to select the oldest open issue
@@ -38,7 +40,7 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > [commands], required requirements assessment, summary and planning without an
 > added approval gate,
 > posting the plan, focused commits, branch pushes, draft PR creation and updates,
-> issue/PR comments and labels, separate verification and fresh review tasks,
+> issue/PR comments and labels, separate verification tasks and fresh review subagents,
 > posting their results, remediation, and the clean transition to ready. Record
 > all required artifacts and evidence; follow effective project policy and raise
 > workflow depth for high-risk issues. Preserve unrelated work and classification
@@ -46,18 +48,19 @@ tokens. Keep notification preferences in the app's dedicated settings.
 >
 > Model [explicit selection, or resolved configured default and source]. Apply
 > medium reasoning effort to implementation and every fix turn through supported
-> Codex task controls. Apply high to each fresh code-review task. Verification
+> Codex task controls. Apply high to each fresh code-review subagent. Verification
 > uses [same model and setup-recorded effort]. Check actual settings, including
 > children; prose is not a setting. Never silently substitute a model or effort.
 > Use workspace-write with setup-inspected persistent command permissions. Effective
 > approval/sandbox policy, writable Git/worktree/cache paths, authentication,
-> network and fresh-task capabilities: [non-secret evidence and supported settings
+> network, fresh verification-task capabilities, and fresh-context review-subagent
+> capabilities: [non-secret evidence and supported settings
 > references]. Do not assume parent approvals transfer or grant new permissions.
 >
 > Implement, run required tests/checks, obtain separate independent verification,
-> push, create a standalone draft PR, and run a separate fresh high-effort review.
+> push, create a standalone draft PR, and run a fresh-context high-effort review subagent.
 > Allow at most three rounds of medium-effort fixes, each followed by required
-> checks/verification and a new fresh high-effort review. Mark ready only when the
+> checks/verification and a new fresh-context high-effort review subagent. Mark ready only when the
 > current diff passes all required checks and independent verification, with no
 > unresolved material review findings or ambiguity. Final fixes require fresh
 > review. Leave exhausted, failed, or interrupted work unfinished and any PR draft.

@@ -13,7 +13,11 @@ For explicitly enabled nightly work, apply
 It approves an in-scope required plan and its issue comment without a new prompt;
 still write and record the plan. Material ambiguity before claiming uses authorized
 nightly clarification screening; after claiming, use the blocked handoff.
-Interactive plan approval and posting behavior below remains unchanged.
+For interactive work, distinguish a plan-only request from planning required
+inside a direct fix/implement request. A plan-only request stops after presenting
+the plan. A direct fix/implement request with 95% requirements confidence
+authorizes following its in-scope plan without another approval gate, but does not
+authorize posting that plan to GitHub unless the user also requested it.
 
 In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
@@ -32,5 +36,7 @@ GitHub—outside the sandbox with escalation from the outset.
    requirements confidence reaches 95% before finalizing the plan.
 6. Present a sequenced plan detailed enough for a fresh implementation task but
    avoid speculative line-by-line prescriptions.
-7. Show the plan locally first. After user approval, post it as a GitHub issue
-   comment using `gh issue comment --body-file`; do not rewrite the issue body.
+7. Show the plan locally first. For a plan-only request, stop. For a direct
+   fix/implement request, return to implementation without waiting for another
+   approval. Post it as a GitHub issue comment using `gh issue comment --body-file`
+   only when the user explicitly requests that write; do not rewrite the issue body.
