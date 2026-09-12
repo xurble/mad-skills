@@ -1,6 +1,6 @@
 ---
 name: github-pull-request
-description: Create a well-specified draft GitHub pull request, offer fresh-context review, mark it ready after the review cycle, or merge it on explicit request. Link an existing issue only when the work is issue-driven. Use when the user asks to open, create, ready, or merge a PR, or when a rigorous workflow reaches its PR gate.
+description: Create a well-specified draft GitHub pull request, run one explicitly requested fresh-context review, mark it ready, or merge it. Link an existing issue only when the work is issue-driven. Use only for the PR actions the user requests or for explicitly authorized nightly work.
 ---
 
 # Create or merge a GitHub pull request
@@ -10,8 +10,8 @@ requirements first; reuse the established requirements for the same scope.
 
 For explicitly enabled nightly work, apply
 [standing authorization](../nightly-implement/references/authorization.md).
-It authorizes in-scope draft creation/updates, accepts the fresh-review offer,
-and permits the clean ready transition without additional prompts. Never bypass
+It authorizes in-scope draft creation/updates, fresh-context review subagents, and
+the clean ready transition without additional prompts. Never bypass
 nightly readiness requirements. Missing capabilities produce a handoff rather
 than an unattended setup prompt; interactive behavior below remains unchanged.
 
@@ -37,10 +37,11 @@ GitHub—outside the sandbox with escalation from the outset.
    `git.conventional_commits` is enabled, require introduced commit messages and
    the PR title to use Conventional Commits; do not rewrite history without
    explicit authorization.
-3. Stop if required tests or `commands.check` failed, if the branch is not pushed,
-   or if policy-required planning or verification is missing. A missing fresh code
-   review does not block draft PR creation; it keeps the PR in draft. Report other
-   exact blockers. Never create or require an issue merely because the user
+3. Stop if required tests or `commands.check` failed or if the branch is not
+   pushed. For an interactive request to open a PR, missing policy-required
+   planning, verification, or review does not block draft creation; disclose it
+   as a pending readiness gate and leave the PR draft. Report other exact blockers.
+   Never create or require an issue merely because the user
    requested a PR; treat a missing issue as a blocker only when effective project
    policy explicitly requires one.
 4. When policy requires a well-specified PR or task risk is high, make its title
@@ -59,19 +60,16 @@ GitHub—outside the sandbox with escalation from the outset.
    setup-github`; do not silently change repository settings during PR creation.
 6. A direct request whose requirements meet the 95% confidence threshold
    authorizes PR creation. Use a body file and return the URL. Open with `gh pr
-   create --draft` and offer a
-   fresh-context code review when task
-   risk is high, or when the change is non-trivial and either policy sets
-   `github.open_pull_requests_as_draft_until_reviewed` or effective policy requires
-   separate review. Do not start that review automatically. Otherwise create the
-   PR in the non-draft state allowed by effective policy; trivial work does not
-   inherit a profile's non-trivial review gate.
-7. When the user accepts the review offer, use `review-change` in a separate fresh
-   task. Keep the PR draft while material findings remain. After fixes, repeat
-   relevant checks and fresh review against the current diff. A clean
-   `review-change` result posts its feedback and marks the draft PR ready. Report
-   that transition. If the user declines or does not accept the offer, leave the
-   PR draft.
+   create --draft` when policy has pending verification/review gates; otherwise
+   create it in the non-draft state allowed by effective policy. PR creation alone
+   does not authorize offering, starting, or performing review. End after reporting
+   the PR and any pending gates unless the same request explicitly includes review.
+7. When review is explicitly requested, delegate exactly one `review-change` pass
+   to a fresh-context high-effort subagent in the current task. Do not create a new
+   user-visible task, thread, or chat. After the reviewer reports or posts its
+   result, stop without fixing findings, re-reviewing, or marking the PR ready.
+   The user decides the next action. Explicitly enabled nightly work is the sole
+   exception and follows `nightly-implement`'s bounded remediation/readiness loop.
 8. Never merge automatically. When the user separately asks to merge, use the
    PR as the merge gate: reload its current title, body, diff, checks, and reviews,
    and stop if hard evidence is missing or the PR does not meet the standalone

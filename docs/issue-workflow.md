@@ -27,11 +27,17 @@ committed work: approved chat or issue specification
   → test and full check when required
   → separate verification against the supplied specification
   → standalone well-specified draft pull request
-  → offer separate fresh-context review
-  → accepted review cycle completes
+  → one requested fresh-context high-effort subagent review
+  → user chooses the next action
   → mark pull request ready
   → merge (and close a linked issue when present)
 ```
+
+For interactive work, every action after implementation is separately requested.
+`fix` or `implement` stops after implementation and tests; adding `open a PR`
+adds PR creation and stops; adding `review` adds one review pass and stops. Review
+findings never trigger automatic remediation or re-review. Explicitly enabled
+nightly work is the sole unattended exception.
 
 Direct natural-language requests such as “open an issue” or “create a PR” authorize
 the corresponding action when the requirements meet the confidence threshold;
@@ -58,12 +64,13 @@ Classification labels remain. Failed or uncertain verification never applies
 `verified`. Verification never closes an issue: only a merged PR containing
 `Closes #N` or an explicit user request does so.
 
-Rigorous non-trivial work requires an approved plan, tests, a full check, fresh
+Rigorous non-trivial work requires a plan, tests, a full check, fresh
 verification, and a standalone well-specified PR. The PR opens as a draft so its
 state visibly records that fresh AI code review has not completed. Creating the PR
-offers that review but never starts it automatically. When accepted, the review
-runs in a separate Codex or Claude task; the PR is marked ready after all material
-findings against the current diff are resolved. A developer may explicitly bypass
+does not offer or start review unless the user requested it. Each review is
+delegated to a fresh-context high-effort subagent in the current task and stops
+after one pass. Remediation, re-review, and marking ready each require subsequent
+user direction. A developer may explicitly bypass
 the AI-review gate and mark ready or merge, but the agent must disclose that review
 was skipped and must not claim otherwise.
 
@@ -72,8 +79,8 @@ was skipped and must not claim otherwise.
 [Setup nightly](../skills/setup-nightly/SKILL.md) records one project's schedule,
 authorization and tested execution settings in Codex. This is the sole unattended
 exception to the interactive gates above: in-scope plan approval/posting,
-commits/pushes, verification result posting, accepting the fresh-review offer,
-review comments and the clean ready transition are authorized at setup. Authorized
+commits/pushes, verification result posting, starting fresh-context review
+subagents, review comments and the clean ready transition are authorized at setup. Authorized
 screening returns unclaimed candidates needing clarification to investigation;
 new ambiguity after claiming produces a blocked handoff instead of a question.
 The plan, checks, independent verification and reviews still happen.
@@ -85,7 +92,7 @@ labels, add needs-investigation, and verify the changes. Repeat selection until
 one issue is actionable or none remain. Stop on failed reads/writes or an open PR;
 retain rejected candidates on resume and never revisit them in the same run.
 Implement at most one issue in an isolated worktree at medium;
-open a draft and review in a separate new high-effort task. Permit at most three
+open a draft and review in a fresh-context high-effort subagent. Permit at most three
 medium-effort remediation rounds, each followed by checks/verification coverage
 and a fresh high-effort review. Current-diff evidence and no unresolved material
 findings/ambiguity are required for ready. Never merge automatically.

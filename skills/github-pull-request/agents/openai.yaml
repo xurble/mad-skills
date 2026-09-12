@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Pull Request"
-  short_description: "Draft, review, ready, or merge a PR"
-  default_prompt: "Use $github-pull-request to create a specified draft PR and guide it through optional fresh review."
+  short_description: "Perform the requested PR action"
+  default_prompt: "Use $github-pull-request for only the explicitly requested PR actions and stop afterward."

@@ -16,9 +16,10 @@ toolkit scheduling engine, new permission system, or automatic project discovery
 The saved instructions name the project, selection rule, allowed workflow and
 stopping rules. They explicitly authorize inspection, required environment setup,
 in-scope edits, branches/worktrees, tests/checks, focused commits and pushes, draft
-PRs and updates, issue/PR comments and labels, separate verification/review tasks,
+PRs and updates, issue/PR comments and labels, separate verification tasks,
+fresh-context review subagents,
 remediation and the clean transition to ready. They cover plan approval/posting,
-verification result posting and accepting the review offer, so those gates do not
+verification result posting and starting review, so those gates do not
 prompt during a run. Required requirements assessments and summaries, plans,
 checks and independent assessments are still produced and recorded.
 
@@ -38,8 +39,9 @@ the shared skill alone does not expand a task's saved authorization.
 
 Setup checks configured commands/labels, authenticated `gh` and Git, network,
 writable worktree/shared Git metadata/cache paths, configured workspace-write and
-approval settings for the scheduled task and fresh child tasks, persistent command
-permissions, and fresh-task creation/effort controls. Permission changes happen
+approval settings for the scheduled task, verification tasks, and review subagents,
+persistent command permissions, and the corresponding creation/effort controls.
+Permission changes happen
 interactively through supported Codex controls and respect managed policy.
 Suppressing prompts does not grant access; a parent's temporary approvals do not
 grant permissions to children or scheduled runs.
@@ -78,8 +80,8 @@ The skill rechecks state before claiming the accepted issue, prevents overlappin
 project runs, and implements at most one issue even if work fails. Resumed runs
 retain their phase, current candidate, rejections and implementation attempt count.
 It follows target issue risk and project policy in an isolated worktree. Implementation/fix turns
-use actual medium effort; each independent code review is a separate new task at
-actual high effort on the same selected/default model. Child requests contain
+use actual medium effort; each independent code review is a fresh-context subagent
+at actual high effort on the same selected/default model. Child requests contain
 their own authorized scope, required action, allowed writes and stopping rules,
 without implementation conversation. Unsupported settings never trigger silent
 model or effort substitution.
@@ -88,6 +90,9 @@ The first PR is draft. A clean initial review can mark ready; otherwise allow at
 most three fix rounds, each with current checks/verification coverage and a new
 fresh high-effort review. Ready requires no material findings or ambiguities and
 passing evidence for the current diff. Final fixes cannot reuse an earlier review.
+This bounded unattended continuation is the sole exception to the interactive
+stop-after-review rule. Every nightly review is still a fresh-context subagent in
+the same scheduled task and must never create another user-visible review chat.
 
 ## Stopping and handoff
 

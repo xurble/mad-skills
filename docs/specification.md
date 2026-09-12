@@ -192,34 +192,38 @@ Use for active personal projects where regressions matter.
 Typical flow:
 
 ```text
-understand -> durable issue when useful -> implement -> test -> verify
--> fresh review for meaningful changes
+understand -> durable issue when useful -> implement -> test
 ```
 
 Meaningful behavior changes normally receive tests. Bug fixes normally receive
 regression coverage. Issues, plans, and pull requests follow project policy and
-the significance of the task. When a non-trivial PR needs the profile's separate
-review, it opens as a draft and offers that review without starting it.
+the significance of the task. Verification, PR creation, and review are separate
+interactive actions rather than automatic continuations. When a non-trivial PR
+needs the profile's separate review, it remains draft until the user requests and
+acts on review results.
 
 ### `rigorous`
 
 Use for production-facing, security-sensitive, financially consequential, or
 otherwise important projects.
 
-The standard path for every non-trivial task requires:
+The merge-readiness path for every non-trivial task requires the following
+evidence and artifacts. Interactive work performs only the actions the user asks
+for and may satisfy these gates incrementally:
 
 1. an implementation-ready specification with acceptance criteria, supplied in
    chat or an existing issue;
-2. a written plan presented to and approved by the user;
+2. a written plan presented to the user; a direct fix/implement request approves
+   the in-scope plan once requirements confidence reaches 95%;
 3. implementation on a pull-request branch;
 4. proportionate tests and the configured full check;
 5. verification against the supplied accepted specification in a separate fresh
    task;
 6. a standalone well-specified draft pull request;
-7. an explicit offer of code review in another separate fresh task, without
-   starting it automatically;
-8. when the offer is accepted, completion of the review and remediation cycle
-   against the current diff before the PR is marked ready.
+7. an explicitly requested code-review pass by a fresh-context high-effort
+   subagent in the current task;
+8. an explicit user decision after each review pass, with no automatic
+   remediation, re-review, or readiness transition.
 
 The PR must consolidate the accepted outcome, motivation, scope, material
 non-goals, observable acceptance criteria, important decisions, validation
@@ -232,7 +236,7 @@ must disclose the skipped review and never represent the change as reviewed.
 Trivial changes remain exempt from ceremony that adds no safety.
 
 Explicit nightly opt-in (§15.1) supplies scoped standing authorization for routine
-plan approval and accepting the review offer. It never removes required evidence
+plan approval and starting review. It never removes required evidence
 or permits an unattended override of readiness gates.
 
 ## 9. Task risk
@@ -434,37 +438,44 @@ blocked handoff instead of an unattended question.
 - `create-agent-issue` refines an existing issue into a standalone implementation
   contract with scope, constraints, acceptance criteria, and verification notes.
   A substantial issue-body replacement is previewed before it is applied.
-- `plan-issue` investigates without changing code, presents a practical plan
-  first, and posts it as an issue comment only after approval.
+- `plan-issue` investigates without changing code and presents a practical plan.
+  A direct fix/implement request authorizes following its in-scope plan once
+  requirements are clear; posting the plan still requires an explicit request.
 
 ### Implementation, verification, and review
 
 - `implement-issue` works from explicit acceptance criteria, applies the selected
   profile and task risk, preserves unrelated changes, tests proportionately, and
-  reports evidence.
+  reports evidence. Interactive implementation and fixes prefer medium effort and
+  stay in the current task; they do not imply verification, PR creation, review,
+  or merge, and do not create another execution context merely to change effort.
 - `verify-issue` runs in a separate fresh task and checks the completed change
   against an issue-driven contract, an existing PR, or an explicitly supplied
   accepted specification. It presents its finding first, then posts an approved
   result when a source artifact exists; issue label changes apply only to
   issue-driven work.
-- `review-change` runs in a separate fresh task and reviews correctness,
+- `review-change` is delegated to a fresh-context subagent in the current task
+  and reviews correctness,
   maintainability, complexity, likely defects, data-loss or security risk,
   architecture, and important missing tests. It checks whether the reviewed
   branch has an open pull request and, when one exists, posts line-specific
   findings as review comments plus any remaining feedback as a pull-request
   review comment. The review request authorizes those comments; other pull-request
-  state changes still require a separate explicit request except that a result
-  with no unresolved material findings or required follow-up changes a draft PR
-  to ready for review. Without an open pull request, it reports locally. It starts
-  only when the user directly requests review or accepts the offer made after
-  draft PR creation. “No significant issues found” is a valid result.
+  state changes require a separate explicit request. Without an open pull request,
+  it reports locally. Each direct request runs one high-effort review pass and
+  returns control without remediation, re-review, or marking ready. “No
+  significant issues found” is a valid result.
 - Verification and review are different responsibilities and do not substitute
   for each other.
 
-Fresh verification and review are separate Codex or Claude Code tasks. They are
-not automatically delegated to a subagent from the implementation conversation.
-In opted-in nightly work, setup explicitly authorizes creating these fresh tasks
-with self-contained scope and permissions; no implementation history is inherited.
+Fresh verification uses a separate Codex or Claude Code task. Fresh code review
+is delegated to a subagent in the current task with no inherited conversation;
+it never creates another user-visible task, thread, or chat. In opted-in nightly
+work, setup explicitly authorizes both operations with self-contained scope and
+permissions; no implementation history is inherited. Nightly is the sole
+exception to interactive stop-after-review behavior and may run its bounded
+remediation/re-review/readiness loop, with every review still performed by a
+subagent inside the scheduled task.
 
 ### Engineering practice
 
@@ -487,10 +498,11 @@ with self-contained scope and permissions; no implementation history is inherite
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
   tests, and risks. Under rigorous policy, it makes the PR a standalone change
-  contract with scope and observable acceptance criteria, opens it as a draft,
-  and offers but does not automatically start fresh-context review. A clean
-  `review-change` result marks the PR ready when the accepted review cycle
-  completes. An explicit developer override may bypass only that review gate. The
+  contract with scope and observable acceptance criteria and opens it as a draft
+  while gates remain. PR creation does not offer or start review unless review is
+  part of the same explicit request. One clean `review-change` pass still requires
+  a separate explicit instruction before marking the PR ready. An explicit
+  developer override may bypass only that review gate. The
   skill links an existing issue for issue-driven work, but a PR request alone
   neither requires nor authorizes creating one. Its default Conventional-Commit
   title becomes the squash commit title.
@@ -544,24 +556,25 @@ for missing configured labels and asks before creating them.
 Issue-driven work may use the full backlog lifecycle:
 
 ```text
-capture issue -> make actionable -> approve plan -> in-progress
--> implement -> verify -> draft pull request -> offer review
--> accepted review cycle -> ready -> merge
+capture issue -> make actionable -> plan -> in-progress
+-> implement -> verify -> draft pull request -> one review pass
+-> user decision -> ready -> merge
 ```
 
 Work that is already specified and approved in chat skips issue creation:
 
 ```text
-approve specification and plan -> implement -> test and full check
+approve specification; plan -> implement -> test and full check
 -> verify against supplied specification -> standalone well-specified draft PR
--> offer review -> accepted review cycle -> ready -> merge
+-> one review pass -> user decision -> ready -> merge
 ```
 
 In both paths, the PR title and body preserve the final specification without
 depending on chat or issue history. Draft state visibly means fresh AI review has
-not completed. PR creation offers that review but does not start it. When accepted,
-the PR remains draft until the current diff has no unresolved material findings,
-then becomes ready. An issue link and `Closes #N` are included only when an
+not completed. Each interactive step after implementation requires explicit user
+direction. A requested review runs one high-effort subagent pass and stops; even a
+clean result does not mark the PR ready without the user's next instruction. An
+issue link and `Closes #N` are included only when an
 existing issue actually drove the work. An explicit developer instruction may
 bypass the AI-review gate and mark ready or merge; the skipped review remains an
 explicitly reported limitation.
@@ -600,11 +613,12 @@ the toolkit must not implement a runner, scheduler, or separate permission syste
 
 Setup must check project configuration, commands, authenticated `gh` and Git,
 required labels (including distinct actionable and needs-investigation mappings),
-actual workspace-write/approval policy in scheduled and child
-tasks, writable worktree/shared Git metadata/cache paths, necessary network and
-persistent permissions, and fresh-task controls. It must use the user's selected
-model or configured default and supported controls for medium implementation/fix
-turns and high fresh code-review tasks. Unavailable or unsupported settings must
+actual workspace-write/approval policy in scheduled tasks, verification tasks,
+and review subagents, writable worktree/shared Git metadata/cache paths,
+necessary network and persistent permissions, and the relevant task/subagent
+controls. It must use the user's selected model or configured default and
+supported controls for medium implementation/fix turns and high fresh-context
+code-review subagents. Unavailable or unsupported settings must
 be reported, never silently substituted. Prompt text alone is insufficient.
 
 Setup must activate the task after prerequisite inspection and configuration
@@ -617,9 +631,9 @@ stage or selecting a second issue.
 Trusted saved instructions must explicitly authorize in-scope inspection and
 environment setup, edits, branches/worktrees, tests/checks, focused commits,
 pushes, draft PR creation/updates, issue/PR comments/labels, required planning,
-separate verification/review, remediation and the clean ready transition. This
-satisfies in-scope plan approval and posting, commit permission,
-verification-result posting and review-offer acceptance.
+separate verification, fresh-context subagent review, remediation and the clean
+ready transition. This satisfies in-scope plan approval and posting, commit
+permission, verification-result posting and review-start authorization.
 Clarification screening must also be explicitly authorized: comment on unclaimed
 candidates, remove configured actionable and stale verified labels, add
 needs-investigation, and continue selection. Existing saved instructions forbidding
@@ -643,12 +657,14 @@ attempt. Once claimed, retain that issue even on ambiguity or failure.
 The skill prevents overlapping project runs, preserves unrelated
 work in an isolated worktree, and applies target issue risk and project policy.
 
-Each independent verification/review task must receive a self-contained scope,
-required action, model/effort policy, allowed GitHub writes and stopping rules
-without implementation history. Parent permissions must not be assumed. Open a
-draft PR, review freshly at high, and permit at most three medium-effort fix rounds,
+Each independent verification task and review subagent must receive a
+self-contained scope, required action, model/effort policy, allowed GitHub writes
+and stopping rules without implementation history. Parent permissions must not be
+assumed. Open a draft PR, review freshly at high in a subagent, and permit at most
+three medium-effort fix rounds,
 each followed by required checks, independent verification coverage and another
-new high-effort review. Mark ready only with current-diff passing evidence and no
+fresh-context high-effort review subagent. Mark ready only with current-diff
+passing evidence and no
 unresolved material findings or ambiguities. Final fixes require fresh review.
 
 After claiming, new material decisions stop dependent work. Meaningful partial
@@ -773,7 +789,8 @@ Future work must preserve the following rules:
 - Version any incompatible configuration change and provide a migration path.
 - Retain `gh` as the only GitHub client until this specification is deliberately
   revised.
-- Keep fresh verification and review as separate user-visible tasks.
+- Keep fresh verification as a separate user-visible task and code review in a
+  fresh-context subagent of the current task.
 - Do not add plugins, release pinning, hooks, MCP integrations, or orchestration
   until demonstrated need outweighs the added lifecycle and maintenance cost.
 - Record consequential changes to these contracts in the decision log and update
@@ -797,9 +814,11 @@ Future work must preserve the following rules:
 - a fresh task can implement an actionable issue without the originating chat;
 - a rigorous change designed in chat can reach merge without a redundant issue;
 - its PR stands alone as the final specification and merge gate;
-- rigorous PRs open as drafts, visibly offer fresh AI review, and become ready
-  after an accepted review cycle or an explicit developer override;
-- separate fresh tasks can verify the specification and review the code;
+- rigorous PRs open as drafts with fresh AI review pending, and become ready
+  only after a clean current-diff review plus explicit user direction, or an
+  explicit developer override;
+- a separate fresh task can verify the specification and a fresh-context subagent
+  can review the code without creating another user-visible task;
 - an inherited project can be specified from implementation while surfacing
   uncertain intent as explicit assumptions;
 - deterministic validation catches malformed skills, configuration, bundles,
