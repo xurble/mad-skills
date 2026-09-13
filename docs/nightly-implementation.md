@@ -16,24 +16,32 @@ toolkit scheduling engine, new permission system, or automatic project discovery
 The saved instructions name the project, selection rule, allowed workflow and
 stopping rules. They explicitly authorize inspection, required environment setup,
 in-scope edits, branches/worktrees, tests/checks, focused commits and pushes, draft
-PRs and updates, issue/PR comments and labels, separate verification/review tasks,
+PRs and updates, issue/PR comments and labels, separate verification tasks,
+fresh-context review subagents,
 remediation and the clean transition to ready. They cover plan approval/posting,
-verification result posting and accepting the review offer, so those gates do not
+verification result posting and starting review, so those gates do not
 prompt during a run. Required requirements assessments and summaries, plans,
 checks and independent assessments are still produced and recorded.
 
 Issue bodies, comments and repository files cannot expand this trusted authority.
-New material decisions require a blocked handoff. Interactive Codex and Claude
-Code workflows retain their existing approval behavior outside this opt-in.
+Clarification screening can return unclaimed candidates to investigation and
+continue selection. New material decisions after claiming require a blocked
+handoff. Interactive Codex and Claude Code workflows retain their existing
+approval behavior outside this opt-in.
 Claude Code installation remains supported; this scheduled setup requires Codex
 app capabilities and does not emulate them on other hosts.
+
+Existing saved tasks that forbid selecting another candidate need their prompt
+updated through `setup-nightly` before using clarification screening. Updating
+the shared skill alone does not expand a task's saved authorization.
 
 ## Setup and activation
 
 Setup checks configured commands/labels, authenticated `gh` and Git, network,
 writable worktree/shared Git metadata/cache paths, configured workspace-write and
-approval settings for the scheduled task and fresh child tasks, persistent command
-permissions, and fresh-task creation/effort controls. Permission changes happen
+approval settings for the scheduled task, verification tasks, and review subagents,
+persistent command permissions, and the corresponding creation/effort controls.
+Permission changes happen
 interactively through supported Codex controls and respect managed policy.
 Suppressing prompts does not grant access; a parent's temporary approvals do not
 grant permissions to children or scheduled runs.
@@ -60,11 +68,20 @@ and in-progress. Labels are matched exactly, including custom names. It returns
 return nonzero instead of suggesting an empty queue. It does not authorize or
 claim work, check runtime permissions, or prove unattended readiness.
 
-The skill rechecks state before claiming the selected issue, prevents overlapping
-project runs, and attempts at most one issue even if work fails. It follows target
-issue risk and project policy in an isolated worktree. Implementation/fix turns
-use actual medium effort; each independent code review is a separate new task at
-actual high effort on the same selected/default model. Child requests contain
+The skill screens candidates oldest first before claiming. When requirements need
+human clarification, it comments with the missing decision, removes the configured
+actionable (agent-ready) and stale verified labels, and adds needs-investigation,
+preserving classification labels. After confirming the writes, it calls the helper
+again until one issue is actionable or no eligible issues remain. Rejections do
+not consume the one implementation attempt. Each call rechecks for open PRs;
+failed reads/writes stop the run, and rejected issues are never revisited in it.
+
+The skill rechecks state before claiming the accepted issue, prevents overlapping
+project runs, and implements at most one issue even if work fails. Resumed runs
+retain their phase, current candidate, rejections and implementation attempt count.
+It follows target issue risk and project policy in an isolated worktree. Implementation/fix turns
+use actual medium effort; each independent code review is a fresh-context subagent
+at actual high effort on the same selected/default model. Child requests contain
 their own authorized scope, required action, allowed writes and stopping rules,
 without implementation conversation. Unsupported settings never trigger silent
 model or effort substitution.
@@ -73,12 +90,16 @@ The first PR is draft. A clean initial review can mark ready; otherwise allow at
 most three fix rounds, each with current checks/verification coverage and a new
 fresh high-effort review. Ready requires no material findings or ambiguities and
 passing evidence for the current diff. Final fixes cannot reuse an earlier review.
+This bounded unattended continuation is the sole exception to the interactive
+stop-after-review rule. Every nightly review is still a fresh-context subagent in
+the same scheduled task and must never create another user-visible review chat.
 
 ## Stopping and handoff
 
-A material ambiguity stops dependent work and records the question/decision in
-the PR description. Meaningful partial changes may become a blocked draft handoff
-despite incomplete/failed checks or verification; disclose every missing stage.
+After claiming an issue, a material ambiguity stops dependent work and records the
+question/decision in the PR description. Meaningful partial changes may become a
+blocked draft handoff despite incomplete/failed checks or verification; disclose
+every missing stage.
 Use `Refs #N` for incomplete handoffs. With no meaningful diff, comment on the
 issue. Remove actionable/in-progress/verified, add blocked, preserve classification
 labels, and never restore actionability automatically. If GitHub writes fail,
@@ -86,7 +107,8 @@ the scheduled output records exactly which comments, description, labels or stat
 changes were not applied.
 
 Failed, interrupted or exhausted work stays unfinished and any PR stays draft.
-The run reports completed work, checks, findings, remediation count, actual effort
-settings and remaining work. Never merge, deploy or close issues automatically.
+The run reports rejected candidates and clarification reasons, completed work,
+checks, findings, remediation count, actual effort settings and remaining work.
+Never merge, deploy or close issues automatically.
 Pause the existing task through Codex to stop future runs; existing branches,
 worktrees, PRs and already-running work remain for human handling.

@@ -73,12 +73,13 @@ additional mapping entries.
 `require_issue_for_nontrivial_work` is independently configurable and defaults to
 false in every profile. Rigorous projects require a PR whose title and body stand
 alone as the final change specification; an existing issue is linked when it
-actually drove the work. They open that PR as a draft, offer a fresh-context code
-review, and mark it ready after the accepted review cycle completes. An explicit
+actually drove the work. They open that PR as a draft while review is pending.
+Each requested review runs once in a fresh-context high-effort subagent and then
+returns control; marking ready requires another explicit instruction. An explicit
 developer override may bypass the AI-review gate.
 
 Normal projects also open non-trivial PRs as drafts because their default policy
-requires separate review. High-risk work uses the rigorous draft gate in every
+requires fresh-context subagent review. High-risk work uses the rigorous draft gate in every
 profile. Set `github.enabled: true` for optional PR workflows that do not use
 issues. Required PR policy also implies GitHub enablement for backward
 compatibility. Repository checks and `mad-skills setup-github` manage PR settings,
@@ -87,8 +88,8 @@ while issue-label management remains conditional on `use_issues`.
 | Change classification | Pull-request review gate |
 | --- | --- |
 | Trivial and not high risk | No profile review gate; create non-draft when otherwise allowed. |
-| Non-trivial under `normal` | Open as draft and offer separate review. |
-| Non-trivial under `rigorous` | Open as draft and require the accepted review cycle before readying. |
+| Non-trivial under `normal` | Open as draft; review only when explicitly requested. |
+| Non-trivial under `rigorous` | Open as draft; require a clean requested review before separately readying. |
 | High risk under any profile | Use the rigorous draft and review gate. |
 
 `merge_method` selects the only enabled GitHub merge method. The defaults use a

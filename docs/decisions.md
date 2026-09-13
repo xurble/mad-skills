@@ -1,5 +1,61 @@
 # Decision log
 
+## 2026-09-12 — Keep interactive implementation and review user-directed
+
+**Decision:**
+
+Treat each interactive request as an action boundary. `fix` or `implement` runs
+implementation and testing at medium effort where supported. Adding `open a PR`
+adds PR creation only. Adding `review` adds exactly one high-effort fresh-context
+subagent review. After that pass, return control without remediation, re-review,
+or a readiness transition. Do not create a separate user-visible task, thread, or
+chat for code review. Independent verification remains a separate fresh task.
+Explicitly enabled unattended nightly work is the sole exception: it may run its
+bounded remediation/re-review/readiness loop, but every review remains a subagent
+inside the scheduled task.
+
+**Context:**
+
+Fresh review execution varied by computer because the workflow described a
+separate task without fixing the coordination mechanism. The owner wants review
+results returned through the task where the work is already being coordinated,
+while still withholding implementation history from the reviewer. When working
+interactively, the owner also wants to decide what follows each implementation,
+PR creation, and review result.
+
+**Rationale:**
+
+A subagent with no inherited conversation preserves reviewer independence and
+keeps review orchestration consistent without adding another sidebar task. An
+explicit one-level delegation rule prevents recursive review delegation. Literal
+action boundaries keep the user in control and prevent a request from silently
+growing into a fix/review loop.
+
+**Alternatives considered:**
+
+- Create a new task for every review: rejected because it exposes host-dependent
+  behavior and moves the review cycle out of the current task.
+- Review directly in the implementation context: rejected because implementation
+  history weakens the intended fresh-context check.
+- Automatically remediate review findings and re-review interactively: rejected
+  because the user wants to decide the next action after seeing every review.
+
+**Consequences and constraints:**
+
+- Direct review requests and nightly review rounds use fresh-context subagents at
+  high effort. Interactive implementation and remediation prefer medium effort
+  but stay in the current task rather than creating another context for effort.
+- A review subagent receives a self-contained target, scope, evidence, permissions,
+  and stopping rules, and performs the review without delegating again.
+- Interactive PRs remain draft when readiness gates are pending. A clean review
+  does not mark one ready without a subsequent explicit instruction.
+- Nightly may remediate and repeat reviews under its saved authorization, but it
+  does so within one scheduled task and never produces extra review chats.
+- If supported subagent controls cannot provide a fresh context, the workflow
+  reports the limitation instead of creating a new chat or self-reviewing.
+- This supersedes only the code-review execution mechanism in the 2026-09-08
+  decision; verification continues to use a separate fresh task.
+
 ## 2026-09-09 — Activate nightly tasks without a setup trial
 
 **Decision:**
@@ -42,7 +98,8 @@ required by the owner for this personal toolkit.
 ## 2026-09-08 — Scope unattended authorization to one Codex project task
 
 **Status:** Superseded in part by the 2026-09-09 decision removing the setup-trial
-activation gate.
+activation gate and the 2026-09-12 decision moving code reviews from new tasks to
+subagents.
 
 **Decision:**
 
@@ -133,6 +190,9 @@ settings, middleware, template loaders, context processors, and static serving.
   middleware, context processors, templates, tags, or dependencies.
 
 ## 2026-08-23 — Use pull requests as the rigorous delivery contract
+
+**Status:** Superseded in part by the 2026-09-12 decision requiring explicit
+interactive actions and a stop after each review pass.
 
 **Decision:**
 

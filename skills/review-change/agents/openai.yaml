@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Change"
-  short_description: "Review a change in a fresh context"
-  default_prompt: "Use $review-change in a fresh task to review this change for material problems."
+  short_description: "Review a change with a fresh-context subagent"
+  default_prompt: "Delegate one high-effort $review-change pass to a fresh-context subagent, report it, and stop."

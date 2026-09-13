@@ -11,8 +11,22 @@ for work requested without an issue or explicit skill invocation.
 For an explicitly enabled nightly run, first apply
 [standing authorization](../nightly-implement/references/authorization.md).
 Still assess confidence and record the requirements summary. New material
-ambiguity stops dependent work with the nightly blocked handoff instead of an
-unattended question. Outside this mode, the interactive steps below apply.
+ambiguity before claiming a candidate uses authorized nightly clarification
+screening: return it to needs-investigation and continue selection. After claiming,
+stop dependent work with the nightly blocked handoff instead of an unattended
+question. Outside this mode, the interactive steps below apply.
+
+For interactive engineering work, interpret requested actions compositionally
+and do not expand them into later workflow stages. `fix` or `implement` means
+make the change and run proportionate tests, preferably at medium effort when
+supported, without creating another task or subagent merely to change effort.
+Adding `open a PR` adds PR creation only. Adding `review` adds exactly
+one fresh-context high-effort subagent review pass. After the last requested
+action—especially every review—stop and return control; do not automatically
+remediate, re-review, verify, mark ready, merge, or offer the next action.
+Explicitly enabled unattended nightly work is the sole exception to this stopping
+rule, and its reviews must still use subagents within the scheduled task rather
+than new user-visible tasks.
 
 1. Read the current request, prior discussion, any settled requirements, and
    relevant repository evidence. Carry forward settled answers; do not make the

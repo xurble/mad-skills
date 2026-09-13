@@ -12,14 +12,15 @@ normal failed/blocked handoff for interactive troubleshooting.
   issues enabled; configured setup, test and full-check commands. Use
   `mad-skills check` and inspect its findings rather than only its exit code.
 - GitHub: installed/authenticated `gh`, actual repository read/write access,
-  distinct configured actionable/blocked/in-progress/verified labels, and all
-  required classification labels present. Check `gh label list`; resolve missing
-  labels during interactive setup with `mad-skills setup-github-labels`. Check Git
+  distinct configured actionable/needs-investigation/blocked/in-progress/verified
+  labels, and all required classification labels present. Check `gh label list`;
+  resolve missing labels during interactive setup with `mad-skills setup-github-labels`. Check Git
   fetch and push authentication separately; `gh auth status` alone is insufficient.
   Verify gh's effective repository target matches the approved repository,
   including host/repository environment overrides.
 - Codex: supported inventory/view/create/update/pause controls for one
-  standalone project task, fresh verification/review task creation and waiting,
+  standalone project task, fresh verification-task creation and waiting,
+  fresh-context review-subagent creation and collection,
   a way to select the current reviewed branch/commit, and inspect actual task
   model/effort/environment. The selected model or resolved configured default
   supports medium and high on that host. Never select a new model to get an effort.

@@ -6,7 +6,8 @@ description: Explicitly enable, update, or pause nightly issue implementation fo
 # Set up one project's nightly implementation
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) interactively.
-This skill requires supported Codex app scheduling and fresh-task controls;
+This skill requires supported Codex app scheduling, fresh verification-task
+controls, and fresh-context review-subagent controls;
 other hosts may read the skills but must not invent a scheduler or Claude fallback.
 Read [setup checks](references/setup-checks.md) and the
 [saved task template](references/scheduled-task.md).
@@ -15,8 +16,9 @@ Read [setup checks](references/setup-checks.md) and the
    inventory. Confirm its canonical path, host, Git remote/repository, nightly
    local time and IANA timezone, and optional model choice. Do not discover or
    enable other projects automatically.
-   Explicitly request standalone project runs and separate verification/review
-   tasks as part of the opt-in; a thread heartbeat is not this workflow.
+   Explicitly request standalone project runs, separate verification tasks, and
+   fresh-context review subagents as part of the opt-in; a thread heartbeat is
+   not this workflow.
 2. Load effective project configuration and required commands/labels. Complete
    every prerequisite in the setup checks. Present missing prerequisites with
    their exact resolution; use supported Codex controls for any approved permission

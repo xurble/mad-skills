@@ -62,7 +62,9 @@ def nightly_candidate(path: Path) -> dict[str, Any]:
     if not effective.configured or not github.get("use_issues"):
         raise MadSkillsError("Nightly selection requires project configuration with github.use_issues enabled")
     labels = github["labels"]
-    workflow_names = [labels.get(key) for key in ("actionable", "blocked", "in_progress", "verified")]
+    workflow_names = [
+        labels.get(key) for key in ("actionable", "needs_investigation", "blocked", "in_progress", "verified")
+    ]
     if any(not isinstance(name, str) or not name.strip() for name in workflow_names):
         raise MadSkillsError("Nightly selection requires non-empty workflow label mappings")
     if len(set(workflow_names)) != len(workflow_names):

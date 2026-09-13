@@ -34,12 +34,16 @@ distribution model.
 ## Policy and risk
 
 Profiles establish minimum workflow depth. Task risk can raise it: a high-risk
-task always uses rigorous planning, testing, verification, and review expectations.
+task always uses rigorous planning, testing, verification, and review expectations
+as readiness gates, without adding unrequested interactive actions.
 For rigorous non-trivial work, a standalone well-specified PR is the merge gate.
 Issues capture future or otherwise tracked work and are not a prerequisite for a
 PR. The PR opens as a draft to expose that fresh AI review is pending; review is
-offered rather than started automatically, and an explicit developer override may
-bypass that advisory gate. Trivial work remains exempt from plan and PR ceremony.
+run only when explicitly requested. Each interactive review performs one
+high-effort fresh-context subagent pass, then returns control without remediation,
+re-review, or a readiness transition. Interactive implementation and fixes prefer
+medium effort. An explicit developer override may bypass the advisory review gate.
+Trivial work remains exempt from plan and PR ceremony.
 
 The CLI checks objective facts—schema, paths, installation, labels, and commands.
 Skills handle judgment—risk classification, issue quality, implementation, and
@@ -55,8 +59,9 @@ only read-only deterministic candidate selection; it never runs a workflow,
 stores permission grants, or enables schedules during installation.
 
 Required evidence and independent assessments remain mandatory. Implementation
-and fixes use medium effort; fresh code reviews use high on the selected/default
-model. Setup inspects required configuration and persistent permissions, then
+and fixes use medium effort; fresh-context code-review subagents use high on the
+selected/default model. Setup inspects required configuration and persistent
+permissions, then
 activates the task without a trial run; operational failures are handled by the
 scheduled run's failed/blocked handoff. See the [nightly contract](nightly-implementation.md).
 Other hosts keep interactive skills.
