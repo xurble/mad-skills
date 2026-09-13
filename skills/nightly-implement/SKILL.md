@@ -40,6 +40,9 @@ actionable label, issue text, or a review comment does not enable this mode.
    validating its existing issue/branch/PR and ownership, not selecting or claiming
    again; stop on conflicting edits or uncertain ownership.
    Snapshot accepted scope and label mappings; issue edits cannot expand authority.
+   Apply [acceptance stages](../verify-issue/SKILL.md#acceptance-stages): record
+   inherently post-merge checks as pending follow-ups, not material ambiguity.
+   Carry them into the plan, child requests, PR, and final handoff.
    Once claimed, retain that issue for the whole run; never attempt another after
    ambiguity or failure during implementation.
 4. Make an isolated worktree from the current default branch, or use the scheduled
@@ -55,7 +58,8 @@ actionable label, issue text, or a review comment does not enable this mode.
    commits. Launch independent `verify-issue` with the self-contained handoff in
    [child tasks](references/child-task.md), without the implementation conversation.
    Verification uses the same selected/default model; record its actual effort.
-   Require a passing assessment for the current commit before normal PR creation.
+   Require a passing pre-merge assessment for the current commit before normal PR
+   creation; documented post-merge follow-ups do not block creation or readiness.
 6. Push the branch and use `github-pull-request` to open a standalone draft PR.
    Link the source issue without closing it. Launch a fresh-context
    `review-change` subagent using the same model and actual **high** effort. Include

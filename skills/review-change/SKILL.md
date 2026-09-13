@@ -60,9 +60,12 @@ GitHub—outside the sandbox with escalation from the outset.
    open PR exists, present the feedback locally only. Do not approve, request
    changes, merge, mark ready, or otherwise change PR state during interactive
    review without a separate explicit request.
-8. For interactive work, end after this single review pass whether it finds issues
+8. Apply [acceptance stages](../verify-issue/SKILL.md#acceptance-stages): documented
+   post-merge checks alone do not block readiness or mean the issue is complete.
+   For interactive work, end after this single review pass whether it finds issues
    or not. Do not edit or remediate code, start another review, mark the PR ready,
    or take a suggested next action. Return control to the user. For explicitly
    enabled nightly work only, return the findings to `nightly-implement`; its
    standing authorization may drive bounded remediation, another fresh review,
-   and the clean transition to ready.
+   and the clean transition to ready only when the current diff has no unresolved
+   material findings or required pre-merge follow-up.
