@@ -49,11 +49,16 @@ tokens. Keep notification preferences in the app's dedicated settings.
 > Model [explicit user selection, or Codex Sol default]. Before each requested
 > stage announce its actual model and effort, including any explicit user override,
 > then proceed without a confirmation pause. Run requirements screening and
-> planning at high effort by default through supported subagent controls. Apply
+> planning at the resolved effort (high by default), honoring any trusted explicit
+> user effort choice, through supported subagent controls. Apply
 > medium reasoning effort by default to implementation and every fix turn through
 > supported Codex task controls. Apply high effort by default to each fresh
 > code-review subagent and independent verification task. Check actual settings, including
 > children; prose is not a setting. Never silently substitute a model or effort.
+> Every Codex code-review `spawn_agent` call must pass `fork_turns: "none"`, the
+> resolved `model` explicitly (`gpt-6-sol` by default), and the resolved
+> `reasoning_effort` (high by default). Never inherit the parent model or use
+> Astra by inheritance. If Sol cannot be selected, stop the review stage.
 > After a PR exists, re-read its current body before each review, remediation,
 > or follow-up verification stage. A clear instruction there may override only model and/or effort for
 > subsequent PR-related work; apply only the stated field and stage. Trusted

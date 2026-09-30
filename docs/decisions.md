@@ -21,6 +21,13 @@ when its coordinating task has different settings. Nightly setup uses Codex Sol
 unless the user explicitly selects a model; its saved task applies high effort
 to capture/planning and review, medium to implementation. This decision updates
 the model/effort portions of the 2026-09-12 and 2026-09-08 decisions below.
+Every Codex code-review subagent is spawned with the resolved model explicitly
+(`gpt-6-sol` by default), selected effort (high by default), and no inherited
+conversation. Inheriting an Astra coordinating task's model is not a valid
+selection. If Sol cannot be applied, the review stage stops. Claude Code
+explicitly selects Opus through its supported subagent control. Nightly
+requirements screening and planning use high effort by default while honoring
+a trusted explicit user effort choice.
 
 **Nightly exception:** A clear instruction in the current PR body may override
 only model and/or effort for later PR-related stages, subject to trusted explicit

@@ -73,8 +73,13 @@ GitHub—outside the sandbox with escalation from the outset.
    shared policy (high effort by default), honoring any explicit user choice.
    Announce the actual selection and delegate exactly one `review-change` pass
    with that model and effort through supported controls to a fresh-context
-   subagent in the current task. Do not create a new
-   user-visible task, thread, or chat. After the reviewer reports or posts its
+   subagent in the current task. In Codex, pass `fork_turns: "none"`, the resolved
+   `model` explicitly (`gpt-6-sol` by default), and the resolved
+   `reasoning_effort` (high by default) to every review `spawn_agent` call.
+   Never inherit the parent model or substitute Astra when Sol is unavailable.
+   In Claude Code, explicitly select the resolved Opus model through its
+   supported subagent control. If the selection cannot be applied, stop the
+   review stage. Do not create a new user-visible task, thread, or chat. After the reviewer reports or posts its
    result, stop without fixing findings, re-reviewing, or marking the PR ready.
    The user decides the next action. Explicitly enabled nightly work is the sole
    exception and follows `nightly-implement`'s bounded remediation/readiness loop.

@@ -23,7 +23,8 @@ For interactive engineering work, interpret requested actions compositionally
 and do not expand them into later workflow stages. `fix` or `implement` means
 make the change and run proportionate tests at the selected model and effort.
 Adding `open a PR` adds PR creation only. Adding `review` adds exactly
-one fresh-context subagent review pass at the selected effort (high by default). After the last requested
+one fresh-context subagent review pass with the resolved model explicitly
+(Codex Sol/high by default); never inherit the parent model. After the last requested
 action—especially every review—stop and return control; do not automatically
 remediate, re-review, verify, mark ready, merge, or offer the next action.
 Explicitly enabled unattended nightly work is the sole exception to this stopping

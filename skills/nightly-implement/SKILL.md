@@ -32,8 +32,11 @@ and announce actual settings before each stage in the scheduled run output.
    helper is read-only, not a claim or authorization. Record the run ID and each
    candidate; repeat selection only through the clarification screening below.
 3. Delegate candidate requirements screening and any required planning to a
-   high-effort subagent using the selected model and supported controls, with a
-   self-contained scope and the saved authorization. Read the candidate issue and
+   subagent at the resolved effort (high by default) using the selected model
+   and supported controls. Honor a trusted explicit user effort selection for
+   screening and planning; pass the resolved model and effort through the
+   subagent creation controls with a self-contained scope and the saved
+   authorization. Read the candidate issue and
    comments using `gh`, plus relevant code and tests.
    Assess requirements before claiming it. If clarification is needed, use
    **Candidates needing clarification** below and continue screening until one is
@@ -73,8 +76,12 @@ and announce actual settings before each stage in the scheduled run output.
    each review or remediation stage and apply any clear model/effort instruction
    under the shared policy, then announce the actual settings before proceeding.
    Launch a fresh-context `review-change` subagent using the resolved model and
-   effort. Include
-   issue, PR, base/head commits, current diff, guidance, check/verification evidence,
+   effort. In Codex, pass `fork_turns: "none"`, the resolved `model` explicitly
+   (`gpt-6-sol` by default), and the resolved `reasoning_effort` (high by
+   default) to every review `spawn_agent` call. Never inherit the parent model
+   or substitute Astra when Sol is unavailable. In Claude Code, explicitly
+   select the resolved Opus model through its supported subagent control.
+   Include issue, PR, base/head commits, current diff, guidance, check/verification evidence,
    authorized GitHub writes, and stopping rules. Use subagent controls that do not
    inherit the implementation conversation; do not create a user-visible task,
    thread, or chat, fork one, or resume an earlier reviewer.

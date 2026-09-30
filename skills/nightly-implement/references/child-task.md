@@ -7,7 +7,12 @@ asynchronous setup before continuing or waiting on it.
 
 For code review, spawn a fresh-context subagent within the current scheduled task
 using supported subagent controls with no inherited turns. In Codex, use
-`spawn_agent` with `fork_turns: "none"`; do not use `create_thread`. Never create
+`spawn_agent` with `fork_turns: "none"`, the resolved `model` explicitly
+(`gpt-6-sol` by default), and the resolved `reasoning_effort` (high by default).
+Never omit the model or inherit the parent model, even if the parent runs Astra;
+stop if the selected model cannot be applied. In Claude Code, explicitly select
+the resolved Opus model through its supported subagent control. Do not use
+`create_thread`. Never create
 a new user-visible task, thread, or chat for review. A review subagent performs
 the review directly and must not delegate again.
 

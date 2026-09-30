@@ -50,7 +50,10 @@ implementation conversation. Verify their actual environments and execution
 settings; temporary parent approvals must not be assumed to carry over. High
 requirements screening/planning and verification, medium implementation/remediation,
 and high code review are defaults applied through supported controls, not inferred from
-prompt wording. Use the setup-selected model or Codex Sol default until a valid
+prompt wording. Trusted explicit user effort choices for screening/planning
+override the high default. Every Codex code-review subagent must receive the
+resolved model explicitly in `spawn_agent`; never inherit the parent model.
+Use the setup-selected model or Codex Sol default until a valid
 PR-body override applies; do not silently substitute a model or effort if the
 selection is unavailable. Missing evidence or capability means a failed/blocked handoff.
 

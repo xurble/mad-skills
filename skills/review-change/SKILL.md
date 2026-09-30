@@ -11,9 +11,18 @@ requirements first; reuse the established requirements for the same scope.
 Run independently from implementation. The coordinating agent must delegate the
 review exactly once through supported subagent controls with no inherited
 conversation and a self-contained prompt. In Codex, use `spawn_agent` with
-`fork_turns: "none"`; do not use `create_thread`. On another supported host, use
-its isolated-context subagent facility. Never create a user-visible task, thread,
-or chat for code review, and never review in the implementation context.
+`fork_turns: "none"`, `model: "gpt-6-sol"` (or the host's current supported Sol
+identifier), and `reasoning_effort: "high"` by default. Resolve explicit user
+model/effort choices first and pass the resolved `model` explicitly alongside
+the resolved effort in those arguments for
+every review spawn. Never omit `model` or inherit the parent task's model; a
+parent running Astra does not make Astra the review model. If the selected Sol
+model is unavailable, stop instead of substituting or inheriting.
+Do not use `create_thread`. On Claude Code, explicitly select the resolved Opus
+model through its supported subagent model control and pass the selected effort.
+On another supported host, use its isolated-context subagent facility. Never
+create a user-visible task, thread, or chat for code review, and never review
+in the implementation context.
 If fresh-context subagent controls are unavailable, report that the requested
 review cannot be run; do not silently fall back to either behavior. A subagent
 explicitly delegated this review performs it directly and must not delegate again.
@@ -25,7 +34,9 @@ For explicitly enabled nightly work, apply
 [standing authorization](../nightly-implement/references/authorization.md).
 Require a new fresh-context subagent with self-contained scope, allowed GitHub
 writes and the model/effort resolved from the current PR body and trusted setup
-selection (Codex Sol at high effort by default); never inherit
+selection (Codex Sol at high effort by default); pass both as explicit subagent
+creation arguments. Only a valid nightly PR-body counter-instruction or trusted
+explicit user/setup choice changes the corresponding default. Never inherit
 implementation history or resume an earlier reviewer. The saved opt-in accepts
 starting review and posting/clean-readiness actions without another prompt.
 Recheck current head,
