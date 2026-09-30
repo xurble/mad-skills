@@ -40,7 +40,8 @@ For rigorous non-trivial work, a standalone well-specified PR is the merge gate.
 Issues capture future or otherwise tracked work and are not a prerequisite for a
 PR. The PR opens as a draft to expose that fresh AI review is pending; review is
 run only when explicitly requested. Each interactive review performs one
-high-effort fresh-context subagent pass, then returns control without remediation,
+fresh-context subagent pass at the selected effort (high by default), then
+returns control without remediation,
 re-review, or a readiness transition. Interactive implementation and fixes use
 medium effort by default. An explicit developer override may bypass the advisory review gate.
 Trivial work remains exempt from plan and PR ceremony.
@@ -65,8 +66,8 @@ only read-only deterministic candidate selection; it never runs a workflow,
 stores permission grants, or enables schedules during installation.
 
 Required evidence and independent assessments remain mandatory. Implementation
-and fixes use medium effort; requirements screening, planning, verification and
-fresh-context code-review subagents use high on the user-selected model or Codex
+and fixes use medium effort by default; requirements screening, planning, verification and
+fresh-context code-review subagents use high effort by default on the user-selected model or Codex
 Sol default. Setup inspects required configuration and persistent
 permissions, then
 activates the task without a trial run; operational failures are handled by the

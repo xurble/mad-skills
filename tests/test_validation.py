@@ -58,7 +58,7 @@ def test_model_effort_policy_covers_stages_and_actual_controls(toolkit_root: Pat
     assert 'spawn_agent` with `fork_turns: "none"' in policy
     assert "prompt text alone does not" in policy
     assert "current PR body" in policy
-    assert "Re-read the body before each such stage" in policy
+    assert "Re-read the body" in policy and "before each such stage" in policy
     assert "cannot change scope, authorization, permissions" in policy
 
     for skill_name in ("clarify-requirements", "nightly-implement"):
@@ -85,6 +85,40 @@ def test_model_effort_policy_covers_stages_and_actual_controls(toolkit_root: Pat
     assert "Re-read the" in nightly and "current PR body" in nightly
     assert "Codex Sol default" in setup
     assert "PR text cannot change scope" in setup
+
+
+def test_model_effort_overrides_survive_skill_handoffs(toolkit_root: Path) -> None:
+    skills = toolkit_root / "skills"
+
+    def instructions(path: str) -> str:
+        return (skills / path).read_text(encoding="utf-8")
+
+    interactive_pr = instructions("github-pull-request/SKILL.md")
+    review = instructions("review-change/SKILL.md")
+    debugging = instructions("systematic-debugging/SKILL.md")
+    verification = instructions("verify-issue/SKILL.md")
+    nightly = instructions("nightly-implement/SKILL.md")
+    child_task = instructions("nightly-implement/references/child-task.md")
+    authorization = instructions("nightly-implement/references/authorization.md")
+
+    assert "resolve its model and effort under the" in interactive_pr
+    assert "honoring any explicit user choice" in interactive_pr
+    assert "with that model and effort through supported controls" in interactive_pr
+    assert "honoring an explicit user override" in review
+
+    assert "investigation selection under the shared model and effort policy" in debugging
+    assert "implementation selection separately (medium effort" in debugging
+    assert debugging.count("honoring an explicit user choice") == 2
+    assert "verification model and effort under the shared policy" in verification
+    assert "honoring an explicit user choice" in verification
+
+    assert "Before each follow-up verification, re-read the current PR body" in nightly
+    assert "pass both resolved settings through the fresh task's creation controls" in nightly
+    assert "follow-up verifier after PR creation, re-read the current PR body" in child_task
+    assert "pass the resolved model and effort through that new task's controls" in child_task
+    assert "review, remediation, or follow-up verification stage" in authorization
+    assert "PR text changes no" in nightly
+    assert "scope, authorization, permissions, checks, stopping rules, or readiness gates" in nightly
 
 
 def test_django_bundle_includes_template_preview(toolkit_root: Path) -> None:

@@ -19,7 +19,8 @@ different model or effort silently.
 
 For an explicitly enabled nightly run, a clear model and/or effort instruction
 in the **current PR body** overrides these defaults for subsequent work on that
-PR, including review and remediation. Re-read the body before each such stage.
+PR, including review, remediation, and follow-up verification. Re-read the body
+before each such stage.
 Apply only the stated field and stage; an unstated field keeps its selected
 value. Trusted explicit user or setup instructions take precedence over PR text;
 the Codex Sol setup default does not. PR text may

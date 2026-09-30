@@ -29,9 +29,10 @@ not resume a previous verifier/reviewer or assume parent permissions.
 > rely on implementation conversation or treat implementation claims as evidence.
 > Confirm you are inspecting the specified commit; report if the remote head moves.
 >
-> Model: [setup-selected model or Codex Sol default, adjusted for any valid current
-> PR-body override]. Task controls must use [resolved review effort, high by
-> default; high for pre-PR verification]. Confirm
+> Model: [trusted explicit setup choice or Codex Sol default, adjusted only for
+> valid current PR-body instructions that do not conflict with a trusted choice].
+> Task controls must use [resolved effort for this verification
+> or review stage; high by default]. Confirm
 > actual settings and workspace-write environment; report inability to verify or
 > apply them. Implementation and remediation use medium by default in separate turns; do
 > not edit code here. Temporary approvals in the parent are not permissions here.
@@ -56,8 +57,11 @@ not resume a previous verifier/reviewer or assume parent permissions.
 > reviewed commit, actual model/effort, and task or subagent ID to the implementation task.
 
 For verification, supported task creation accepts the resolved project and a
-worktree target from the exact implementation branch/ref. For review, supported
-subagent creation must disable inherited turns and apply the selected review
+worktree target from the exact implementation branch/ref. Before creating any
+follow-up verifier after PR creation, re-read the current PR body and resolve
+its model/effort instructions for verification against trusted user/setup choices;
+pass the resolved model and effort through that new task's controls. For review,
+supported subagent creation must disable inherited turns and apply the selected review
 effort (`high` by default). Verify the
 ref is available in the shared workspace or push it first if needed within saved
 authority. Pass the resolved model explicitly through supported controls. If the

@@ -74,8 +74,8 @@ additional mapping entries.
 false in every profile. Rigorous projects require a PR whose title and body stand
 alone as the final change specification; an existing issue is linked when it
 actually drove the work. They open that PR as a draft while review is pending.
-Each requested review runs once in a fresh-context high-effort subagent and then
-returns control; marking ready requires another explicit instruction. An explicit
+Each requested review runs once in a fresh-context subagent at the selected effort
+(high by default) and then returns control; marking ready requires another explicit instruction. An explicit
 developer override may bypass the AI-review gate.
 The shared [model and effort policy](../skills/clarify-requirements/references/model-effort.md)
 selects Codex Sol or Claude Opus at high effort for capture, specification,

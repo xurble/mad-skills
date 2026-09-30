@@ -97,8 +97,8 @@ retain rejected candidates on resume and never revisit them in the same run.
 Implement at most one issue in an isolated worktree at medium effort by default;
 open a draft and review in a fresh-context subagent at high effort by default.
 Permit at most three remediation rounds, each followed by checks/verification
-coverage and a fresh review. Re-read the current PR body before review or
-remediation: a clear model/effort instruction can override only those defaults
+coverage and a fresh review. Re-read the current PR body before review,
+remediation, or follow-up verification: a clear model/effort instruction can override only those defaults
 for subsequent PR-related stages, subject to trusted explicit user/setup choices.
 Current-diff evidence and no unresolved material
 findings/ambiguity are required for ready. Never merge automatically.
