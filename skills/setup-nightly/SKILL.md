@@ -14,7 +14,8 @@ Read [setup checks](references/setup-checks.md) and the
 
 1. Resolve exactly one explicitly selected saved project using Codex's project
    inventory. Confirm its canonical path, host, Git remote/repository, nightly
-   local time and IANA timezone, and optional model choice. Do not discover or
+   local time and IANA timezone, and optional model choice. Default to Codex Sol
+   when the user has not chosen a model. Do not discover or
    enable other projects automatically.
    Explicitly request standalone project runs, separate verification tasks, and
    fresh-context review subagents as part of the opt-in; a thread heartbeat is
@@ -47,9 +48,8 @@ Read [setup checks](references/setup-checks.md) and the
    `list_projects` IDs and `automation_update` with cron kind, local execution,
    the approved schedule, and actual `reasoningEffort: medium`.
    For updates use its resolved ID and full preserved fields. When model is
-   omitted by the user, use the configured default; if a required model field
-   needs a concrete value, resolve and record that default through supported
-   settings rather than choosing another. Validate both medium and high support
+   omitted by the user, select Codex Sol through supported settings and record
+   it explicitly. Validate both medium and high support
    on the actual host; unsupported/unavailable values stop setup.
 7. Read back project binding, intended active/paused state, schedule, timezone,
    model, effort and saved prompt. A prompt saying “medium” or a successful create

@@ -15,6 +15,9 @@ make the summary a confirmation gate. Read-only investigation may continue while
 answers are pending; edits, issue creation, and other mutations wait. Reuse the
 established requirements across workflow steps, reopening clarification only for
 material scope changes or new ambiguity that lowers confidence below 95%.
+Apply the shared [model and effort policy](../skills/clarify-requirements/references/model-effort.md)
+at each requested stage, announcing the actual selection before work. Explicit
+user choices override defaults; supported task controls must apply the selection.
 
 ```text
 future work: open-bug / open-enhancement
@@ -91,10 +94,13 @@ comment with the missing decision, remove configured actionable and stale verifi
 labels, add needs-investigation, and verify the changes. Repeat selection until
 one issue is actionable or none remain. Stop on failed reads/writes or an open PR;
 retain rejected candidates on resume and never revisit them in the same run.
-Implement at most one issue in an isolated worktree at medium;
-open a draft and review in a fresh-context high-effort subagent. Permit at most three
-medium-effort remediation rounds, each followed by checks/verification coverage
-and a fresh high-effort review. Current-diff evidence and no unresolved material
+Implement at most one issue in an isolated worktree at medium effort by default;
+open a draft and review in a fresh-context subagent at high effort by default.
+Permit at most three remediation rounds, each followed by checks/verification
+coverage and a fresh review. Re-read the current PR body before review or
+remediation: a clear model/effort instruction can override only those defaults
+for subsequent PR-related stages, subject to trusted explicit user/setup choices.
+Current-diff evidence and no unresolved material
 findings/ambiguity are required for ready. Never merge automatically.
 
 After claiming, new material ambiguity stops dependent work. Meaningful partial

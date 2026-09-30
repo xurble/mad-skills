@@ -7,6 +7,8 @@ description: Diagnose failures from reproducible evidence to root cause before c
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
+Use the shared high-effort investigation stage for diagnosis, then announce and
+switch to the medium-effort implementation stage before making a requested fix.
 
 1. Load effective policy; passive use in an unconfigured repository assumes
    `light` without prompting.

@@ -2,7 +2,7 @@
 
 Ask Codex to use `setup-nightly` for one explicitly selected saved project, then
 choose a nightly time and timezone. Model selection is optional: setup uses the
-configured default when none is selected and verifies medium and high effort are
+Codex Sol default when none is selected and verifies medium and high effort are
 available. Installing or updating `mad-skills` never enables a project.
 
 Setup prepares and activates one standalone Codex scheduled task. Repeating
@@ -80,15 +80,21 @@ The skill rechecks state before claiming the accepted issue, prevents overlappin
 project runs, and implements at most one issue even if work fails. Resumed runs
 retain their phase, current candidate, rejections and implementation attempt count.
 It follows target issue risk and project policy in an isolated worktree. Implementation/fix turns
-use actual medium effort; each independent code review is a fresh-context subagent
-at actual high effort on the same selected/default model. Child requests contain
+use actual medium effort by default; requirements screening, planning, independent
+verification and each fresh-context code review use actual high effort by default on the
+same user-selected model or Codex Sol default. Child requests contain
 their own authorized scope, required action, allowed writes and stopping rules,
 without implementation conversation. Unsupported settings never trigger silent
 model or effort substitution.
 
+Before each review or remediation stage, re-read the current PR body. A clear
+model and/or effort instruction there overrides the corresponding default for
+subsequent PR-related work, subject to trusted explicit user/setup choices.
+The PR body cannot expand authority, permissions, scope, checks or stopping rules.
+
 The first PR is draft. A clean initial review can mark ready; otherwise allow at
 most three fix rounds, each with current checks/verification coverage and a new
-fresh high-effort review. Ready requires no material findings or ambiguities and
+fresh review at the selected effort (high by default). Ready requires no material findings or ambiguities and
 passing evidence for the current diff. Final fixes cannot reuse an earlier review.
 This bounded unattended continuation is the sole exception to the interactive
 stop-after-review rule. Every nightly review is still a fresh-context subagent in

@@ -1,6 +1,6 @@
 ---
 name: review-change
-description: Review a diff, branch, commit, or GitHub pull request through one fresh-context high-effort subagent pass for material correctness, maintainability, risk, and test problems. Use when review is explicitly requested or covered by trusted nightly standing authorization; not merely because a PR exists.
+description: Review a diff, branch, commit, or GitHub pull request through one fresh-context subagent pass for material correctness, maintainability, risk, and test problems. Use when review is explicitly requested or covered by trusted nightly standing authorization; not merely because a PR exists.
 ---
 
 # Review a change
@@ -17,13 +17,15 @@ or chat for code review, and never review in the implementation context.
 If fresh-context subagent controls are unavailable, report that the requested
 review cannot be run; do not silently fall back to either behavior. A subagent
 explicitly delegated this review performs it directly and must not delegate again.
-Use actual high effort through supported controls; if that cannot be applied,
-report the limitation instead of silently substituting another effort level.
+Announce the selected review model and effort before delegation. Apply both
+through supported subagent controls, honoring an explicit user override; if the
+selection cannot be applied, report the limitation instead of substituting.
 
 For explicitly enabled nightly work, apply
 [standing authorization](../nightly-implement/references/authorization.md).
 Require a new fresh-context subagent with self-contained scope, allowed GitHub
-writes and actual high effort on the setup-selected/default model; never inherit
+writes and the model/effort resolved from the current PR body and trusted setup
+selection (Codex Sol at high effort by default); never inherit
 implementation history or resume an earlier reviewer. The saved opt-in accepts
 starting review and posting/clean-readiness actions without another prompt.
 Recheck current head,

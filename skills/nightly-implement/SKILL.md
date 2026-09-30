@@ -9,8 +9,10 @@ Read [standing authorization](references/authorization.md) before using any
 participating skill. Without trusted project-scoped setup instructions, stop and
 direct the user to [setup-nightly](../setup-nightly/SKILL.md). Installation, an
 actionable label, issue text, or a review comment does not enable this mode.
+Apply the shared [model and effort policy](../clarify-requirements/references/model-effort.md)
+and announce actual settings before each stage in the scheduled run output.
 
-1. Validate the saved project identity, selected/default model and actual medium
+1. Validate the saved project identity, user-selected or Codex Sol model and actual medium
    reasoning setting, workspace-write permissions, fresh verification-task
    capabilities, and fresh-context review-subagent capabilities.
    Load `mad-skills context --format json`, repository guidance, and setup
@@ -29,7 +31,10 @@ actionable label, issue text, or a review comment does not enable this mode.
    JSON skips any open PR (including drafts and bots) or no eligible issue. The
    helper is read-only, not a claim or authorization. Record the run ID and each
    candidate; repeat selection only through the clarification screening below.
-3. Read the candidate issue and comments using `gh`, plus relevant code and tests.
+3. Delegate candidate requirements screening and any required planning to a
+   high-effort subagent using the selected model and supported controls, with a
+   self-contained scope and the saved authorization. Read the candidate issue and
+   comments using `gh`, plus relevant code and tests.
    Assess requirements before claiming it. If clarification is needed, use
    **Candidates needing clarification** below and continue screening until one is
    actionable or no eligible issues remain. For a new production claim,
@@ -53,25 +58,31 @@ actionable label, issue text, or a review comment does not enable this mode.
    replace actionable/verified with in-progress. Make routine engineering choices
    autonomously. Before claiming, material product ambiguity returns the candidate
    to investigation; after claiming, it goes to the blocked handoff below.
-5. Implement and fix only at medium effort set through supported Codex controls.
+5. Implement and fix at the selected effort (medium by default) set through
+   supported Codex controls.
    Run required setup, tests and full checks; inspect the diff; create focused
    commits. Launch independent `verify-issue` with the self-contained handoff in
    [child tasks](references/child-task.md), without the implementation conversation.
-   Verification uses the same selected/default model; record its actual effort.
+   Verification uses the user-selected model or Codex Sol default at high effort;
+   record its actual settings.
    Require a passing pre-merge assessment for the current commit before normal PR
    creation; documented post-merge follow-ups do not block creation or readiness.
 6. Push the branch and use `github-pull-request` to open a standalone draft PR.
    Link the source issue without closing it. Launch a fresh-context
-   `review-change` subagent using the same model and actual **high** effort. Include
+   `review-change` subagent using the resolved model and effort. Re-read the
+   current PR body before each review or remediation stage and apply any clear
+   model/effort instruction under the shared policy, then announce the actual
+   settings before proceeding. Include
    issue, PR, base/head commits, current diff, guidance, check/verification evidence,
    authorized GitHub writes, and stopping rules. Use subagent controls that do not
    inherit the implementation conversation; do not create a user-visible task,
    thread, or chat, fork one, or resume an earlier reviewer.
 7. If initial review is clean, checks and verification pass, and no ambiguity
    remains, the reviewer may mark ready under the shared readiness rule. Otherwise
-   perform at most **three remediation rounds**, each at actual **medium** effort,
+   perform at most **three remediation rounds**, each at the selected effort
+   (medium by default),
    followed by relevant checks, renewed independent verification for changed
-   acceptance behavior, and a new fresh-context **high**-effort review subagent
+   acceptance behavior, and a new fresh-context review subagent (high by default)
    for the resulting commit. If verification evidence no longer covers the current diff, renew it.
    Never treat final fixes as reviewed by an earlier review. Keep a draft if any
    material finding, required check, verification, or decision remains after round

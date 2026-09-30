@@ -7,6 +7,7 @@ description: Independently verify a completed change against its PR, GitHub issu
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
+Announce and use the shared high-effort verification selection before inspection.
 
 Run this workflow in a task separate from implementation.
 

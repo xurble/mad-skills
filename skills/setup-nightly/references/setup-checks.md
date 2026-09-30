@@ -22,8 +22,9 @@ normal failed/blocked handoff for interactive troubleshooting.
   standalone project task, fresh verification-task creation and waiting,
   fresh-context review-subagent creation and collection,
   a way to select the current reviewed branch/commit, and inspect actual task
-  model/effort/environment. The selected model or resolved configured default
-  supports medium and high on that host. Never select a new model to get an effort.
+  model/effort/environment. The user-selected model, or Codex Sol by default,
+  supports medium and high on that host. Confirm high-effort subagent controls
+  for requirements screening and planning as well as code review.
 - Schedule: selected local time and IANA timezone are representable; verify the
   app's next runs and daylight-saving behavior. Local execution requires the
   computer and app available. Codex owns scheduling and history; no toolkit cron,

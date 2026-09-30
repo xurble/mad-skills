@@ -43,6 +43,50 @@ def test_requirements_check_proceeds_at_confidence_threshold(toolkit_root: Path)
     assert "obtain confirmation before proceeding" not in skill_text
 
 
+def test_model_effort_policy_covers_stages_and_actual_controls(toolkit_root: Path) -> None:
+    skills = toolkit_root / "skills"
+    policy = (skills / "clarify-requirements" / "references" / "model-effort.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Codex Sol or Claude Opus | high" in policy
+    assert "Codex Sol or Claude Opus | medium" in policy
+    assert "Independent verification and code review" in policy
+    assert "explicit user choice" in policy
+    assert "tell the user the **actual**" in policy
+    assert "without a confirmation pause" in policy
+    assert "supported controls" in policy
+    assert 'spawn_agent` with `fork_turns: "none"' in policy
+    assert "prompt text alone does not" in policy
+    assert "current PR body" in policy
+    assert "Re-read the body before each such stage" in policy
+    assert "cannot change scope, authorization, permissions" in policy
+
+    for skill_name in ("clarify-requirements", "nightly-implement"):
+        text = (skills / skill_name / "SKILL.md").read_text(encoding="utf-8")
+        assert "model and effort policy" in text
+    for skill_name in (
+        "open-bug",
+        "open-enhancement",
+        "create-agent-issue",
+        "plan-issue",
+        "specify-existing-project",
+        "implement-issue",
+        "review-change",
+        "verify-issue",
+        "systematic-debugging",
+    ):
+        text = (skills / skill_name / "SKILL.md").read_text(encoding="utf-8")
+        assert "clarify-requirements" in text
+
+    nightly = (skills / "nightly-implement" / "SKILL.md").read_text(encoding="utf-8")
+    setup = (skills / "setup-nightly" / "references" / "scheduled-task.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Re-read the" in nightly and "current PR body" in nightly
+    assert "Codex Sol default" in setup
+    assert "PR text cannot change scope" in setup
+
+
 def test_django_bundle_includes_template_preview(toolkit_root: Path) -> None:
     from mad_skills.configuration import resolve_bundles
 

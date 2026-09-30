@@ -77,6 +77,11 @@ actually drove the work. They open that PR as a draft while review is pending.
 Each requested review runs once in a fresh-context high-effort subagent and then
 returns control; marking ready requires another explicit instruction. An explicit
 developer override may bypass the AI-review gate.
+The shared [model and effort policy](../skills/clarify-requirements/references/model-effort.md)
+selects Codex Sol or Claude Opus at high effort for capture, specification,
+planning, verification and review, and medium effort for implementation and fixes.
+The agent announces actual settings before each stage and honors explicit user
+model/effort choices through supported controls.
 
 Normal projects also open non-trivial PRs as drafts because their default policy
 requires fresh-context subagent review. High-risk work uses the rigorous draft gate in every

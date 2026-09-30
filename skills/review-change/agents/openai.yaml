@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Change"
   short_description: "Review a change with a fresh-context subagent"
-  default_prompt: "Delegate one high-effort $review-change pass to a fresh-context subagent, report it, and stop."
+  default_prompt: "Delegate one $review-change pass to a fresh-context subagent at the selected effort (high by default), report it, and stop."

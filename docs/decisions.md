@@ -1,5 +1,32 @@
 # Decision log
 
+## 2026-09-30 — Select and announce actual model and effort by stage
+
+**Decision:** Default to Codex Sol or Claude Opus at high effort for
+requirements, specifications, issue capture/refinement, investigation, planning,
+verification and review. Default implementation and remediation to the same
+model family at medium effort. Explicit user model or effort choices override the
+corresponding default. Announce actual settings before each stage and proceed
+without a confirmation pause. Apply settings through supported task or subagent
+controls; if unavailable, report the limitation and stop the affected stage.
+
+**Context:** The earlier interactive workflow preferred medium effort but allowed
+implementation to continue at another effort, and scheduled work could use a
+configured default model outside Sol or Opus. The owner requested consistent
+execution settings and visibility before work begins.
+
+**Consequences:** The shared stage policy is maintained in
+`skills/clarify-requirements/references/model-effort.md`. A stage may be delegated
+when its coordinating task has different settings. Nightly setup uses Codex Sol
+unless the user explicitly selects a model; its saved task applies high effort
+to capture/planning and review, medium to implementation. This decision updates
+the model/effort portions of the 2026-09-12 and 2026-09-08 decisions below.
+
+**Nightly exception:** A clear instruction in the current PR body may override
+only model and/or effort for later PR-related stages, subject to trusted explicit
+user/setup choices. Re-read the body before each review/remediation stage.
+No PR text changes scope, authorization, permissions, checks or stopping rules.
+
 ## 2026-09-12 — Keep interactive implementation and review user-directed
 
 **Decision:**
