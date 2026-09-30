@@ -1,4 +1,4 @@
 interface:
-  display_name: "Clean Git Branches"
-  short_description: "Sync primary and prune obsolete branches"
-  default_prompt: "Use $clean-up-branches to sync the primary branch and remove verified obsolete local and origin branches."
+  display_name: "Clean Git Branches and Worktrees"
+  short_description: "Sync primary and prune obsolete Git work"
+  default_prompt: "Use $clean-up-branches to sync the primary branch and remove verified obsolete linked worktrees and local and origin branches."

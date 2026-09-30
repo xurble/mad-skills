@@ -491,10 +491,10 @@ subagent inside the scheduled task.
   commits, uses Conventional Commits by default, encourages focused commits, and
   uses worktrees when parallel or risky work makes them useful.
 - `clean-up-branches` fast-forwards the primary branch, prunes stale tracking refs,
-  and deletes only branches proven merged by ancestry or by an exact merged-PR
-  head match. It uses forced local deletion only for verified squash merges and
-  preserves protected, current, worktree-bound, divergent, and ambiguous
-  branches.
+  and removes only branches and clean linked worktrees proven merged by ancestry
+  or by an exact merged-PR head match. It uses forced local branch deletion only
+  for verified squash merges and preserves protected, current, dirty, divergent,
+  and ambiguous work.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
   tests, and risks. Under rigorous policy, it makes the PR a standalone change
