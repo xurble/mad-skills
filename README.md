@@ -76,6 +76,7 @@ reaches GitHub outside the sandbox with escalation from the outset.
 
 - [Specification](docs/specification.md)
 - [Architecture](docs/architecture.md)
+- [Decision log](docs/decisions.md)
 - [Adding a project](docs/adding-a-project.md)
 - [Configuration](docs/configuration.md)
 - [Issue workflow](docs/issue-workflow.md)

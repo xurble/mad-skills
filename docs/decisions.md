@@ -1,5 +1,52 @@
 # Decision log
 
+## 2026-10-01 — Retain portable live distribution and stage behavioral improvements
+
+**Decision:** Retain the Git checkout and live skill symlinks as the sole
+distribution path for this personal toolkit. Keep portable `SKILL.md`
+frontmatter to `name` and `description`, and select model, effort, and fresh
+context through explicit host runtime controls. Continue Codex-only nightly
+implementation; use Claude Code mainly as a second-opinion host. Add neither
+enforcement hooks nor a release/pinning process without a concrete need.
+
+**Context and rationale:** One toolkit serves many personal projects, and none
+needs an independent version today. Symlinks give immediate updates and Git
+history permits rollback. Plugin packaging, tagged release adoption, and
+per-project pinning would add maintenance without solving a current problem.
+Host-specific frontmatter would weaken portability. Nightly's current bounded
+Codex workflow remains the supported scheduled path; the trusted-label boundary
+in #14 has priority over a platform migration.
+
+**Behavioral follow-up:** Build host-neutral scenarios under `evals/`, run
+manually as advisory checks on Codex and Claude Code. Begin with
+`clarify-requirements` and `github-pull-request`, then add `review-change` and
+`clean-up-branches` (#16). Use the first two before consolidating shared skill
+policy (#17). Consolidate genuinely repeated readiness guidance and the Codex
+rule to run `gh` outside the sandbox, but keep workflow and nightly safety rules
+local. `mad-skills context` remains factual. Retain “95%” as a practical stop
+signal, not a calculated score: ask only about material choices, use evidence and
+reversible defaults for low-impact decisions, and converge with focused
+questions while holding dependent writes until a material answer arrives.
+
+**Context audit:** With the same method before and after #17, sample a
+read-only, implementation, and PR/review task on both hosts, plus a separately
+identified nightly sample. Publish observed token overhead, the largest sources,
+and measurement limits once; establish no recurring budget or gate.
+
+**Alternatives rejected:** A plugin/marketplace distribution and pinned releases
+add a second lifecycle without an independent-version requirement; expanded
+frontmatter sacrifices the common format; moving nightly to Claude Code or
+GitHub adds another authorization surface before #14 is addressed; generic
+hooks lack a demonstrated enforcement failure. An automated evaluator or CI gate
+is premature for the initial behavioral scenarios, and CLI policy injection or
+removing the “95%” signal risks changing established action boundaries. #8
+remains the separate CI issue.
+
+**Consequences and constraints:** #16 is normal risk; #17 is high risk because
+live symlinks propagate policy edits to every consumer. Neither follow-up may
+relax authorization, destructive-action, review, or stopping boundaries. The
+decision tracker is #15; its linked follow-ups carry the implementation work.
+
 ## 2026-09-30 — Select and announce actual model and effort by stage
 
 **Decision:** Default to Codex Sol or Claude Opus at high effort for
