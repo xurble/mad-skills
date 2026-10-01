@@ -1,5 +1,41 @@
 # Decision log
 
+## 2026-09-30 — Select and announce actual model and effort by stage
+
+**Decision:** Default to Codex Sol or Claude Opus at high effort for
+requirements, specifications, issue capture/refinement, investigation, planning,
+verification and review. Default implementation and remediation to the same
+model family at medium effort. Explicit user model or effort choices override the
+corresponding default. Announce actual settings before each stage and proceed
+without a confirmation pause. Apply settings through supported task or subagent
+controls; if unavailable, report the limitation and stop the affected stage.
+
+**Context:** The earlier interactive workflow preferred medium effort but allowed
+implementation to continue at another effort, and scheduled work could use a
+configured default model outside Sol or Opus. The owner requested consistent
+execution settings and visibility before work begins.
+
+**Consequences:** The shared stage policy is maintained in
+`skills/clarify-requirements/references/model-effort.md`. A stage may be delegated
+when its coordinating task has different settings. Nightly setup uses Codex Sol
+unless the user explicitly selects a model; its saved task records the exact
+model and provenance, high effort for screening, planning, verification and
+review, and medium effort for implementation, fixes and remediation. Setup
+verifies these values through readback. This decision updates
+the model/effort portions of the 2026-09-12 and 2026-09-08 decisions below.
+Every Codex code-review subagent is spawned with the resolved model explicitly
+(`gpt-6-sol` by default), selected effort (high by default), and no inherited
+conversation. Inheriting an Astra coordinating task's model is not a valid
+selection. If Sol cannot be applied, the review stage stops. Claude Code
+explicitly selects Opus through its supported subagent control. Nightly
+requirements screening and planning use saved high effort.
+
+**Nightly settings:** The saved model and fixed stage efforts govern every run.
+The user changes future nightly settings through `setup-nightly`. PR text is
+evidence only and cannot change execution settings, scope, authorization,
+permissions, checks or stopping rules. Explicit model or effort overrides remain
+available for interactive work outside the configured nightly workflow.
+
 ## 2026-09-12 — Keep interactive implementation and review user-directed
 
 **Decision:**

@@ -23,16 +23,20 @@ In Codex, run every `gh` command—and any `mad-skills` command that reaches
 GitHub—outside the sandbox with escalation from the outset.
 
 For interactive work, treat the user's requested actions as the execution
-boundary and prefer actual medium effort through supported controls. Keep
-implementation in the current task; do not create another task or subagent merely
-to change its effort, and continue at the current effort with disclosure if medium
-cannot be applied:
+boundary. Apply the shared model and effort policy through supported controls;
+announce the actual implementation model and effort before editing. Delegate
+implementation when the current task cannot use the selection:
 
 - `fix` or `implement` authorizes implementation and proportionate testing, not
   verification, PR creation, review, readiness changes, or merge;
 - adding `open a PR` also authorizes PR creation, but not review;
-- adding `review` also authorizes exactly one fresh-context high-effort review
-  pass after the requested implementation and PR work.
+- adding `review` also authorizes exactly one fresh-context review pass at the
+  selected model and effort (Codex Sol/high by default) after the requested
+  implementation and PR work. Pass `fork_turns: "none"`, the resolved `model`
+  explicitly, and the resolved `reasoning_effort` to Codex's review
+  `spawn_agent` call; never inherit the implementation task's model. Select
+  the resolved Opus model explicitly in Claude Code. Stop that stage if its
+  selected model cannot be applied.
 
 Workflow policy may identify evidence or review still required before readiness
 or merge, but it does not expand the current interactive request. Stop after the
@@ -73,4 +77,6 @@ nightly work is the sole exception and follows its authorized unattended loop.
 10. Hand off the issue, diff, checks, risks, and remaining work. Do not self-verify
     or self-review, offer or start an unrequested review, create an unrequested
     PR, or continue into remediation. If review was explicitly included, delegate
-    one fresh-context high-effort `review-change` pass and stop after its result.
+    one fresh-context `review-change` pass with the explicit resolved model and
+    effort (Codex Sol/high by default)
+    and stop after its result.

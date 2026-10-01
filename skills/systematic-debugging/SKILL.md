@@ -7,6 +7,11 @@ description: Diagnose failures from reproducible evidence to root cause before c
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
+Resolve the investigation selection under the shared model and effort policy
+(high effort by default), honoring an explicit user choice. Before a requested
+fix, resolve and announce the implementation selection separately (medium effort
+by default), again honoring an explicit user choice. Apply the actual settings
+through supported controls for each stage.
 
 1. Load effective policy; passive use in an unconfigured repository assumes
    `light` without prompting.

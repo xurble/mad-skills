@@ -40,10 +40,17 @@ For rigorous non-trivial work, a standalone well-specified PR is the merge gate.
 Issues capture future or otherwise tracked work and are not a prerequisite for a
 PR. The PR opens as a draft to expose that fresh AI review is pending; review is
 run only when explicitly requested. Each interactive review performs one
-high-effort fresh-context subagent pass, then returns control without remediation,
-re-review, or a readiness transition. Interactive implementation and fixes prefer
-medium effort. An explicit developer override may bypass the advisory review gate.
+fresh-context subagent pass at the selected effort (high by default), then
+returns control without remediation,
+re-review, or a readiness transition. Interactive implementation and fixes use
+medium effort by default. An explicit developer override may bypass the advisory review gate.
 Trivial work remains exempt from plan and PR ceremony.
+
+The shared [model and effort policy](../skills/clarify-requirements/references/model-effort.md)
+selects Codex Sol or Claude Opus at high effort for capture, planning,
+verification and review, and medium effort for implementation and fixes. An
+explicit user choice overrides the corresponding default. Each stage announces
+its actual settings before work and applies them through supported controls.
 
 The CLI checks objective facts—schema, paths, installation, labels, and commands.
 Skills handle judgment—risk classification, issue quality, implementation, and
@@ -59,8 +66,9 @@ only read-only deterministic candidate selection; it never runs a workflow,
 stores permission grants, or enables schedules during installation.
 
 Required evidence and independent assessments remain mandatory. Implementation
-and fixes use medium effort; fresh-context code-review subagents use high on the
-selected/default model. Setup inspects required configuration and persistent
+and fixes use medium effort; requirements screening, planning, verification and
+fresh-context code-review subagents use high effort on the saved model (user-selected
+or Codex Sol default). Setup inspects required configuration and persistent
 permissions, then
 activates the task without a trial run; operational failures are handled by the
 scheduled run's failed/blocked handoff. See the [nightly contract](nightly-implementation.md).

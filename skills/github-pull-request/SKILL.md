@@ -69,9 +69,17 @@ GitHub—outside the sandbox with escalation from the outset.
    create it in the non-draft state allowed by effective policy. PR creation alone
    does not authorize offering, starting, or performing review. End after reporting
    the PR and any pending gates unless the same request explicitly includes review.
-7. When review is explicitly requested, delegate exactly one `review-change` pass
-   to a fresh-context high-effort subagent in the current task. Do not create a new
-   user-visible task, thread, or chat. After the reviewer reports or posts its
+7. When review is explicitly requested, resolve its model and effort under the
+   shared policy (high effort by default), honoring any explicit user choice.
+   Announce the actual selection and delegate exactly one `review-change` pass
+   with that model and effort through supported controls to a fresh-context
+   subagent in the current task. In Codex, pass `fork_turns: "none"`, the resolved
+   `model` explicitly (`gpt-6-sol` by default), and the resolved
+   `reasoning_effort` (high by default) to every review `spawn_agent` call.
+   Never inherit the parent model or substitute Astra when Sol is unavailable.
+   In Claude Code, explicitly select the resolved Opus model through its
+   supported subagent control. If the selection cannot be applied, stop the
+   review stage. Do not create a new user-visible task, thread, or chat. After the reviewer reports or posts its
    result, stop without fixing findings, re-reviewing, or marking the PR ready.
    The user decides the next action. Explicitly enabled nightly work is the sole
    exception and follows `nightly-implement`'s bounded remediation/readiness loop.
