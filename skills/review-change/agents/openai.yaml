@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Change"
   short_description: "Review a change with a fresh-context subagent"
-  default_prompt: "Delegate one $review-change pass with fork_turns: none, an explicit model: gpt-6-sol (unless a trusted user choice or valid nightly PR-body instruction selects another), and reasoning_effort: high by default; never inherit the parent model. Report the result and stop."
+  default_prompt: "Delegate one $review-change pass with fork_turns: none, an explicit model: gpt-6-sol by default, and reasoning_effort: high by default; never inherit the parent model. Honor explicit interactive user choices, but use the saved model and high effort for a configured nightly. Report the result and stop."

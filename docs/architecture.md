@@ -66,9 +66,9 @@ only read-only deterministic candidate selection; it never runs a workflow,
 stores permission grants, or enables schedules during installation.
 
 Required evidence and independent assessments remain mandatory. Implementation
-and fixes use medium effort by default; requirements screening, planning, verification and
-fresh-context code-review subagents use high effort by default on the user-selected model or Codex
-Sol default. Setup inspects required configuration and persistent
+and fixes use medium effort; requirements screening, planning, verification and
+fresh-context code-review subagents use high effort on the saved model (user-selected
+or Codex Sol default). Setup inspects required configuration and persistent
 permissions, then
 activates the task without a trial run; operational failures are handled by the
 scheduled run's failed/blocked handoff. See the [nightly contract](nightly-implementation.md).

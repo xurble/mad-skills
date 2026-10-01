@@ -41,7 +41,10 @@ normal failed/blocked handoff for interactive troubleshooting.
   access. Managed denials are blockers, not invitations to work around them.
 
 After preflight, activate the task and verify its saved identity, recurrence,
-timezone, model, medium effort and full authorization prompt through app readback.
+timezone, exact model ID and provenance, medium scheduled-task effort, fixed
+saved stage efforts (high for screening, planning, verification and review;
+medium for implementation, fixes and remediation), and full authorization
+prompt through app readback. Missing or mismatched saved settings fail setup.
 Do not use Run now, a designated test issue, or a simulated workflow as an
 activation gate. If a later scheduled run encounters a permission denial,
 unavailable child control, failed command or other unmet prerequisite, it must

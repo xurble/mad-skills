@@ -34,8 +34,11 @@ Read [setup checks](references/setup-checks.md) and the
    interactively, never create a likely duplicate. Preserve unrelated settings
    including notification preferences. Never write automation TOML directly.
 4. Prepare the complete saved instructions from the template, filling every
-   project/selection/workflow/stop field, chosen time/timezone, model provenance,
-   and permission setting. Present this concrete authorization and task
+   project/selection/workflow/stop field, chosen time/timezone, exact model ID
+   and provenance (explicit setup selection or Codex Sol default), and fixed
+   stage efforts (high for screening, planning, verification and review; medium
+   for implementation, fixes and remediation), plus permission settings. Present
+   this concrete authorization and task
    configuration for approval before activation. On repeat setup, reuse settled
    authorization; confirm material expansions.
 5. Verify schedule/timezone semantics in the app, including daylight-saving
@@ -52,11 +55,13 @@ Read [setup checks](references/setup-checks.md) and the
    it explicitly. Validate both medium and high support
    on the actual host; unsupported/unavailable values stop setup.
 7. Read back project binding, intended active/paused state, schedule, timezone,
-   model, effort and saved prompt. A prompt saying “medium” or a successful create
-   call alone is not
-   proof. If the readback differs materially, pause the task and report the exact
-   mismatch. Otherwise report the project, schedule/timezone, model/default source,
-   medium implementation/high review settings, authorization, setup evidence,
+   exact model ID and provenance, scheduled-task medium effort, saved high/medium
+   stage effort mapping and full prompt. A prompt saying “medium” or a
+   successful create call alone is not proof. If the readback differs materially,
+   pause the task and report the exact
+   mismatch. Otherwise report the project, schedule/timezone, exact model/default
+   source, high screening/planning/verification/review and medium
+   implementation/fixes/remediation settings, authorization, setup evidence,
    task ID and readiness. Do not require or launch a supervised trial; activation
    completes setup, and failures from a later scheduled run use the normal
    failed/blocked handoff for interactive troubleshooting.
