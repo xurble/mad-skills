@@ -34,5 +34,9 @@ def test_manual_eval_protocol_and_results_do_not_claim_unrun_pass(toolkit_root: 
     assert "uncontrolled / host default" in readme
     assert "authoritative high-effort verification or review readiness gate" in readme
     assert "| Model | Effort |" in template
-    assert "unrun" in results
-    assert "No behavioral pass is claimed" in results
+    rows = [line.split(" | ") for line in results.splitlines() if line.startswith("| ") and " | 2026-" in line]
+    recorded = {(row[0].removeprefix("| "), row[1]): row[4] for row in rows}
+    for case_ids in CASES.values():
+        for case_id in case_ids:
+            for host in ("Codex", "Claude Code"):
+                assert recorded.get((case_id, host)) in {"pass", "fail", "unrun"}, (case_id, host)
