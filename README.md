@@ -80,6 +80,7 @@ reaches GitHub outside the sandbox with escalation from the outset.
 - [Adding a project](docs/adding-a-project.md)
 - [Configuration](docs/configuration.md)
 - [Issue workflow](docs/issue-workflow.md)
+- [Manual behavioral evals](evals/README.md)
 - [Opt-in nightly implementation](docs/nightly-implementation.md)
 - [Creating skills](docs/creating-skills.md)
 - [Promoting local skills](docs/promoting-local-skills.md)
