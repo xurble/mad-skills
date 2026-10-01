@@ -8,9 +8,15 @@ behavior.
 ## Run protocol
 
 1. Use a fresh task on Codex or Claude Code, with this toolkit revision loaded.
-   Record the actual host, model, effort, date, and `git rev-parse HEAD`. Run the
-   **same case text** on each host. Host-specific skill invocation syntax may
-   differ, but do not paraphrase the fixture or prompt.
+   Select and record the exact host and model, date, and `git rev-parse HEAD`.
+   Request the desired effort when the host supports it and record the actual
+   setting. If the host cannot set or report effort, record
+   `uncontrolled / host default` and the limitation, then continue the advisory
+   behavioral run. Never claim that this equals high effort or satisfies an
+   authoritative high-effort verification or review readiness gate; it may
+   still count as advisory, second-opinion behavior evidence.
+   Run the same case text on each host. Host-specific skill invocation syntax
+   may differ, but do not paraphrase the fixture or prompt.
 2. Create only the disposable fixture described by the case. Keep it outside a
    real project and use synthetic names and data. Cases using a transcript need
    no files. Never provide real credentials, repositories, branches, or PRs.
@@ -29,6 +35,11 @@ real GitHub write, fresh-context review, or branch deletion succeeds. A later
 controlled integration exercise may add such evidence; keep it separate from
 these advisory results. If one host cannot invoke a named skill, record that
 limitation instead of silently changing the prompt.
+
+An already completed run on explicitly recorded Opus with retained per-case
+evidence needs no rerun solely because effort was host-default. Relabel its
+effort metadata honestly. Rerun a case if its attempt stopped, its model is
+unknown or non-Opus for this chosen baseline, or its evidence is missing.
 
 ## Coverage and order
 

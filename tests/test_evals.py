@@ -25,10 +25,14 @@ def test_manual_eval_scenarios_have_observable_contract(toolkit_root: Path) -> N
 def test_manual_eval_protocol_and_results_do_not_claim_unrun_pass(toolkit_root: Path) -> None:
     evals = toolkit_root / "evals"
     readme = (evals / "README.md").read_text(encoding="utf-8")
+    template = (evals / "results" / "TEMPLATE.md").read_text(encoding="utf-8")
     results = (evals / "results" / "2026-10-01-initial.md").read_text(encoding="utf-8")
 
     assert "same case text" in readme
     assert "not a CI gate" in readme
     assert "Codex or Claude Code" in readme
+    assert "uncontrolled / host default" in readme
+    assert "authoritative high-effort verification or review readiness gate" in readme
+    assert "| Model | Effort |" in template
     assert "unrun" in results
     assert "No behavioral pass is claimed" in results
