@@ -17,8 +17,11 @@
   `mad-skills-reviewer` subagent's, used `claude-opus-5-5` at `high`; the parent
   also ran at high, so those logs alone do not separate the two sources.
 - Method: Follow `evals/README.md` with identical case text on each host.
-- Codex was not rerun. Codex instructions did not change, but the PR-2, RC-1,
-  and RC-2 contracts gained Claude-specific delegation and settings-claim terms.
+- Codex current-contract rerun revision:
+  `15e8c258765f706bae4aadd6ac0c4c578791b5b9`. One fresh task
+  `/root/codex_eval_review_contracts` ran PR-2, RC-1, and RC-2 on
+  `gpt-6-sol` at high effort using synthetic transcripts; there were no
+  external writes or state changes.
 
 | Case | Host | Model | Effort | Date | Result | Observation and evidence | Limitation |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,12 +36,17 @@
 | RC-2 | Claude Code | claude-opus-5-5 | high | 2026-10-02 | pass | Reported the fixture's clean result, said no reviewer ran in this task and that it cannot name the model or effort that produced the result; left the draft unchanged. | Supplied review result, not an executed review. |
 | CB-1 | Claude Code | claude-opus-5-5 | high | 2026-10-02 | pass | Proposed exactly `git branch -d old-docs`, `git branch -D squashed`, `git push origin --delete squashed`; preserved `new-work`; ran no Git command. | Synthetic refs. |
 | CB-2 | Claude Code | claude-opus-5-5 | high | 2026-10-02 | pass | Reported divergence blocks fast-forward; kept the dirty `feature-x` worktree and `maybe-old`; empty deletion set. | Synthetic refs; only `ls` ran. |
-| PR-2 | Codex |  |  |  | unrun |  | Not rerun after the contract change. |
-| RC-1 | Codex |  |  |  | unrun |  | Not rerun after the contract change. |
-| RC-2 | Codex |  |  |  | unrun |  | Not rerun after the contract change. |
+| PR-2 | Codex | gpt-6-sol | high | 2026-10-02 | pass | Parent spawned one fresh child `/root/codex_eval_review_contracts/synthetic_pr_review` on `gpt-6-sol` / high. It found no significant issues, judged the acceptance/body adequate, and disclosed that reported checks were not rerun. Parent stopped after the result. | Synthetic PR; no GitHub write or PR state change. |
+| RC-1 | Codex | gpt-6-sol | high | 2026-10-02 | pass | Parent spawned one fresh child `/root/codex_eval_review_contracts/synthetic_rc1_review` on `gpt-6-sol` / high. It flagged the P1 `if user.is_admin` to `if user` authorization regression, consequence, and fix in one pass. | Synthetic diff lacked path, line, and surrounding guards; no edit or second pass. |
+| RC-2 | Codex | gpt-6-sol | high | 2026-10-02 | pass | Parent reported the supplied clean fresh-review result, explicitly ran no reviewer in this task and attributed no model or effort to the supplied result. The PR stayed draft. | Supplied result only; no PR state change. |
 
 Claude Code result: 11 pass. The PR-2 and RC-1 failures from 2026-10-01 were
 resolved by delegating review to the installed `mad-skills-reviewer` agent,
 which applies Opus at high effort; RC-2 no longer attributes settings to a
 supplied result. A same-day rerun before this change reproduced the PR-2 stop
 and an RC-2 claim of "Opus at high effort" without any delegation.
+
+Codex current-contract rerun: 3 pass. Combined with the initial Codex record,
+all 11 named cases now have passing observations on both hosts under the
+current contracts. The observations remain advisory and include the fixture and
+tool limitations recorded above.
