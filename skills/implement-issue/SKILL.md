@@ -19,8 +19,7 @@ capabilities stop the run; material ambiguity returns an unclaimed candidate to
 investigation and continues authorized screening, or stops an already claimed
 issue with a blocked handoff. Do not ask unattended setup/clarification questions.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md).
 
 For interactive work, treat the user's requested actions as the execution
 boundary. Apply the shared model and effort policy through supported controls;

@@ -100,8 +100,8 @@ while issue-label management remains conditional on `use_issues`.
 `merge_method` selects the only enabled GitHub merge method. The defaults use a
 Conventional-Commit PR title plus the PR description for the squash commit and
 delete the remote head branch after merge. Apply or repair the settings and
-labels with `mad-skills setup-github`. In Codex, run that command and other `gh`
-work outside the sandbox with escalation from the outset.
+labels with `mad-skills setup-github`. In Codex, apply the shared
+[GitHub command rule](../skills/github-pull-request/references/gh-execution.md).
 
 Conventional Commits are enabled by default and can be overridden per project:
 

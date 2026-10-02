@@ -32,17 +32,55 @@ def test_general_bundle_includes_requirements_and_reverse_specification(toolkit_
     assert "nightly-implement" in skills
 
 
-def test_requirements_check_proceeds_at_confidence_threshold(toolkit_root: Path) -> None:
+def test_shared_readiness_preserves_material_convergence(toolkit_root: Path) -> None:
     skill_root = toolkit_root / "skills" / "clarify-requirements"
     skill_text = (skill_root / "SKILL.md").read_text(encoding="utf-8")
+    readiness = (skill_root / "references" / "readiness.md").read_text(encoding="utf-8")
     metadata_text = (skill_root / "agents" / "openai.yaml").read_text(encoding="utf-8")
 
-    assert "Below 95%, proactively ask focused questions" in skill_text
-    assert "At 95% confidence or above, proceed without asking" in skill_text
-    assert "do not turn the summary into an approval gate" in skill_text
+    assert "[requirements readiness rule](references/readiness.md)" in skill_text
+    assert "95% confidence" in readiness
+    assert "not a calculated probability" in readiness
+    assert "plausible answers would\nmaterially change" in readiness
+    assert "conventional, reversible defaults" in readiness
+    assert "smallest focused blocking group" in readiness
+    assert "hold\ndependent edits" in readiness
+    assert "Silence and elapsed time\nnever supply an answer" in readiness
+    assert "proceed without confirmation" in readiness
+    assert "root cause may remain explicitly unknown" in readiness
     assert "then proceed without asking for confirmation" in metadata_text
     assert "wait for explicit confirmation" not in skill_text
     assert "obtain confirmation before proceeding" not in skill_text
+
+
+def test_github_workflows_share_codex_execution_rule(toolkit_root: Path) -> None:
+    skills = toolkit_root / "skills"
+    canonical = skills / "github-pull-request" / "references" / "gh-execution.md"
+    rule = canonical.read_text(encoding="utf-8")
+    assert "every `gh` command" in rule
+    assert "every `mad-skills` command that reaches\nGitHub" in rule
+    assert "outside the sandbox with escalation from the outset" in rule
+
+    for name in (
+        "open-bug",
+        "open-enhancement",
+        "create-agent-issue",
+        "plan-issue",
+        "implement-issue",
+        "github-pull-request",
+        "review-change",
+        "verify-issue",
+        "clean-up-branches",
+        "setup-nightly",
+    ):
+        text = (skills / name / "SKILL.md").read_text(encoding="utf-8")
+        assert "gh-execution.md" in text
+        assert "outside the sandbox with escalation from the outset" not in text
+
+    nightly = (skills / "nightly-implement" / "SKILL.md").read_text(encoding="utf-8")
+    assert "persistent outside-sandbox permissions recorded\n   at setup" in nightly
+    assert "material product ambiguity returns the candidate\n   to investigation" in nightly
+    assert "Never merge, deploy, or close issues automatically" in nightly
 
 
 def test_model_effort_policy_covers_stages_and_actual_controls(toolkit_root: Path) -> None:

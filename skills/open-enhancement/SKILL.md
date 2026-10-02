@@ -8,8 +8,7 @@ description: Create a durable GitHub issue for a feature, improvement, refactor,
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md).
 
 1. Run `mad-skills context --format json`. Offer `mad-skills init` when project
    configuration is absent; use `light` for this task if declined.

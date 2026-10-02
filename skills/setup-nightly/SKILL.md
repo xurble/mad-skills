@@ -11,6 +11,9 @@ controls, and fresh-context review-subagent controls;
 other hosts may read the skills but must not invent a scheduler or Claude fallback.
 Read [setup checks](references/setup-checks.md) and the
 [saved task template](references/scheduled-task.md).
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md)
+to setup's `gh` checks; retain the approved persistent-permission requirements
+for the scheduled run.
 
 1. Resolve exactly one explicitly selected saved project using Codex's project
    inventory. Confirm its canonical path, host, Git remote/repository, nightly
