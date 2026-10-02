@@ -31,6 +31,9 @@ links every shared skill into:
 - `~/.agents/skills` for Codex;
 - `~/.claude/skills` for Claude Code.
 
+For Claude Code it also links the `mad-skills-reviewer` agent definition into
+`~/.claude/agents`, so delegated reviews run on Opus at high effort.
+
 The links continue to point at this checkout, so a normal `git pull` updates the
 skills everywhere. The installer is safe to rerun and stops on unmanaged name
 conflicts.

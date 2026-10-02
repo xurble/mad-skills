@@ -18,8 +18,11 @@ the resolved effort in those arguments for
 every review spawn. Never omit `model` or inherit the parent task's model; a
 parent running Astra does not make Astra the review model. If the selected Sol
 model is unavailable, stop instead of substituting or inheriting.
-Do not use `create_thread`. On Claude Code, explicitly select the resolved Opus
-model through its supported subagent model control and pass the selected effort.
+Do not use `create_thread`. On Claude Code, delegate to the `mad-skills-reviewer`
+subagent type and explicitly select the resolved Opus model; it applies high
+effort. If that type is unavailable, use `general-purpose` with the resolved
+model, report the effort as `uncontrolled / host default`, and proceed under the
+shared policy's Claude Code effort rule rather than stopping.
 On another supported host, use its isolated-context subagent facility. Never
 create a user-visible task, thread, or chat for code review, and never review
 in the implementation context.
@@ -29,6 +32,9 @@ explicitly delegated this review performs it directly and must not delegate agai
 Announce the selected review model and effort before delegation. Apply both
 through supported subagent controls, honoring an explicit user override; if the
 selection cannot be applied, report the limitation instead of substituting.
+Report only the model and effort actually applied. If no reviewer ran in this
+task, for example because the user supplied the review result, say so and
+attribute no model or effort to that result.
 
 For explicitly enabled nightly work, apply
 [standing authorization](../nightly-implement/references/authorization.md).

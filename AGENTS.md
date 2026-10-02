@@ -10,6 +10,7 @@ consuming repositories supply project facts through `AGENTS.md` and
 ## Structure
 
 - `skills/`: reusable Agent Skills; each requires `SKILL.md` and Codex metadata.
+- `claude-agents/`: Claude Code agent definitions installed into `~/.claude/agents`.
 - `src/mad_skills/`: deterministic CLI, configuration, installation, and checks.
 - `profiles/`, `bundles/`, `config/`: shared policy data and schema.
 - `templates/`: issue and decision templates used by workflows.

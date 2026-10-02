@@ -30,6 +30,14 @@ behavior.
    a reason. Do not infer a pass from a plausible answer or from an unavailable
    host. Use the [results template](results/TEMPLATE.md).
 
+On Claude Code, `uv run python evals/claude_runner.py <new-output-dir> [CASE ...]`
+applies this protocol: one fresh `claude -p` session per case on
+`claude-opus-5-5`, skills and `claude-agents/` linked into each disposable
+fixture, GitHub and destructive Git commands disallowed, and only CR-1 allowed
+to edit and run its test. Grade each `trace.jsonl` manually. A review delegated
+to `mad-skills-reviewer` runs at high effort; a `general-purpose` fallback runs
+at `uncontrolled / host default`, which is advisory only.
+
 The cases test a decision through a safe stop point. They cannot prove that a
 real GitHub write, fresh-context review, or branch deletion succeeds. A later
 controlled integration exercise may add such evidence; keep it separate from

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 from pathlib import Path
 
 CASES = {
@@ -40,3 +41,19 @@ def test_manual_eval_protocol_and_results_do_not_claim_unrun_pass(toolkit_root: 
         for case_id in case_ids:
             for host in ("Codex", "Claude Code"):
                 assert recorded.get((case_id, host)) in {"pass", "fail", "unrun"}, (case_id, host)
+
+
+def test_claude_runner_parses_every_case_and_links_reviewer_agent(toolkit_root: Path) -> None:
+    spec = importlib.util.spec_from_file_location("claude_runner", toolkit_root / "evals" / "claude_runner.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+
+    cases = runner.parse_cases()
+
+    assert [case[0] for case in cases] == [case_id for ids in CASES.values() for case_id in ids]
+    assert all(fixture and prompt for _, _, fixture, prompt in cases)
+    assert "Bash(gh:*)" in runner.DISALLOWED
+    assert (toolkit_root / "claude-agents" / "mad-skills-reviewer.md").is_file()
+    readme = (toolkit_root / "evals" / "README.md").read_text(encoding="utf-8")
+    assert "evals/claude_runner.py" in readme
+    assert "`mad-skills-reviewer`" in readme

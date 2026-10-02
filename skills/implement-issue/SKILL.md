@@ -34,9 +34,11 @@ implementation when the current task cannot use the selection:
   selected model and effort (Codex Sol/high by default) after the requested
   implementation and PR work. Pass `fork_turns: "none"`, the resolved `model`
   explicitly, and the resolved `reasoning_effort` to Codex's review
-  `spawn_agent` call; never inherit the implementation task's model. Select
-  the resolved Opus model explicitly in Claude Code. Stop that stage if its
-  selected model cannot be applied.
+  `spawn_agent` call; never inherit the implementation task's model. In Claude
+  Code, delegate to the `mad-skills-reviewer` subagent type with the resolved
+  Opus model selected explicitly, following the shared policy's Claude Code
+  effort rule when it is unavailable. Stop that stage if its selected model
+  cannot be applied.
 
 Workflow policy may identify evidence or review still required before readiness
 or merge, but it does not expand the current interactive request. Stop after the

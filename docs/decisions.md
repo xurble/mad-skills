@@ -1,5 +1,26 @@
 # Decision log
 
+## 2026-10-02 — Apply Claude Code review effort through an installed agent
+
+**Decision:** Install a `mad-skills-reviewer` Claude Code agent definition
+(`model: opus`, `effort: high`, read-only tools plus Bash) alongside the skill
+links, and delegate Claude Code reviews to it. When a Claude Code stage cannot
+apply its selected effort, proceed on the selected model and disclose
+`uncontrolled / host default` instead of stopping; that result is advisory and
+never satisfies a high-effort gate. Codex instructions are unchanged.
+
+**Context:** Claude Code's Agent tool accepts a model but not an effort, so the
+stop-on-unapplied-effort rule made Claude Code review stop or proceed
+inconsistently in the #16 behavioral evals. A request-level probe on Claude
+Code 2.1.287 confirmed that an agent definition's `effort` sets
+`output_config.effort` for the subagent, including through a symlink, while a
+subagent without one inherits the parent session's effort.
+
+**Alternatives:** Keep stopping on Claude Code (rejected: review is unusable
+there by default); prompt-only effort instructions (rejected: prompt text does
+not change execution settings); a Claude Code plugin (rejected by the
+2026-10-01 distribution decision).
+
 ## 2026-10-01 — Retain portable live distribution and stage behavioral improvements
 
 **Decision:** Retain the Git checkout and live skill symlinks as the sole
