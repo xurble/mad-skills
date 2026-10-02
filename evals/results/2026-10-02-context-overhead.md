@@ -51,7 +51,7 @@ scenarios, including read-only (`CR-3`), implementation (`CR-1`), and PR/review
 fixtures; they are the behavioral baseline.
 
 The post-edit run was on 2026-10-02 in Codex with `gpt-6-sol` at high effort,
-using `6420a30` plus the uncommitted issue-17 diff and the
+using `6420a30` plus the issue-17 diff recorded in `1eaff08`, and the
 [manual scenario protocol](../README.md). All 11 named scenarios passed after
 the CB-1 fixture clarification:
 
