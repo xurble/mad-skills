@@ -145,3 +145,43 @@ def test_claude_runner_rejects_empty_case_set(toolkit_root: Path, tmp_path: Path
     assert captured.out == ""
     assert "no eval cases are available" in captured.err
     assert not output.exists()
+
+
+@pytest.mark.parametrize(
+    ("codes", "expected_status"),
+    [({"CR-1": 7}, 1), ({"CR-1": 0, "CR-2": 7, "CR-3": 0}, 1), ({"CR-1": 0, "CR-2": 0}, 0)],
+)
+def test_claude_runner_reports_every_case_and_propagates_failures(
+    toolkit_root: Path, tmp_path: Path, monkeypatch, capsys, codes: dict[str, int], expected_status: int
+) -> None:
+    spec = importlib.util.spec_from_file_location("claude_runner", toolkit_root / "evals" / "claude_runner.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+    cases = [(case_id, "", "", "") for case_id in codes]
+    monkeypatch.setattr(runner, "parse_cases", lambda: cases)
+
+    def unexpected_execution(*args, **kwargs):
+        raise AssertionError("test cases must not start Claude")
+
+    monkeypatch.setattr(runner.subprocess, "run", unexpected_execution)
+    completed: set[str] = set()
+
+    def fake_run_case(case: tuple[str, str, str, str], output: Path) -> tuple[str, int]:
+        case_id = case[0]
+        trace = output / case_id / "trace.jsonl"
+        trace.parent.mkdir(parents=True)
+        trace.write_text(f"evidence for {case_id}\n", encoding="utf-8")
+        completed.add(case_id)
+        return case_id, codes[case_id]
+
+    monkeypatch.setattr(runner, "run_case", fake_run_case)
+    output = tmp_path / "output"
+    assert runner.main([str(output)]) == expected_status
+    captured = capsys.readouterr()
+    assert captured.err == ""
+    assert captured.out.splitlines() == [
+        f"{case_id}: exit {code}; trace {output / case_id / 'trace.jsonl'}" for case_id, code in codes.items()
+    ]
+    assert completed == set(codes)
+    for case_id in codes:
+        assert (output / case_id / "trace.jsonl").read_text(encoding="utf-8") == f"evidence for {case_id}\n"

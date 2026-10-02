@@ -3,6 +3,8 @@
 Usage: uv run python evals/claude_runner.py OUTPUT_DIR [CASE_ID ...]
 Omit CASE_ID to run all cases. Unknown IDs fail before fixture setup or Claude
 invocation; the diagnostic lists the available IDs.
+All selected cases run, with one trace and exit report per case in scenario
+order. The runner exits nonzero if any Claude case exits nonzero.
 
 Each case runs in a disposable directory under OUTPUT_DIR with a copy of this
 checkout's skills and Claude agents. Every case is transcript-only and has
@@ -121,10 +123,12 @@ def main(argv: list[str]) -> int:
     if output.exists() and any(output.iterdir()):
         print(f"{output} is not empty; choose a new output directory")
         return 2
+    failed = False
     with ThreadPoolExecutor(max_workers=6) as pool:
         for case_id, code in pool.map(lambda case: run_case(case, output), cases):
             print(f"{case_id}: exit {code}; trace {output / case_id / 'trace.jsonl'}", flush=True)
-    return 0
+            failed = failed or code != 0
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

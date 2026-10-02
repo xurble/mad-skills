@@ -50,6 +50,11 @@ creating a fixture or invoking Claude, with the bad ID and available IDs on
 stderr. An empty scenario set also fails rather than reporting a successful
 no-op.
 
+The runner finishes every selected case, reports each exit code and trace path
+in scenario order, and exits 1 if any Claude invocation exits nonzero (0 only
+when all selected invocations succeed). A CLI exit of 0 does not grade behavior;
+manually inspect every trace against its scenario contract.
+
 The cases test a decision through a safe stop point. They cannot prove that a
 real GitHub write, fresh-context review, or branch deletion succeeds. A later
 controlled integration exercise may add such evidence; keep it separate from
