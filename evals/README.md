@@ -44,6 +44,12 @@ review delegated to `mad-skills-reviewer` runs at high effort; a
 `general-purpose` fallback runs at `uncontrolled / host default`, which is
 advisory only.
 
+Omit case IDs to run the full suite, or pass exact IDs from the table below
+(for example, `CR-1 PR-2`). An unknown or malformed ID exits nonzero before
+creating a fixture or invoking Claude, with the bad ID and available IDs on
+stderr. An empty scenario set also fails rather than reporting a successful
+no-op.
+
 The cases test a decision through a safe stop point. They cannot prove that a
 real GitHub write, fresh-context review, or branch deletion succeeds. A later
 controlled integration exercise may add such evidence; keep it separate from

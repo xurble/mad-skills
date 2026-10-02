@@ -1,6 +1,8 @@
 """Run the manual scenarios on Claude Code, one fresh `claude -p` session per case.
 
 Usage: uv run python evals/claude_runner.py OUTPUT_DIR [CASE_ID ...]
+Omit CASE_ID to run all cases. Unknown IDs fail before fixture setup or Claude
+invocation; the diagnostic lists the available IDs.
 
 Each case runs in a disposable directory under OUTPUT_DIR with a copy of this
 checkout's skills and Claude agents. Every case is transcript-only and has
@@ -104,8 +106,18 @@ def main(argv: list[str]) -> int:
         print(__doc__)
         return 2
     output = Path(argv[0]).resolve()
+    all_cases = parse_cases()
+    available = [case[0] for case in all_cases]
+    if not available:
+        print("ERROR: no eval cases are available", file=sys.stderr)
+        return 2
+    unknown = list(dict.fromkeys(case_id for case_id in argv[1:] if case_id not in available))
+    if unknown:
+        bad_ids = ", ".join(repr(case_id) for case_id in unknown)
+        print(f"ERROR: unknown case ID(s): {bad_ids}. Available cases: {', '.join(available)}", file=sys.stderr)
+        return 2
     selected = set(argv[1:])
-    cases = [case for case in parse_cases() if not selected or case[0] in selected]
+    cases = [case for case in all_cases if not selected or case[0] in selected]
     if output.exists() and any(output.iterdir()):
         print(f"{output} is not empty; choose a new output directory")
         return 2

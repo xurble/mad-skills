@@ -3,6 +3,8 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 CASES = {
     "clarify-requirements": ("CR-1", "CR-2", "CR-3"),
     "github-pull-request": ("PR-1", "PR-2", "PR-3", "PR-4"),
@@ -105,3 +107,41 @@ def test_claude_runner_scrubs_credentials_and_cr1_setup_is_transcript_only(
     runner.build_fixture("CR-1", work)
     assert sorted(path.name for path in work.iterdir()) == [".claude"]
     assert not any((work / name).exists() for name in ("calc.py", "test_calc.py", ".venv", ".git"))
+
+
+@pytest.mark.parametrize("requested", [("PR_2",), ("PR-1", "PR_2"), ("",)])
+def test_claude_runner_rejects_unknown_cases_before_setup(
+    toolkit_root: Path, tmp_path: Path, monkeypatch, capsys, requested: tuple[str, ...]
+) -> None:
+    spec = importlib.util.spec_from_file_location("claude_runner", toolkit_root / "evals" / "claude_runner.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+
+    def unexpected_execution(*args, **kwargs):
+        raise AssertionError("invalid cases must not start Claude or set up a fixture")
+
+    monkeypatch.setattr(runner.subprocess, "run", unexpected_execution)
+    monkeypatch.setattr(runner, "build_fixture", unexpected_execution)
+    output = tmp_path / "output"
+    assert runner.main([str(output), *requested]) != 0
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "unknown case ID" in captured.err
+    assert repr(requested[-1]) in captured.err
+    assert "Available cases:" in captured.err
+    assert "PR-2" in captured.err
+    assert not output.exists()
+
+
+def test_claude_runner_rejects_empty_case_set(toolkit_root: Path, tmp_path: Path, monkeypatch, capsys) -> None:
+    spec = importlib.util.spec_from_file_location("claude_runner", toolkit_root / "evals" / "claude_runner.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+    monkeypatch.setattr(runner, "parse_cases", lambda: [])
+    output = tmp_path / "output"
+
+    assert runner.main([str(output)]) != 0
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "no eval cases are available" in captured.err
+    assert not output.exists()
