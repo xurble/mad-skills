@@ -104,7 +104,9 @@ def validate_claude_agent(path: Path) -> list[ValidationFinding]:
         findings.append(ValidationFinding(path, "description must be a useful string of at least 20 characters"))
     if header.get("model") != "opus":
         findings.append(ValidationFinding(path, "model must be opus"))
-    if header.get("effort") not in CLAUDE_EFFORTS:
+    if path.stem == "mad-skills-reviewer" and header.get("effort") != "high":
+        findings.append(ValidationFinding(path, "mad-skills-reviewer effort must be high"))
+    elif header.get("effort") not in CLAUDE_EFFORTS:
         findings.append(ValidationFinding(path, f"effort must be one of {sorted(CLAUDE_EFFORTS)}"))
     return findings
 

@@ -52,8 +52,45 @@ def test_claude_runner_parses_every_case_and_links_reviewer_agent(toolkit_root: 
 
     assert [case[0] for case in cases] == [case_id for ids in CASES.values() for case_id in ids]
     assert all(fixture and prompt for _, _, fixture, prompt in cases)
-    assert "Bash(gh:*)" in runner.DISALLOWED
+    transcript = runner.build_command("PR-2", "synthetic prompt")
+    assert "--restricted" in transcript
+    assert transcript[transcript.index("--permission-mode") + 1] == "dontAsk"
+    assert "Bash" not in transcript[transcript.index("--tools") + 1].split(",")
+    assert "Bash" in transcript[transcript.index("--disallowedTools") + 1 :]
+    assert "mcp__*" in transcript[transcript.index("--disallowedTools") + 1 :]
     assert (toolkit_root / "claude-agents" / "mad-skills-reviewer.md").is_file()
     readme = (toolkit_root / "evals" / "README.md").read_text(encoding="utf-8")
     assert "evals/claude_runner.py" in readme
     assert "`mad-skills-reviewer`" in readme
+
+
+def test_claude_runner_scrubs_credentials_and_limits_cr1_to_fixture(toolkit_root: Path, tmp_path: Path) -> None:
+    spec = importlib.util.spec_from_file_location("claude_runner", toolkit_root / "evals" / "claude_runner.py")
+    runner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner)
+
+    host_env = {
+        "PATH": "/usr/bin",
+        "HOME": "/Users/example",
+        "GH_TOKEN": "secret",
+        "ANTHROPIC_API_KEY": "secret",
+        "AWS_SECRET_ACCESS_KEY": "secret",
+        "CLAUDE_CODE_OAUTH_TOKEN": "secret",
+    }
+    env = runner.build_env("PR-2", tmp_path, host_env)
+    assert set(env) == {"PATH", "HOME", "TMPDIR"}
+    assert env["PATH"] == "/usr/bin"
+    # A Bash wrapper such as `env gh ...` cannot run in transcript cases.
+    transcript = runner.build_command("PR-2", "synthetic prompt")
+    assert "Bash" not in transcript[transcript.index("--tools") + 1].split(",")
+
+    cr1 = runner.build_command("CR-1", "synthetic prompt")
+    allowed = cr1[cr1.index("--allowedTools") + 1 : cr1.index("--disallowedTools")]
+    assert "Edit(./calc.py)" in allowed
+    assert [rule for rule in allowed if rule.startswith("Bash(")] == [
+        "Bash(.venv/bin/python -m pytest test_calc.py::test_add)"
+    ]
+    assert "acceptEdits" not in cr1
+    cr1_env = runner.build_env("CR-1", tmp_path, host_env)
+    assert cr1_env["PATH"].startswith(str(tmp_path / ".venv" / "bin"))
+    assert "GH_TOKEN" not in cr1_env

@@ -30,8 +30,11 @@ If fresh-context subagent controls are unavailable, report that the requested
 review cannot be run; do not silently fall back to either behavior. A subagent
 explicitly delegated this review performs it directly and must not delegate again.
 Announce the selected review model and effort before delegation. Apply both
-through supported subagent controls, honoring an explicit user override; if the
-selection cannot be applied, report the limitation instead of substituting.
+through supported subagent controls, honoring an explicit user override. If the
+selected model cannot be applied, stop. If effort cannot be applied, stop except
+for the documented Claude Code `general-purpose` fallback above: run one fresh
+review at `uncontrolled / host default`, disclose that limit, and never count it
+toward a high-effort readiness gate.
 Report only the model and effort actually applied. If no reviewer ran in this
 task, for example because the user supplied the review result, say so and
 attribute no model or effort to that result.

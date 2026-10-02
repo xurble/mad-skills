@@ -200,6 +200,21 @@ def test_claude_reviewer_agent_definition_is_validated(tmp_path: Path, toolkit_r
     assert "model must be opus" in messages
     assert any(message.startswith("effort must be one of") for message in messages)
 
+    for effort in ("low", "medium"):
+        downgraded = tmp_path / "mad-skills-reviewer.md"
+        downgraded.write_text(reviewer.replace("effort: high", f"effort: {effort}"), encoding="utf-8")
+        assert any(
+            finding.message == "mad-skills-reviewer effort must be high"
+            for finding in validate_claude_agent(downgraded)
+        )
+
+
+def test_claude_missing_reviewer_fallback_is_advisory(toolkit_root: Path) -> None:
+    review = (toolkit_root / "skills/review-change/SKILL.md").read_text(encoding="utf-8")
+    assert "If that type is unavailable, use `general-purpose`" in review
+    assert "stop except\nfor the documented Claude Code `general-purpose` fallback" in review
+    assert "never count it\ntoward a high-effort readiness gate" in review
+
 
 def test_nightly_stage_settings_are_saved_and_pr_body_cannot_override(toolkit_root: Path) -> None:
     skills = toolkit_root / "skills"

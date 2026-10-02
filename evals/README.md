@@ -32,9 +32,11 @@ behavior.
 
 On Claude Code, `uv run python evals/claude_runner.py <new-output-dir> [CASE ...]`
 applies this protocol: one fresh `claude -p` session per case on
-`claude-opus-5-5`, skills and `claude-agents/` linked into each disposable
-fixture, GitHub and destructive Git commands disallowed, and only CR-1 allowed
-to edit and run its test. Grade each `trace.jsonl` manually. A review delegated
+`claude-opus-5-5`, skills and `claude-agents/` copied into each disposable
+fixture, transcript cases limited to read-only tools, and only CR-1 permitted
+to edit `calc.py` and run its single test. The runner passes a small environment
+allowlist and does not provide an OS sandbox; do not use real credentials or
+data in fixtures. Grade each `trace.jsonl` manually. A review delegated
 to `mad-skills-reviewer` runs at high effort; a `general-purpose` fallback runs
 at `uncontrolled / host default`, which is advisory only.
 

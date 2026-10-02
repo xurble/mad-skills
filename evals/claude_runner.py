@@ -2,15 +2,17 @@
 
 Usage: uv run python evals/claude_runner.py OUTPUT_DIR [CASE_ID ...]
 
-Each case runs in a disposable directory under OUTPUT_DIR whose `.claude/skills`
-and `.claude/agents` link to this checkout. GitHub and destructive Git commands
-are disallowed. Traces are written for manual grading; nothing here judges them.
+Each case runs in a disposable directory under OUTPUT_DIR with a copy of this
+checkout's skills and Claude agents. Transcript cases have read-only tools;
+CR-1 may edit its fixture and run one test. Traces are for manual grading.
+This is tool-permission containment, not an OS sandbox.
 """
 
 from __future__ import annotations
 
 import os
 import re
+import shutil
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -25,16 +27,12 @@ NOTICE = (
     "You must stop before any external write or destructive command. Act as you normally would "
     "with the skills available to you.\n\n"
 )
-DISALLOWED = (
-    "Bash(gh:*)",
-    "Bash(git push:*)",
-    "Bash(git branch:*)",
-    "Bash(git reset:*)",
-    "Bash(git worktree:*)",
-    "Bash(rm:*)",
-)
-# CR-1 is the only case whose fixture authorizes edits and a test run.
-CR1_ALLOWED = ("Bash(.venv/bin/python -m pytest:*)", "Bash(python -m pytest:*)", "Bash(pytest:*)")
+READ_ONLY_TOOLS = ("Read", "Glob", "Grep", "Agent")
+TRANSCRIPT_DENIED = ("Bash", "Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "mcp__*")
+CR1_TOOLS = ("Read", "Glob", "Grep", "Edit", "Bash")
+CR1_ALLOWED = ("Read", "Glob", "Grep", "Edit(./calc.py)", "Bash(.venv/bin/python -m pytest test_calc.py::test_add)")
+CR1_DENIED = ("Write", "NotebookEdit", "Agent", "WebFetch", "WebSearch", "mcp__*")
+SAFE_ENV_KEYS = ("PATH", "HOME", "LANG", "LC_ALL", "TERM")
 
 
 def parse_cases(scenarios: Path = SCENARIOS) -> list[tuple[str, str, str, str]]:
@@ -54,8 +52,8 @@ def parse_cases(scenarios: Path = SCENARIOS) -> list[tuple[str, str, str, str]]:
 
 def build_fixture(case_id: str, work: Path) -> None:
     (work / ".claude").mkdir(parents=True)
-    (work / ".claude" / "skills").symlink_to(ROOT / "skills", target_is_directory=True)
-    (work / ".claude" / "agents").symlink_to(ROOT / "claude-agents", target_is_directory=True)
+    shutil.copytree(ROOT / "skills", work / ".claude" / "skills")
+    shutil.copytree(ROOT / "claude-agents", work / ".claude" / "agents")
     if case_id == "CR-1":
         (work / "calc.py").write_text("def add(a, b):\n    return a - b\n")
         (work / "test_calc.py").write_text("from calc import add\n\n\ndef test_add():\n    assert add(2, 3) == 5\n")
@@ -74,25 +72,43 @@ def build_fixture(case_id: str, work: Path) -> None:
         )
 
 
+def build_command(case_id: str, text: str) -> list[str]:
+    is_cr1 = case_id == "CR-1"
+    tools = CR1_TOOLS if is_cr1 else READ_ONLY_TOOLS
+    allowed = CR1_ALLOWED if is_cr1 else READ_ONLY_TOOLS
+    denied = CR1_DENIED if is_cr1 else TRANSCRIPT_DENIED
+    return [
+        "claude", "-p", text,
+        "--model", MODEL,
+        "--effort", "high",
+        "--restricted",
+        "--permission-mode", "dontAsk",
+        "--setting-sources", "project",
+        "--output-format", "stream-json", "--verbose",
+        "--tools", ",".join(tools),
+        "--allowedTools", *allowed,
+        "--disallowedTools", *denied,
+    ]  # fmt: skip
+
+
+def build_env(case_id: str, work: Path, host_env: dict[str, str]) -> dict[str, str]:
+    env = {key: host_env[key] for key in SAFE_ENV_KEYS if key in host_env}
+    env["TMPDIR"] = str(work / "tmp")
+    if case_id == "CR-1":
+        env["PATH"] = f"{work / '.venv' / 'bin'}{os.pathsep}{env.get('PATH', '')}"
+    return env
+
+
 def run_case(case: tuple[str, str, str, str], output: Path) -> tuple[str, int]:
     case_id, preamble, fixture, prompt = case
     case_dir = output / case_id
     work = case_dir / "work"
     build_fixture(case_id, work)
+    (work / "tmp").mkdir()
     text = f"{NOTICE}{preamble}\n\nFixture: {fixture}\n\nPrompt: {prompt}\n"
     (case_dir / "prompt.txt").write_text(text)
-    command = [
-        "claude", "-p", text,
-        "--model", MODEL,
-        "--effort", "high",
-        "--setting-sources", "project",
-        "--output-format", "stream-json", "--verbose",
-        "--disallowedTools", *DISALLOWED,
-    ]  # fmt: skip
-    env = dict(os.environ)
-    if case_id == "CR-1":
-        command += ["--permission-mode", "acceptEdits", "--allowedTools", *CR1_ALLOWED]
-        env["PATH"] = f"{work / '.venv' / 'bin'}{os.pathsep}{env['PATH']}"
+    command = build_command(case_id, text)
+    env = build_env(case_id, work, dict(os.environ))
     with open(case_dir / "trace.jsonl", "w") as trace:
         result = subprocess.run(
             command, cwd=work, env=env, stdin=subprocess.DEVNULL, stdout=trace, stderr=subprocess.STDOUT, timeout=1800
