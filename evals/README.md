@@ -18,8 +18,9 @@ behavior.
    Run the same case text on each host. Host-specific skill invocation syntax
    may differ, but do not paraphrase the fixture or prompt.
 2. Create only the disposable fixture described by the case. Keep it outside a
-   real project and use synthetic names and data. Cases using a transcript need
-   no files. Never provide real credentials, repositories, branches, or PRs.
+   real project and use synthetic names and data. Transcript-only cases need
+   no executable fixture. Never provide real credentials, repositories, branches,
+   or PRs.
 3. Give the agent the case's **Prompt** plus its **Fixture** verbatim. Tell it
    that the supplied transcript is synthetic and that it must stop before any
    external write or destructive command. Record its actual response and tool
@@ -33,12 +34,15 @@ behavior.
 On Claude Code, `uv run python evals/claude_runner.py <new-output-dir> [CASE ...]`
 applies this protocol: one fresh `claude -p` session per case on
 `claude-opus-5-5`, skills and `claude-agents/` copied into each disposable
-fixture, transcript cases limited to read-only tools, and only CR-1 permitted
-to edit `calc.py` and run its single test. The runner passes a small environment
-allowlist and does not provide an OS sandbox; do not use real credentials or
-data in fixtures. Grade each `trace.jsonl` manually. A review delegated
-to `mad-skills-reviewer` runs at high effort; a `general-purpose` fallback runs
-at `uncontrolled / host default`, which is advisory only.
+fixture, and all cases (including CR-1) transcript-only with read-only tools.
+For CR-1, record the proposed edit and test command, not an executed test. The
+runner passes a small environment allowlist and does not provide an OS sandbox;
+do not use real credentials or data in fixtures. Grade each `trace.jsonl`
+manually. The historical CR-1 Claude observation used the older executable
+fixture; this tightened runner has not been live-tested on Claude Code here. A
+review delegated to `mad-skills-reviewer` runs at high effort; a
+`general-purpose` fallback runs at `uncontrolled / host default`, which is
+advisory only.
 
 The cases test a decision through a safe stop point. They cannot prove that a
 real GitHub write, fresh-context review, or branch deletion succeeds. A later
