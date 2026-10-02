@@ -30,6 +30,7 @@ NOTICE = (
 )
 READ_ONLY_TOOLS = ("Read", "Glob", "Grep", "Agent")
 TRANSCRIPT_DENIED = ("Bash", "Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "mcp__*")
+CR1_READ_ONLY_TOOLS = ("Read", "Glob", "Grep")
 SAFE_ENV_KEYS = ("PATH", "HOME", "LANG", "LC_ALL", "TERM")
 
 
@@ -59,6 +60,8 @@ def build_fixture(case_id: str, work: Path) -> None:
 
 
 def build_command(case_id: str, text: str) -> list[str]:
+    tools = CR1_READ_ONLY_TOOLS if case_id == "CR-1" else READ_ONLY_TOOLS
+    denied = (*TRANSCRIPT_DENIED, "Agent") if case_id == "CR-1" else TRANSCRIPT_DENIED
     return [
         "claude", "-p", text,
         "--model", MODEL,
@@ -67,9 +70,9 @@ def build_command(case_id: str, text: str) -> list[str]:
         "--permission-mode", "dontAsk",
         "--setting-sources", "project",
         "--output-format", "stream-json", "--verbose",
-        "--tools", ",".join(READ_ONLY_TOOLS),
-        "--allowedTools", *READ_ONLY_TOOLS,
-        "--disallowedTools", *TRANSCRIPT_DENIED,
+        "--tools", ",".join(tools),
+        "--allowedTools", *tools,
+        "--disallowedTools", *denied,
     ]  # fmt: skip
 
 

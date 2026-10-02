@@ -35,8 +35,8 @@ On Claude Code, `uv run python evals/claude_runner.py <new-output-dir> [CASE ...
 applies this protocol: one fresh `claude -p` session per case on
 `claude-opus-5-5`, skills and `claude-agents/` copied into each disposable
 fixture, and all cases (including CR-1) transcript-only with read-only tools.
-For CR-1, record the proposed edit and test command, not an executed test. The
-runner passes a small environment allowlist and does not provide an OS sandbox;
+CR-1 also disallows delegation. Record its proposed edit and test command, not an executed test.
+The runner passes a small environment allowlist and does not provide an OS sandbox;
 do not use real credentials or data in fixtures. Grade each `trace.jsonl`
 manually. The historical CR-1 Claude observation used the older executable
 fixture; this tightened runner has not been live-tested on Claude Code here. A

@@ -56,11 +56,14 @@ def test_claude_runner_parses_every_case_and_links_reviewer_agent(toolkit_root: 
         transcript = runner.build_command(case_id, "synthetic prompt")
         assert "--restricted" in transcript
         assert transcript[transcript.index("--permission-mode") + 1] == "dontAsk"
-        assert transcript[transcript.index("--tools") + 1].split(",") == list(runner.READ_ONLY_TOOLS)
+        expected_tools = runner.CR1_READ_ONLY_TOOLS if case_id == "CR-1" else runner.READ_ONLY_TOOLS
+        assert transcript[transcript.index("--tools") + 1].split(",") == list(expected_tools)
         allowed = transcript[transcript.index("--allowedTools") + 1 : transcript.index("--disallowedTools")]
         denied = transcript[transcript.index("--disallowedTools") + 1 :]
-        assert allowed == list(runner.READ_ONLY_TOOLS)
+        assert allowed == list(expected_tools)
         assert {"Bash", "Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "mcp__*"} <= set(denied)
+        if case_id == "CR-1":
+            assert "Agent" in denied
     assert (toolkit_root / "claude-agents" / "mad-skills-reviewer.md").is_file()
     readme = (toolkit_root / "evals" / "README.md").read_text(encoding="utf-8")
     assert "evals/claude_runner.py" in readme
