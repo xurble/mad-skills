@@ -31,6 +31,9 @@ links every shared skill into:
 - `~/.agents/skills` for Codex;
 - `~/.claude/skills` for Claude Code.
 
+For Claude Code it also links the `mad-skills-reviewer` agent definition into
+`~/.claude/agents`, so delegated reviews run on Opus at high effort.
+
 The links continue to point at this checkout, so a normal `git pull` updates the
 skills everywhere. The installer is safe to rerun and stops on unmanaged name
 conflicts.
@@ -80,6 +83,7 @@ reaches GitHub outside the sandbox with escalation from the outset.
 - [Adding a project](docs/adding-a-project.md)
 - [Configuration](docs/configuration.md)
 - [Issue workflow](docs/issue-workflow.md)
+- [Manual behavioral evals](evals/README.md)
 - [Opt-in nightly implementation](docs/nightly-implementation.md)
 - [Creating skills](docs/creating-skills.md)
 - [Promoting local skills](docs/promoting-local-skills.md)

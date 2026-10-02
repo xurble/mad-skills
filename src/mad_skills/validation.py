@@ -84,6 +84,33 @@ def validate_skill(path: Path, *, require_metadata: bool = True) -> list[Validat
     return findings
 
 
+CLAUDE_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
+
+
+def validate_claude_agent(path: Path) -> list[ValidationFinding]:
+    match = FRONTMATTER.match(path.read_text(encoding="utf-8"))
+    if not match:
+        return [ValidationFinding(path, "agent definition must start with YAML frontmatter")]
+    try:
+        header = yaml.safe_load(match.group("header"))
+    except yaml.YAMLError as exc:
+        return [ValidationFinding(path, f"invalid frontmatter: {exc}")]
+    if not isinstance(header, dict):
+        return [ValidationFinding(path, "frontmatter must be a mapping")]
+    findings = []
+    if header.get("name") != path.stem:
+        findings.append(ValidationFinding(path, "agent name must match filename"))
+    if not isinstance(header.get("description"), str) or len(header["description"].strip()) < 20:
+        findings.append(ValidationFinding(path, "description must be a useful string of at least 20 characters"))
+    if header.get("model") != "opus":
+        findings.append(ValidationFinding(path, "model must be opus"))
+    if path.stem == "mad-skills-reviewer" and header.get("effort") != "high":
+        findings.append(ValidationFinding(path, "mad-skills-reviewer effort must be high"))
+    elif header.get("effort") not in CLAUDE_EFFORTS:
+        findings.append(ValidationFinding(path, f"effort must be one of {sorted(CLAUDE_EFFORTS)}"))
+    return findings
+
+
 def validate_toolkit(toolkit_root: Path | None = None) -> list[ValidationFinding]:
     root = toolkit_root or find_toolkit_root()
     findings: list[ValidationFinding] = []
@@ -105,6 +132,11 @@ def validate_toolkit(toolkit_root: Path | None = None) -> list[ValidationFinding
             if name in seen_names:
                 findings.append(ValidationFinding(skill_path, f"duplicate skill name {name}"))
             seen_names[name] = skill_path
+
+    agent_root = root / "claude-agents"
+    if agent_root.is_dir():
+        for agent_path in sorted(agent_root.glob("*.md")):
+            findings.extend(validate_claude_agent(agent_path))
 
     defaults = load_yaml(root / "config/defaults.yaml")
     for profile_path in sorted((root / "profiles").glob("*.yaml")):

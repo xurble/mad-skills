@@ -23,7 +23,8 @@ Bundle includes are resolved before their own skills, duplicates are removed, an
 ## Distribution
 
 The checkout is the source of truth. `mad-skills install` creates absolute,
-user-scope skill symlinks for Codex and Claude Code. Existing unmanaged paths are
+user-scope skill symlinks for Codex and Claude Code, plus Claude Code agent
+definitions from `claude-agents/`. Existing unmanaged paths are
 never replaced. An editable uv tool install keeps the CLI pointed at this source
 tree. A normal Git pull therefore updates both instructions and tooling.
 
@@ -51,6 +52,9 @@ selects Codex Sol or Claude Opus at high effort for capture, planning,
 verification and review, and medium effort for implementation and fixes. An
 explicit user choice overrides the corresponding default. Each stage announces
 its actual settings before work and applies them through supported controls.
+Claude Code sets subagent effort only through agent definitions, so review uses
+the installed `mad-skills-reviewer`; without it, Claude Code stages proceed at
+disclosed `uncontrolled / host default` effort as advisory evidence.
 
 The CLI checks objective facts—schema, paths, installation, labels, and commands.
 Skills handle judgment—risk classification, issue quality, implementation, and

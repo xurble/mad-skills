@@ -77,9 +77,10 @@ GitHub—outside the sandbox with escalation from the outset.
    `model` explicitly (`gpt-6-sol` by default), and the resolved
    `reasoning_effort` (high by default) to every review `spawn_agent` call.
    Never inherit the parent model or substitute Astra when Sol is unavailable.
-   In Claude Code, explicitly select the resolved Opus model through its
-   supported subagent control. If the selection cannot be applied, stop the
-   review stage. Do not create a new user-visible task, thread, or chat. After the reviewer reports or posts its
+   In Claude Code, delegate to the `mad-skills-reviewer` subagent type with the
+   resolved Opus model selected explicitly; without it, follow the shared
+   policy's Claude Code effort rule instead of stopping. If the model cannot be
+   applied, stop the review stage. Do not create a new user-visible task, thread, or chat. After the reviewer reports or posts its
    result, stop without fixing findings, re-reviewing, or marking the PR ready.
    The user decides the next action. Explicitly enabled nightly work is the sole
    exception and follows `nightly-implement`'s bounded remediation/readiness loop.

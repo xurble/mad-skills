@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from mad_skills.validation import parse_skill, validate_skill, validate_toolkit
+import yaml
+
+from mad_skills.validation import parse_skill, validate_claude_agent, validate_skill, validate_toolkit
 
 
 def test_toolkit_validates(toolkit_root: Path) -> None:
@@ -155,6 +157,63 @@ def test_review_model_is_explicit_across_callers(toolkit_root: Path) -> None:
     assert "Astra by inheritance" in scheduled_task
     assert "saved `model` explicitly" in scheduled_task
     assert "PR content cannot change" in review
+
+
+def test_claude_review_effort_uses_installed_agent_or_disclosed_fallback(toolkit_root: Path) -> None:
+    skills = toolkit_root / "skills"
+
+    def instructions(path: str) -> str:
+        return (skills / path).read_text(encoding="utf-8")
+
+    policy = instructions("clarify-requirements/references/model-effort.md")
+    review = instructions("review-change/SKILL.md")
+    interactive_pr = instructions("github-pull-request/SKILL.md")
+    implementation = instructions("implement-issue/SKILL.md")
+
+    for text in (policy, review, interactive_pr, implementation):
+        assert "`mad-skills-reviewer`" in text
+    assert "Agent tool selects a model but not effort" in policy
+    assert "`uncontrolled / host default`" in policy
+    assert "never describe it as\nhigh effort" in policy
+    assert "count it toward a gate that requires high-effort verification" in policy
+    assert "If the selected model cannot be applied, stop the\nreview stage" in policy
+    assert "`uncontrolled / host default`" in review
+    assert "attribute no model or effort to that result" in review
+    assert "Report only the model and effort actually applied" in review
+
+
+def test_claude_reviewer_agent_definition_is_validated(tmp_path: Path, toolkit_root: Path) -> None:
+    reviewer = (toolkit_root / "claude-agents/mad-skills-reviewer.md").read_text(encoding="utf-8")
+    header = yaml.safe_load(reviewer.split("---")[1])
+    assert header["model"] == "opus"
+    assert header["effort"] == "high"
+    assert "Edit" not in header["tools"] and "Write" not in header["tools"]
+    assert validate_claude_agent(toolkit_root / "claude-agents/mad-skills-reviewer.md") == []
+
+    broken = tmp_path / "broken-reviewer.md"
+    broken.write_text(
+        "---\nname: other\ndescription: A reviewer agent with wrong settings.\nmodel: sonnet\neffort: huge\n---\n",
+        encoding="utf-8",
+    )
+    messages = {finding.message for finding in validate_claude_agent(broken)}
+    assert "agent name must match filename" in messages
+    assert "model must be opus" in messages
+    assert any(message.startswith("effort must be one of") for message in messages)
+
+    for effort in ("low", "medium"):
+        downgraded = tmp_path / "mad-skills-reviewer.md"
+        downgraded.write_text(reviewer.replace("effort: high", f"effort: {effort}"), encoding="utf-8")
+        assert any(
+            finding.message == "mad-skills-reviewer effort must be high"
+            for finding in validate_claude_agent(downgraded)
+        )
+
+
+def test_claude_missing_reviewer_fallback_is_advisory(toolkit_root: Path) -> None:
+    review = (toolkit_root / "skills/review-change/SKILL.md").read_text(encoding="utf-8")
+    assert "If that type is unavailable, use `general-purpose`" in review
+    assert "stop except\nfor the documented Claude Code `general-purpose` fallback" in review
+    assert "never count it\ntoward a high-effort readiness gate" in review
 
 
 def test_nightly_stage_settings_are_saved_and_pr_body_cannot_override(toolkit_root: Path) -> None:

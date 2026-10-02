@@ -9,7 +9,7 @@ from pathlib import Path
 from mad_skills.configuration import EffectiveConfig, github_workflow_enabled, resolve_project
 from mad_skills.errors import MadSkillsError
 from mad_skills.github import mismatched_repository_settings, missing_labels, require_gh
-from mad_skills.installer import TARGET_PATHS
+from mad_skills.installer import AGENT_TARGET_PATHS, TARGET_PATHS, claude_agent_files
 from mad_skills.paths import find_toolkit_root
 from mad_skills.validation import validate_skill
 
@@ -83,6 +83,22 @@ def _check_installation(effective: EffectiveConfig, toolkit_root: Path, home: Pa
                     f"install.{target_name}",
                     f"{len(missing)} resolved skill(s) are not linked correctly; run "
                     f"'mad-skills install --target {target_name}'",
+                )
+            )
+    for target_name, relative in AGENT_TARGET_PATHS.items():
+        missing_agents = [
+            agent.stem
+            for agent in claude_agent_files(toolkit_root)
+            if not (home / relative / agent.name).is_symlink()
+            or (home / relative / agent.name).resolve(strict=False) != agent.resolve()
+        ]
+        if missing_agents:
+            findings.append(
+                Finding(
+                    "warning",
+                    f"install.{target_name}-agents",
+                    f"agent definition(s) not linked: {', '.join(missing_agents)}; reviews run at uncontrolled "
+                    f"effort until you run 'mad-skills install --target {target_name}'",
                 )
             )
 

@@ -61,6 +61,23 @@ def test_full_check_executes_canonical_command(tmp_path: Path, toolkit_root: Pat
     assert result.status == "READY"
 
 
+def test_missing_claude_reviewer_agent_is_a_warning(tmp_path: Path, toolkit_root: Path) -> None:
+    repo = tmp_path / "repo"
+    home = tmp_path / "home"
+    repo.mkdir()
+    configure_ready_project(repo)
+    install("all", home=home, toolkit_root=toolkit_root)
+    (home / ".claude/agents/mad-skills-reviewer.md").unlink()
+
+    result = check_project(repo, home=home, toolkit_root=toolkit_root, check_github=False)
+
+    assert result.status == "READY WITH WARNINGS"
+    finding = next(finding for finding in result.findings if finding.code == "install.claude-agents")
+    assert finding.severity == "warning"
+    assert "mad-skills-reviewer" in finding.message
+    assert "uncontrolled" in finding.message
+
+
 def test_unconfigured_project_is_ready_with_warning(tmp_path: Path, toolkit_root: Path) -> None:
     home = tmp_path / "home"
     repo = tmp_path / "repo"
