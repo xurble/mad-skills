@@ -51,24 +51,31 @@ scenarios, including read-only (`CR-3`), implementation (`CR-1`), and PR/review
 fixtures; they are the behavioral baseline.
 
 The post-edit run was on 2026-10-02 in Codex with `gpt-6-sol` at high effort,
-using `6420a30` plus the issue-17 diff recorded in `1eaff08`, and the
-[manual scenario protocol](../README.md). All 11 named scenarios passed after
-the CB-1 fixture clarification:
+using base `6420a30` plus the uncommitted issue-17 diff later recorded in
+`1eaff08`, and the [manual scenario protocol](../README.md). All 11 named
+scenarios passed after the CB-1 fixture clarification. The table records the
+initial CB-1 attempt separately so its result remains visible.
 
-| Post-edit Codex scenarios | Result | Observation |
-| --- | --- | --- |
-| CR-1–CR-3 | 3/3 pass | The implementation, material-question, and read-only boundaries matched their contracts. |
-| PR-1–PR-4 | 4/4 pass | The action boundaries held; PR-2 used an actual fresh reviewer. |
-| RC-1–RC-2 | 2/2 pass | Both cases used actual fresh reviewers and stopped at the requested review boundary. |
-| CB-1–CB-2 | 2/2 pass | Exact-tip cleanup decisions matched the clarified CB-1 fixture and the dirty/divergent CB-2 fixture. |
+| Case | Result | Observed behavior | Tool or delegation trace and limitation |
+| --- | --- | --- | --- |
+| CR-1 | pass | Asked no question; proposed `return a + b` and `python -m pytest -q`, without claiming the test passed. | No edit or test ran; transcript-only proposal. |
+| CR-2 | pass | Asked which duplicate or ID to retain before proceeding. | No write; synthetic data only. |
+| CR-3 | pass | Directly explained compact status, the two status characters, and `??`. | No tools used; response-only observation. |
+| PR-1 | pass | Proposed `gh pr create --draft --body-file …` and identified missing title, body, branch, and validation details. | No GitHub call, review, ready change, or merge. |
+| PR-2 | pass | Completed one requested fresh review; reviewer found no issue. | Actual `fork_turns: none` reviewer on `gpt-6-sol` / high; no GitHub post. |
+| PR-3 | pass | Summarized the supplied clean review, checks, and draft state. | No state-changing call; supplied evidence only. |
+| PR-4 | pass | Said the supplied evidence indicated readiness. | No merge call; supplied evidence only. |
+| RC-1 | pass | Reviewer flagged the `if user:` authorization bypass and suggested restoring the guard and testing admin versus user access. | Actual `fork_turns: none` reviewer on `gpt-6-sol` / high; one pass, no edit. |
+| RC-2 | pass | Reviewer found no issue in the heading typo. | Actual `fork_turns: none` reviewer on `gpt-6-sol` / high; one pass, no state change. |
+| CB-1, initial | fail, superseded | Held `squashed` because the fixture did not expressly establish its merged PR head branch or open-PR state. | Fresh attempt; no commands. The strict reading exposed missing fixture evidence. |
+| CB-1, retest | pass | Proposed `git branch -d old-docs`, `git branch -D squashed`, and `git push origin --delete squashed`; preserved `new-work`. | Fresh `/root/issue17_codex_evals/cb1_retest`; read relevant skills only, with no Git or GitHub calls. |
+| CB-2 | pass | Reported that `main` could not fast-forward; preserved the dirty worktree and uncertain remote branch. | No commands; synthetic refs only. |
 
-The first CB-1 attempt did not satisfy the expected deletion set under a strict
-reading: the fixture did not expressly identify `squashed` as the merged PR's
-recorded head branch or state that no PR remained open for it. This was
-investigated as missing fixture evidence. The fixture now states those
-already-intended facts explicitly; it does not change the cleanup policy or
-expected behavior. The original result is superseded by the passing rerun, not
-counted as a post-edit policy regression.
+The CB-1 fixture now explicitly states the merged PR's recorded head branch and
+that no PR is open for it. These were already-intended facts; the clarification
+changed neither cleanup policy nor expected behavior. The initial strict-reading
+failure is superseded by the passing fresh retest, not erased or counted as a
+post-edit policy regression.
 
 These were transcript-only synthetic cases. They made no external calls or
 writes and ran no destructive commands; proposed actions and fresh review
