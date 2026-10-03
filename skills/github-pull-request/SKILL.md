@@ -25,8 +25,7 @@ This overrides only the normal creation prerequisites in step 3, never the
 current-diff checks, verification and fresh-review requirements for ready state.
 If GitHub writes fail, report their exact unapplied content in the run output.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](references/gh-execution.md).
 
 1. Load effective policy. Offer `mad-skills init` when configuration is absent;
    use `light` for this task if declined. Require installed, authenticated `gh`;

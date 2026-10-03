@@ -1,5 +1,20 @@
 # Decision log
 
+## 2026-10-02 — Split the context audit by host
+
+**Decision:** Issue #17 owns shared-policy consolidation, the one-time Codex
+context-overhead audit, and its post-edit Codex behavioral rerun. [Issue
+#21](https://github.com/xurble/mad-skills/issues/21) owns Claude Code-specific
+measurements and post-edit behavioral reruns. Keep the shared skill files
+portable and preserve their existing behavior on both hosts.
+
+**Context:** The 2026-10-01 decision proposed a both-host audit. A shared
+source-file count cannot establish which instructions either host loads or make
+their token costs comparable. Separate reports can record host-specific loading,
+runtime observations, and measurement limits without expanding #17's Codex
+acceptance criteria. This entry updates the audit assignment in that earlier
+decision; its distribution and behavioral-boundary decisions remain in force.
+
 ## 2026-10-02 — Apply Claude Code review effort through an installed agent
 
 **Decision:** Install a `mad-skills-reviewer` Claude Code agent definition

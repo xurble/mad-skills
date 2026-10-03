@@ -59,6 +59,13 @@ disclosed `uncontrolled / host default` effort as advisory evidence.
 The CLI checks objective facts—schema, paths, installation, labels, and commands.
 Skills handle judgment—risk classification, issue quality, implementation, and
 review. The project and GitHub remain sources of truth; there is no workflow engine.
+`mad-skills context` reports resolved project facts, not behavioral instructions.
+Shared [requirements readiness](../skills/clarify-requirements/references/readiness.md)
+and [Codex GitHub command execution](../skills/github-pull-request/references/gh-execution.md)
+live in single references reached through applicable skills. Interactive action
+boundaries and nightly authorization, safety, and stopping rules remain in their
+own workflows. The one-time [Codex context audit](../evals/results/2026-10-02-context-overhead.md)
+records the footprint and its measurement limits; it is not an ongoing gate.
 
 ## Opt-in scheduled work
 

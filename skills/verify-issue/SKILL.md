@@ -23,8 +23,7 @@ produce the requirements summary and full evidence-based result. Do not
 inherit implementation history or assume parent permissions. Record the verified
 commit. Missing prerequisites or new ambiguity require a failed/blocked handoff.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md).
 
 1. Load policy with `mad-skills context --format json`. Offer `mad-skills init`
    when configuration is absent; use `light` for this task if declined. Require

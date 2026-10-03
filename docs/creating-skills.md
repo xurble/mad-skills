@@ -11,8 +11,10 @@ Add a shared skill only after a concrete workflow has proved reusable.
 5. Generate matching Codex UI metadata at `agents/openai.yaml`.
 6. Add it to the smallest appropriate bundle.
 7. Apply `clarify-requirements` at the workflow entry point and reuse the
-   established scope. Keep the 95% confidence rule in that shared skill rather
-   than copying or weakening it in individual workflows.
+   established scope. Keep practical convergence in the shared
+   [readiness reference](../skills/clarify-requirements/references/readiness.md).
+   GitHub-writing skills link to the shared
+   [Codex command rule](../skills/github-pull-request/references/gh-execution.md).
 8. Run `mad-skills validate` and forward-test realistic prompts in a consuming
    repository.
 
