@@ -24,6 +24,7 @@ committed work: approved chat or issue specification
   → separate verification against the supplied specification
   → standalone well-specified draft pull request
   → one requested fresh-context high-effort subagent review
+  → user-directed fixes and fresh review passes until clear
   → user chooses the next action
   → mark pull request ready
   → merge (and close a linked issue when present)
@@ -31,8 +32,10 @@ committed work: approved chat or issue specification
 
 For interactive work, every action after implementation is separately requested.
 `fix` or `implement` stops after implementation and tests; adding `open a PR`
-adds PR creation and stops; adding `review` adds one review pass and stops. Review
-findings never trigger automatic remediation or re-review. Explicitly enabled
+adds PR creation and stops; adding `review` adds one review pass and stops. A
+request to fix issue X, open a PR, and do the first review authorizes those three
+stages in order. Findings lead to further fix/review passes only when the user
+requests them. Explicitly enabled
 nightly work is the sole unattended exception.
 
 Direct natural-language requests such as “open an issue” or “create a PR” authorize
@@ -42,10 +45,13 @@ Ambiguous discussion never authorizes a mutation.
 A PR request does not authorize or require creating an issue. When a feature has
 clear requirements from chat, implementation may proceed directly and the
 PR must consolidate the accepted design into a durable standalone specification.
-When an existing issue drove the work, the PR retains the issue link and closing
-syntax while still recording the accepted final scope. PR titles use Conventional
-Commits by default so the squash commit keeps the same form. Repository setup
-enables squash-only merges and automatic remote branch deletion by default.
+When an existing issue drove the work and the PR is intended to deliver it, the
+PR includes `Closes #N` from creation while recording the accepted final scope.
+Draft status and pending verification or review do not alter that link. An
+incomplete or blocked partial handoff that does not claim delivery may use
+`Refs #N`. PR titles use Conventional Commits by default so the squash commit
+keeps the same form. Repository setup enables squash-only merges and automatic
+remote branch deletion by default.
 
 Bug and enhancement capture creates an issue once requirements meet the 95%
 confidence threshold, without a separate creation-only approval. Root cause and
@@ -56,13 +62,15 @@ present their result locally before posting an approved comment or review.
 
 Workflow labels change from `agent-actionable` to `in-progress` to `verified`.
 Classification labels remain. Failed or uncertain verification never applies
-`verified`. Verification never closes an issue: only a merged PR containing
-`Closes #N` or an explicit user request does so.
+`verified`. Verification never closes an issue: only a later merge of a PR
+containing `Closes #N` does so. Agents never directly close issues or merge
+automatically.
 
 Rigorous non-trivial work requires a plan, tests, a full check, fresh
-verification, and a standalone well-specified PR. The PR opens as a draft so its
-state visibly records that fresh AI code review has not completed. Creating the PR
-does not offer or start review unless the user requested it. Each review is
+verification, and a standalone well-specified PR. The PR opens as a draft while
+review or readiness gates remain, and may stay draft after a clean review until
+the user directs the ready transition. Creating the PR does not offer or start
+review unless the user requested it. Each review is
 delegated to a fresh-context high-effort subagent in the current task and stops
 after one pass. Remediation, re-review, and marking ready each require subsequent
 user direction. A developer may explicitly bypass

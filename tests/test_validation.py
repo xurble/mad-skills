@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
@@ -81,6 +82,33 @@ def test_github_workflows_share_codex_execution_rule(toolkit_root: Path) -> None
     assert "persistent outside-sandbox permissions recorded\n   at setup" in nightly
     assert "material product ambiguity returns the candidate\n   to investigation" in nightly
     assert "Never merge, deploy, or close issues automatically" in nightly
+
+
+def test_issue_driven_pr_link_is_independent_of_readiness(toolkit_root: Path) -> None:
+    def read(path: str) -> str:
+        return (toolkit_root / path).read_text(encoding="utf-8")
+
+    pr = read("skills/github-pull-request/SKILL.md")
+    nightly = read("skills/nightly-implement/SKILL.md")
+    verification = read("skills/verify-issue/SKILL.md")
+    workflow = read("docs/issue-workflow.md")
+    specification = read("docs/specification.md")
+
+    for text in (pr, nightly, verification, workflow, specification):
+        assert "`Closes #N`" in text
+    for text in (pr, workflow, specification):
+        assert "`Closes #N` from creation" in text
+        assert "`Refs #N`" in text
+    pr_steps = re.findall(r"(?ms)^\d+\. .*?(?=^\d+\. |\Z)", pr)
+    contract_step = next(step for step in pr_steps if "standalone change contract" in step)
+    creation_step = next(step for step in pr_steps if "authorizes PR creation" in step)
+    assert "`Closes #N` from creation" not in contract_step
+    assert "`Closes #N` from creation" in creation_step
+    assert "`Refs #N` for an" in creation_step
+    assert "gh pr\n   create --draft" in creation_step
+    assert "Never directly close an\n   issue" in pr
+    assert "user-directed fix/review passes" in specification
+    assert "later merged pull\nrequest" in specification
 
 
 def test_model_effort_policy_covers_stages_and_actual_controls(toolkit_root: Path) -> None:
