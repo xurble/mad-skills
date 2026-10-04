@@ -52,11 +52,14 @@ Apply the shared [Codex GitHub command rule](references/gh-execution.md).
    non-goals, observable acceptance criteria, what changed, important decisions,
    validation evidence, and relevant migrations, data/security implications,
    rollout, and known risks. Include pending post-merge checks with their evidence,
-   trigger and responsible role; use `Refs #N` instead of `Closes #N` while any
-   acceptance check remains pending. Keep inapplicable sections out and do not invent
-   rationale. For fully verified issue-driven work, include `Closes #N`, but
-   consolidate the accepted final specification in the PR instead of making reviewers reconstruct
-   it from the issue history.
+   trigger and responsible role. Keep inapplicable sections out and do not invent
+   rationale. For an issue-driven PR intended to deliver the issue, include
+   `Closes #N` from creation, even while the PR is draft or review, verification,
+   or post-merge checks are pending. The link takes effect only on merge; draft
+   status and readiness gates remain separate. Use `Refs #N` for an incomplete
+   or blocked partial handoff that does not claim to deliver the issue.
+   Consolidate the accepted final specification in the PR instead of making
+   reviewers reconstruct it from the issue history.
 5. Confirm the repository supports `github.merge_method` and
    `github.delete_branch_on_merge`. The defaults are squash-only merging, a
    Conventional-Commit PR title plus description for the squash commit, and
@@ -92,5 +95,5 @@ Apply the shared [Codex GitHub command rule](references/gh-execution.md).
    never claim it happened, and mark ready if GitHub requires it before using the
    configured merge method. Default to squash. Let GitHub delete the remote branch
    after merge, and do not delete a local branch without explicit authorization.
-   Issue closure occurs through the merged linked PR or a separate explicit user
-   request.
+   Issue closure occurs through the merged linked PR. Never directly close an
+   issue with an issue command or API call.

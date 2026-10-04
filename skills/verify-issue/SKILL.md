@@ -49,8 +49,8 @@ Apply the shared [Codex GitHub command rule](../github-pull-request/references/g
    issue-driven change whose material criteria all pass (none pending), remove
    `in-progress` and apply `verified`; otherwise do not change issue labels. For issue-less work
    verified before PR creation, return the result locally for the PR handoff.
-7. Never merge a PR or close an issue. Issue closure occurs only through a merged
-   linked PR or the user's explicit request.
+7. Never merge a PR or directly close an issue. Issue closure occurs through a
+   later, separately authorized merge of the linked PR.
 
 ## Acceptance stages
 
@@ -66,8 +66,9 @@ what evidence will satisfy it, its trigger, and the responsible person or role
 testable on the current diff first, including available PR CI/scan results before
 readiness. A pre-merge verification pass with these documented follow-ups permits
 normal PR creation and readiness under the existing check and fresh-review gates;
-it does not mean the whole issue is verified. Leave `verified` unapplied and avoid
-auto-closing issue references while acceptance checks remain pending.
+it does not mean the whole issue is verified. Leave `verified` unapplied. An
+issue-driven PR intended to deliver the issue still includes `Closes #N` from
+creation; that link closes the issue only if the PR is later merged.
 
 Do not defer a failing or unavailable pre-merge check as post-merge, silently drop
 criteria, or override an explicit requirement that evidence must exist before

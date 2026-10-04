@@ -70,7 +70,8 @@ and announce actual settings before each stage in the scheduled run output.
    Require a passing pre-merge assessment for the current commit before normal PR
    creation; documented post-merge follow-ups do not block creation or readiness.
 6. Push the branch and use `github-pull-request` to open a standalone draft PR.
-   Link the source issue without closing it. Announce the saved model and high
+   Include `Closes #N` for the issue this PR is intended to deliver; opening a
+   draft does not close it. Announce the saved model and high
    review effort before proceeding. Launch a fresh-context `review-change`
    subagent using those settings. In Codex, pass `fork_turns: "none"`, the saved
    `model` explicitly (`gpt-6-sol` unless the user selected another model at
