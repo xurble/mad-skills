@@ -26,14 +26,23 @@ when checking pull requests with `gh`.
 4. Classify a candidate as safely obsolete only when its exact tip is either:
    - an ancestor of the updated remote primary branch; or
    - the recorded head commit, or an ancestor of it, of a merged pull request
-     in that exact repository.
+     in that exact repository whose merge reached the primary branch.
 
-   Use `gh` when available to verify squash merges: find the pull request by
-   head branch or by commit, then check ancestry against its recorded head
-   commit, fetching it if needed. A matching branch name or a
-   closed, unmerged pull request is not sufficient. Skip candidates with an open
-   pull request, commits added after the merged pull request, missing merge
-   evidence, or ambiguous repository ownership.
+   Use `gh` when available to verify squash merges. Look up pull requests
+   containing the candidate's tip with
+   `gh api repos/<owner>/<repo>/commits/<tip>/pulls`, keeping only merged pull
+   requests whose base is the primary branch and whose merge commit is an
+   ancestor of the updated remote primary branch. Fetch each recorded head with
+   `git fetch <remote> refs/pull/<N>/head`, confirm it equals `headRefOid`, and
+   require `git merge-base --is-ancestor <tip> <headRefOid>`; one qualifying
+   pull request suffices. Do not check out pull requests. A local branch may
+   qualify under any name. A remote branch qualifies through a pull request
+   only when it is that pull request's own `headRefName`.
+
+   A matching branch name or a closed, unmerged pull request is not sufficient.
+   Skip candidates with an open pull request using them as head or base,
+   commits added after the merged pull request head, missing merge evidence, or
+   ambiguous repository ownership.
 5. Show the exact worktree removal and local and remote branch deletion sets
    before mutating them. A direct request with scope meeting the 95% confidence
    threshold authorizes removal of only the verified set; if the skill was
@@ -43,10 +52,10 @@ when checking pull requests with `gh`.
    force, then delete its branch. Delete ordinary merged local branches with
    `git branch -d`. Use
    `git branch -D` only for a locally verified squash-merged branch whose exact
-   tip passed the pull-request check, including an earlier commit of that
-   pull request's head branch. Delete a verified remote branch with
+   tip passed the pull-request check. Delete a verified remote branch with
    `git push <remote> --delete <branch>`, then fetch with pruning again.
 7. Reinspect status, the primary branch and its upstream, worktrees, and
    remaining branches. Report what was synchronized, each worktree removed,
-   each local and remote branch deleted, and every candidate skipped with its
-   reason.
+   each local and remote branch deleted with its evidence, and every candidate
+   skipped with its reason. For a branch deleted through a pull request, name
+   `refs/pull/<N>/head` as its recovery point.
