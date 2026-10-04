@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
@@ -98,7 +99,13 @@ def test_issue_driven_pr_link_is_independent_of_readiness(toolkit_root: Path) ->
     for text in (pr, workflow, specification):
         assert "`Closes #N` from creation" in text
         assert "`Refs #N`" in text
-    assert "Use `Refs #N` for an incomplete\n   or blocked partial handoff" in pr
+    pr_steps = re.findall(r"(?ms)^\d+\. .*?(?=^\d+\. |\Z)", pr)
+    contract_step = next(step for step in pr_steps if "standalone change contract" in step)
+    creation_step = next(step for step in pr_steps if "authorizes PR creation" in step)
+    assert "`Closes #N` from creation" not in contract_step
+    assert "`Closes #N` from creation" in creation_step
+    assert "`Refs #N` for an" in creation_step
+    assert "gh pr\n   create --draft" in creation_step
     assert "Never directly close an\n   issue" in pr
     assert "user-directed fix/review passes" in specification
     assert "later merged pull\nrequest" in specification
