@@ -25,10 +25,12 @@ when checking pull requests with `gh`.
    another is safe to remove when their tips differ.
 4. Classify a candidate as safely obsolete only when its exact tip is either:
    - an ancestor of the updated remote primary branch; or
-   - the recorded head commit of a merged pull request for that exact repository
-     and head branch.
+   - the recorded head commit, or an ancestor of it, of a merged pull request
+     in that exact repository.
 
-   Use `gh` when available to verify squash merges. A matching branch name or a
+   Use `gh` when available to verify squash merges: find the pull request by
+   head branch or by commit, then check ancestry against its recorded head
+   commit, fetching it if needed. A matching branch name or a
    closed, unmerged pull request is not sufficient. Skip candidates with an open
    pull request, commits added after the merged pull request, missing merge
    evidence, or ambiguous repository ownership.
@@ -41,7 +43,8 @@ when checking pull requests with `gh`.
    force, then delete its branch. Delete ordinary merged local branches with
    `git branch -d`. Use
    `git branch -D` only for a locally verified squash-merged branch whose exact
-   tip passed the pull-request check. Delete a verified remote branch with
+   tip passed the pull-request check, including an earlier commit of that
+   pull request's head branch. Delete a verified remote branch with
    `git push <remote> --delete <branch>`, then fetch with pruning again.
 7. Reinspect status, the primary branch and its upstream, worktrees, and
    remaining branches. Report what was synchronized, each worktree removed,
