@@ -2,19 +2,12 @@
 
 GitHub Issues are the backlog for future work that is not yet being committed to.
 Pull requests are the durable record and merge gate for work being delivered.
-`gh` is the only supported GitHub client. In Codex, every direct `gh` command and
-every `mad-skills` command that reaches GitHub runs outside the sandbox with
-escalation from the outset.
+`gh` is the only supported GitHub client. In Codex, apply the shared
+[GitHub command rule](../skills/github-pull-request/references/gh-execution.md).
 
-Apply [clarify-requirements](../skills/clarify-requirements/SKILL.md) before
-proceeding with requirements capture, investigation, planning, implementation, or
-a request to act after discussion. Use the discussion and repository evidence,
-ask focused questions whenever requirements confidence is below 95%, then present
-a concise summary when useful and proceed once the threshold is reached. Do not
-make the summary a confirmation gate. Read-only investigation may continue while
-answers are pending; edits, issue creation, and other mutations wait. Reuse the
-established requirements across workflow steps, reopening clarification only for
-material scope changes or new ambiguity that lowers confidence below 95%.
+Apply [clarify-requirements](../skills/clarify-requirements/SKILL.md) and its
+shared [requirements readiness rule](../skills/clarify-requirements/references/readiness.md)
+before engineering work. Reuse settled requirements across workflow steps.
 Apply the shared [model and effort policy](../skills/clarify-requirements/references/model-effort.md)
 at each requested stage, announcing the actual selection before work. Explicit
 user choices override defaults; supported task controls must apply the selection.
@@ -43,8 +36,7 @@ findings never trigger automatic remediation or re-review. Explicitly enabled
 nightly work is the sole unattended exception.
 
 Direct natural-language requests such as “open an issue” or “create a PR” authorize
-the corresponding action when the requirements meet the confidence threshold;
-skill syntax is optional. A clear initial request can satisfy that threshold.
+the corresponding action when requirements are ready; skill syntax is optional.
 Ambiguous discussion never authorizes a mutation.
 
 A PR request does not authorize or require creating an issue. When a feature has

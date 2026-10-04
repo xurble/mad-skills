@@ -7,6 +7,8 @@ description: Clean up obsolete Git branches and linked worktrees, and synchroniz
 
 Apply [clarify-requirements](../clarify-requirements/SKILL.md) to the task's
 requirements first; reuse the established requirements for the same scope.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md)
+when checking pull requests with `gh`.
 
 1. Inspect the repository root, status, current branch, worktrees, remotes, and
    the remote's primary branch. Scope remote cleanup to `origin` unless the user

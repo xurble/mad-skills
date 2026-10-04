@@ -53,8 +53,7 @@ clean review alone is insufficient. Missing capabilities, unresolved findings or
 ambiguity leave a draft and return a handoff. The nightly workflow is the sole
 exception to the interactive stop-after-one-pass rule below.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md).
 
 1. Load effective policy and repository guidance. Offer `mad-skills init` when
    configuration is absent; use `light` for this task if declined. Determine the

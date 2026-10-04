@@ -19,8 +19,7 @@ the plan. A direct fix/implement request with 95% requirements confidence
 authorizes following its in-scope plan without another approval gate, but does not
 authorize posting that plan to GitHub unless the user also requested it.
 
-In Codex, run every `gh` command—and any `mad-skills` command that reaches
-GitHub—outside the sandbox with escalation from the outset.
+Apply the shared [Codex GitHub command rule](../github-pull-request/references/gh-execution.md).
 
 1. Load policy with `mad-skills context --format json`; offer initialization if
    configuration is absent.
