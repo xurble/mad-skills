@@ -482,9 +482,12 @@ subagent inside the scheduled task.
   uses worktrees when parallel or risky work makes them useful.
 - `clean-up-branches` fast-forwards the primary branch, prunes stale tracking refs,
   and removes only branches and clean linked worktrees proven merged by ancestry
-  or by an exact merged-PR head match. It uses forced local branch deletion only
-  for verified squash merges and preserves protected, current, dirty, divergent,
-  and ambiguous work.
+  of the primary branch, or by matching or preceding the recorded head of a pull
+  request merged into the primary branch. Remote branches qualify through a pull
+  request only as its own head branch, and never while an open pull request uses
+  them as head or base. It uses forced local branch deletion only for verified
+  squash merges and preserves protected, current, dirty, divergent, and
+  ambiguous work.
 - `github-pull-request` creates a concise PR covering outcome, implementation,
   known rationale, important decisions, migrations, security implications,
   tests, and risks. Under rigorous policy, it makes the PR a standalone change
