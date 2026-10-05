@@ -549,8 +549,8 @@ Issue-driven work may use the full backlog lifecycle:
 
 ```text
 capture issue -> make actionable -> plan -> in-progress
--> implement -> verify -> draft pull request -> one review pass
--> user decision -> ready -> merge
+-> implement -> verify when required -> draft pull request -> first review pass
+-> user-directed fix/review passes until clear -> user decision -> ready -> merge
 ```
 
 Work that is already specified and approved in chat skips issue creation:
@@ -562,12 +562,17 @@ approve specification; plan -> implement -> test and full check
 ```
 
 In both paths, the PR title and body preserve the final specification without
-depending on chat or issue history. Draft state visibly means fresh AI review has
-not completed. Each interactive step after implementation requires explicit user
-direction. A requested review runs one high-effort subagent pass and stops; even a
-clean result does not mark the PR ready without the user's next instruction. An
-issue link and `Closes #N` are included only when an
-existing issue actually drove the work. An explicit developer instruction may
+depending on chat or issue history. A draft may have pending review or readiness
+gates, including a user-directed ready transition after a clean review. Each
+interactive step after implementation requires explicit user direction. A
+request to fix issue X, open a PR, and do the first review authorizes
+those stages together; subsequent fixes and fresh reviews require user direction.
+Each requested review runs one high-effort subagent pass and stops; even a clean
+result does not mark the PR ready without the user's next instruction. An
+issue-driven PR intended to deliver the issue includes `Closes #N` from creation,
+even while draft or pending verification, review, or post-merge checks. `Refs #N`
+may be used for an incomplete or blocked partial handoff that does not claim
+delivery. An explicit developer instruction may
 bypass the AI-review gate and mark ready or merge; the skipped review remains an
 explicitly reported limitation.
 
@@ -575,10 +580,9 @@ Workflow labels progress from `agent-actionable` to `in-progress` to `verified`.
 Classification labels such as `bug` or `enhancement` remain in place. Failed or
 uncertain verification never applies `verified`.
 
-Verification never closes an issue. An issue closes only when:
-
-- a merged pull request contains `Closes #N`; or
-- the user explicitly asks for closure.
+Verification never closes an issue. An issue closes only when a later merged pull
+request contains `Closes #N`. Agents never directly close issues or merge
+automatically.
 
 ## 15. Invocation and mutation authority
 
