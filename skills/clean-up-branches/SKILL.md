@@ -30,14 +30,15 @@ when checking pull requests with `gh`.
 
    Use `gh` when available to verify squash merges. Look up pull requests
    containing the candidate's tip with
-   `gh api repos/<owner>/<repo>/commits/<tip>/pulls`, keeping only merged pull
-   requests whose base is the primary branch and whose merge commit is an
-   ancestor of the updated remote primary branch. Fetch each recorded head with
-   `git fetch <remote> refs/pull/<N>/head`, confirm it equals `headRefOid`, and
-   require `git merge-base --is-ancestor <tip> <headRefOid>`; one qualifying
-   pull request suffices. Do not check out pull requests. A local branch may
-   qualify under any name. A remote branch qualifies through a pull request
-   only when it is that pull request's own `headRefName`.
+   `gh api repos/<owner>/<repo>/commits/<tip>/pulls`, keeping only those with
+   `merged_at` set, `base.ref` equal to the primary branch, and
+   `merge_commit_sha` an ancestor of the updated remote primary branch. Fetch
+   each recorded head with `git fetch <remote> refs/pull/<N>/head`, confirm it
+   equals `head.sha`, and require `git merge-base --is-ancestor <tip> <head.sha>`;
+   one qualifying pull request suffices. Do not check out pull requests. A local
+   branch may qualify under any name. A remote branch qualifies through a pull
+   request only when it equals `head.ref` and `head.repo.full_name` is the
+   scoped remote's repository.
 
    A matching branch name or a closed, unmerged pull request is not sufficient.
    Skip candidates with an open pull request using them as head or base,
@@ -57,5 +58,5 @@ when checking pull requests with `gh`.
 7. Reinspect status, the primary branch and its upstream, worktrees, and
    remaining branches. Report what was synchronized, each worktree removed,
    each local and remote branch deleted with its evidence, and every candidate
-   skipped with its reason. For a branch deleted through a pull request, name
-   `refs/pull/<N>/head` as its recovery point.
+   skipped with its reason. For a branch deleted through a pull request, give
+   its deleted tip SHA and `refs/pull/<N>/head` as recovery points.

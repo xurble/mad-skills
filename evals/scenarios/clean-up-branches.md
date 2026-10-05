@@ -14,7 +14,8 @@ recorded head branch is `squashed`, and the remote branch still points to B.
 Local `squashed-wip` points to commit B0, the parent of B on PR 7's head
 branch. Remote `integration` also points to B0 and is the base of open PR 9.
 Local `stacked` points to commit D, the recorded head of PR 8, which was merged
-into `integration` and never reached `main`. Local `new-work` points to B plus
+into a separate `release-x` branch; D is not an ancestor of B or of
+`origin/main`, and no pull request merged into `main` contains D. Local `new-work` points to B plus
 a new commit C. Apart from PR 9, no open PR uses any of these branches as head
 or base, and no remote `squashed-wip` exists. No candidate is checked out, and
 all worktrees are clean. These are invented refs.
