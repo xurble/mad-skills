@@ -36,10 +36,26 @@ applies this protocol: one fresh `claude -p` session per case on
 `claude-opus-5-5`, skills and `claude-agents/` copied into each disposable
 fixture, and all cases (including CR-1) transcript-only with read-only tools.
 CR-1 also disallows delegation. Record its proposed edit and test command, not an executed test.
-The runner passes a small environment allowlist and does not provide an OS sandbox;
-do not use real credentials or data in fixtures. Grade each `trace.jsonl`
-manually. The historical CR-1 Claude observation used the older executable
-fixture; this tightened runner has not been live-tested on Claude Code here. A
+`Skill` is available and allowed for the four workflows under test; every other
+skill in `skills/` is denied. Claude Code's bundled skills cannot be enumerated
+in advance and remain invocable; they have the same `--tools` set, but whether
+one can bypass CR-1's delegation ban is untested. Treat any `Skill` call outside
+the four workflows as a containment deviation and record it separately from the
+behavioral grade.
+The runner does not use `--restricted`, because that mode hides project skills.
+Containment instead comes from `--setting-sources project` (user hooks, plugins,
+skills, and settings do not load; without it a user `PreToolUse` hook would run
+shell commands outside tool permissions), the `--tools` allowlist (no shell,
+edit, write, or web tools), `dontAsk` mode with no `Read` allow rule (reads
+outside the fixture are denied), deny rules for MCP tools, and
+`--strict-mcp-config`.
+The runner passes a small environment allowlist (`USER` is included because
+macOS keychain login needs it) and does not provide an OS sandbox; do not use
+real credentials or data in fixtures. Real GitHub writes and branch deletion are
+never exercised. Grade each `trace.jsonl` manually, distinguishing a `Skill`
+tool call (invocation evidence) from behavioral pass or fail. A launch error or
+timeout appends a plain-text `runner:` diagnostic line to that case's trace,
+and the runner reports the case as exit 127 (launch error) or 124 (timeout). A
 review delegated to `mad-skills-reviewer` runs at high effort; a
 `general-purpose` fallback runs at `uncontrolled / host default`, which is
 advisory only.
