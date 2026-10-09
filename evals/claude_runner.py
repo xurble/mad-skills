@@ -8,9 +8,11 @@ order. The runner exits nonzero if any Claude case exits nonzero.
 
 Each case runs in a disposable directory under OUTPUT_DIR with a copy of this
 checkout's skills and Claude agents. Every case is transcript-only: read-only
-tools plus `Skill`, which may invoke only the four workflows under test. A
-launch error or timeout is recorded in the case trace as a failed case. Traces
-are for manual grading. This is tool-permission containment, not an OS sandbox.
+tools plus `Skill`. Of this checkout's skills, only the four workflows under
+test may be invoked; Claude Code's bundled skills remain invocable. A launch
+error or timeout appends a diagnostic line to the case trace and reports the
+case as failed. Traces are for manual grading. This is tool-permission
+containment, not an OS sandbox.
 """
 
 from __future__ import annotations
@@ -70,7 +72,8 @@ def build_fixture(case_id: str, work: Path) -> None:
 
 def build_command(case_id: str, text: str) -> list[str]:
     # --restricted would hide the project skills under test. Containment instead
-    # comes from the --tools allowlist, dontAsk (which denies reads outside the
+    # comes from --setting-sources project (no user hooks, plugins, skills, or
+    # settings), the --tools allowlist, dontAsk (which denies reads outside the
     # fixture because Read is not allowlisted), and the deny rules below.
     # Allow rules alone do not limit Skill, so every other skill is denied.
     tools = CR1_READ_ONLY_TOOLS if case_id == "CR-1" else READ_ONLY_TOOLS

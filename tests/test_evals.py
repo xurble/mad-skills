@@ -63,6 +63,10 @@ def test_claude_runner_parses_every_case_and_links_reviewer_agent(toolkit_root: 
         transcript = runner.build_command(case_id, "synthetic prompt")
         assert "--restricted" not in transcript  # it hides the project skills under test
         assert "--strict-mcp-config" in transcript
+        # Without --restricted, this alone keeps user hooks, plugins, skills, and settings out.
+        assert transcript[transcript.index("--setting-sources") + 1] == "project"
+        assert transcript[transcript.index("--model") + 1] == runner.MODEL == "claude-opus-5-5"
+        assert transcript[transcript.index("--effort") + 1] == "high"
         assert transcript[transcript.index("--permission-mode") + 1] == "dontAsk"
         expected_tools = runner.CR1_READ_ONLY_TOOLS if case_id == "CR-1" else runner.READ_ONLY_TOOLS
         tools = transcript[transcript.index("--tools") + 1].split(",")
