@@ -7,9 +7,10 @@ All selected cases run, with one trace and exit report per case in scenario
 order. The runner exits nonzero if any Claude case exits nonzero.
 
 Each case runs in a disposable directory under OUTPUT_DIR with a copy of this
-checkout's skills and Claude agents. Every case is transcript-only and has
-read-only tools. Traces are for manual grading. This is tool-permission
-containment, not an OS sandbox.
+checkout's skills and Claude agents. Every case is transcript-only: read-only
+tools plus `Skill`, which may invoke only the four workflows under test. A
+launch error or timeout is recorded in the case trace as a failed case. Traces
+are for manual grading. This is tool-permission containment, not an OS sandbox.
 """
 
 from __future__ import annotations
@@ -32,10 +33,14 @@ NOTICE = (
     "You must stop before any external write or destructive command. "
     "Act as you normally would with the skills available to you.\n\n"
 )
-READ_ONLY_TOOLS = ("Read", "Glob", "Grep", "Agent")
+READ_ONLY_TOOLS = ("Read", "Glob", "Grep", "Agent", "Skill")
 TRANSCRIPT_DENIED = ("Bash", "Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "mcp__*")
-CR1_READ_ONLY_TOOLS = ("Read", "Glob", "Grep")
-SAFE_ENV_KEYS = ("PATH", "HOME", "LANG", "LC_ALL", "TERM")
+CR1_READ_ONLY_TOOLS = ("Read", "Glob", "Grep", "Skill")
+# USER is not a credential; macOS keychain login needs it.
+SAFE_ENV_KEYS = ("PATH", "HOME", "USER", "LANG", "LC_ALL", "TERM")
+TIMEOUT_SECONDS = 1800
+TIMEOUT_EXIT = 124
+LAUNCH_ERROR_EXIT = 127
 
 
 def parse_cases(scenarios: Path = SCENARIOS) -> list[tuple[str, str, str, str]]:
@@ -64,18 +69,25 @@ def build_fixture(case_id: str, work: Path) -> None:
 
 
 def build_command(case_id: str, text: str) -> list[str]:
+    # --restricted would hide the project skills under test. Containment instead
+    # comes from the --tools allowlist, dontAsk (which denies reads outside the
+    # fixture because Read is not allowlisted), and the deny rules below.
+    # Allow rules alone do not limit Skill, so every other skill is denied.
     tools = CR1_READ_ONLY_TOOLS if case_id == "CR-1" else READ_ONLY_TOOLS
-    denied = (*TRANSCRIPT_DENIED, "Agent") if case_id == "CR-1" else TRANSCRIPT_DENIED
+    other_skills = sorted(path.name for path in (ROOT / "skills").iterdir() if path.is_dir() and path.name not in ORDER)
+    denied = (*TRANSCRIPT_DENIED, *(f"Skill({name})" for name in other_skills))
+    if case_id == "CR-1":
+        denied = (*denied, "Agent")
     return [
         "claude", "-p", text,
         "--model", MODEL,
         "--effort", "high",
-        "--restricted",
         "--permission-mode", "dontAsk",
         "--setting-sources", "project",
+        "--strict-mcp-config",
         "--output-format", "stream-json", "--verbose",
         "--tools", ",".join(tools),
-        "--allowedTools", *tools,
+        "--allowedTools", *(f"Skill({name})" for name in ORDER),
         "--disallowedTools", *denied,
     ]  # fmt: skip
 
@@ -97,9 +109,22 @@ def run_case(case: tuple[str, str, str, str], output: Path) -> tuple[str, int]:
     command = build_command(case_id, text)
     env = build_env(work, dict(os.environ))
     with open(case_dir / "trace.jsonl", "w") as trace:
-        result = subprocess.run(
-            command, cwd=work, env=env, stdin=subprocess.DEVNULL, stdout=trace, stderr=subprocess.STDOUT, timeout=1800
-        )
+        try:
+            result = subprocess.run(
+                command,
+                cwd=work,
+                env=env,
+                stdin=subprocess.DEVNULL,
+                stdout=trace,
+                stderr=subprocess.STDOUT,
+                timeout=TIMEOUT_SECONDS,
+            )
+        except subprocess.TimeoutExpired:
+            trace.write(f"\nrunner: {case_id} timed out after {TIMEOUT_SECONDS}s\n")
+            return case_id, TIMEOUT_EXIT
+        except OSError as exc:
+            trace.write(f"\nrunner: {case_id} could not start Claude: {exc}\n")
+            return case_id, LAUNCH_ERROR_EXIT
     return case_id, result.returncode
 
 
