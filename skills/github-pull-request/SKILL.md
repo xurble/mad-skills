@@ -19,8 +19,10 @@ than an unattended setup prompt; interactive behavior below remains unchanged.
 pushed and handed off in a draft even when required tests/checks, planning, or
 verification are incomplete or failed. Disclose those gaps, completed work,
 remaining actions, and the exact ambiguity/decision or failure in the standalone
-description. Link the source issue with `Refs #N` rather than closing syntax for
-this incomplete handoff. With no meaningful changes, comment on the issue instead.
+description. Keep the source issue linked with `Closes #N`: draft or blocked
+status does not change that this PR is the delivery vehicle for the issue, and
+the keyword takes effect only if the PR is later merged. With no meaningful
+changes, comment on the issue instead.
 This overrides only the normal creation prerequisites in step 3, never the
 current-diff checks, verification and fresh-review requirements for ready state.
 If GitHub writes fail, report their exact unapplied content in the run output.
@@ -61,12 +63,12 @@ Apply the shared [Codex GitHub command rule](references/gh-execution.md).
    automatic remote branch deletion. Report drift and offer `mad-skills
    setup-github`; do not silently change repository settings during PR creation.
 6. A direct request whose requirements meet the 95% confidence threshold
-   authorizes PR creation. For an issue-driven PR intended to deliver the issue,
-   include `Closes #N` from creation, even while the PR is draft or review,
-   verification, or post-merge checks are pending. The link takes effect only on
-   merge; draft status and readiness gates remain separate. Use `Refs #N` for an
-   incomplete or blocked partial handoff that does not claim to deliver the
-   issue. Use a body file and return the URL. Open with `gh pr
+   authorizes PR creation. For every issue-driven PR, include `Closes #N` for its
+   target issue from creation, even while the PR is draft, incomplete, blocked,
+   or pending review, verification, or post-merge checks. The link takes effect
+   only on merge; draft status and readiness gates remain separate. Use `Refs #N`
+   only for a related issue that this PR is not intended to resolve, never for the
+   target issue. Use a body file and return the URL. Open with `gh pr
    create --draft` when policy has pending verification/review gates; otherwise
    create it in the non-draft state allowed by effective policy. PR creation alone
    does not authorize offering, starting, or performing review. End after reporting

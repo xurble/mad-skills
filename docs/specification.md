@@ -566,12 +566,12 @@ request to fix issue X, open a PR, and do the first review authorizes
 those stages together; subsequent fixes and fresh reviews require user direction.
 Each requested review runs one high-effort subagent pass and stops; even a clean
 result does not mark the PR ready without the user's next instruction. An
-issue-driven PR intended to deliver the issue includes `Closes #N` from creation,
-even while draft or pending verification, review, or post-merge checks. `Refs #N`
-may be used for an incomplete or blocked partial handoff that does not claim
-delivery. An explicit developer instruction may
-bypass the AI-review gate and mark ready or merge; the skipped review remains an
-explicitly reported limitation.
+issue-driven PR includes `Closes #N` for its target issue from creation, even while
+draft, incomplete, blocked, or pending verification, review, or post-merge checks.
+The keyword takes effect only if the PR is merged. `Refs #N` is reserved for a
+related issue that the PR is not intended to resolve. An explicit developer
+instruction may bypass the AI-review gate and mark ready or merge; the skipped
+review remains an explicitly reported limitation.
 
 Workflow labels progress from `agent-actionable` to `in-progress` to `verified`.
 Classification labels such as `bug` or `enhancement` remain in place. Failed or

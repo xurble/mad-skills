@@ -109,11 +109,13 @@ After claiming an issue, a material ambiguity stops dependent work and records t
 question/decision in the PR description. Meaningful partial changes may become a
 blocked draft handoff despite incomplete/failed checks or verification; disclose
 every missing stage.
-Use `Refs #N` for incomplete handoffs. With no meaningful diff, comment on the
-issue. Remove actionable/in-progress/verified, add blocked, preserve classification
-labels, and never restore actionability automatically. If GitHub writes fail,
-the scheduled output records exactly which comments, description, labels or state
-changes were not applied.
+Keep `Closes #N` for the target issue in incomplete handoffs because the draft PR
+remains its delivery vehicle and the keyword takes effect only on merge. Use
+`Refs #N` only for related, non-target issues. With no meaningful diff, comment
+on the issue. Remove actionable/in-progress/verified, add blocked, preserve
+classification labels, and never restore actionability automatically. If GitHub
+writes fail, the scheduled output records exactly which comments, description,
+labels or state changes were not applied.
 
 Failed, interrupted or exhausted work stays unfinished and any PR stays draft.
 The run reports rejected candidates and clarification reasons, completed work,

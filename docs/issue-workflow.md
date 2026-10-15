@@ -45,13 +45,13 @@ Ambiguous discussion never authorizes a mutation.
 A PR request does not authorize or require creating an issue. When a feature has
 clear requirements from chat, implementation may proceed directly and the
 PR must consolidate the accepted design into a durable standalone specification.
-When an existing issue drove the work and the PR is intended to deliver it, the
-PR includes `Closes #N` from creation while recording the accepted final scope.
-Draft status and pending verification or review do not alter that link. An
-incomplete or blocked partial handoff that does not claim delivery may use
-`Refs #N`. PR titles use Conventional Commits by default so the squash commit
-keeps the same form. Repository setup enables squash-only merges and automatic
-remote branch deletion by default.
+When an existing issue drove the work, the PR includes `Closes #N` for that target
+issue from creation while recording the accepted final scope. Draft, incomplete,
+or blocked status and pending verification or review do not alter that link; it
+takes effect only if the PR is merged. `Refs #N` is reserved for a related issue
+that the PR is not intended to resolve. PR titles use Conventional Commits by
+default so the squash commit keeps the same form. Repository setup enables
+squash-only merges and automatic remote branch deletion by default.
 
 Bug and enhancement capture creates an issue once requirements meet the 95%
 confidence threshold, without a separate creation-only approval. Root cause and

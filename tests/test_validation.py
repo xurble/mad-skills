@@ -97,14 +97,19 @@ def test_issue_driven_pr_link_is_independent_of_readiness(toolkit_root: Path) ->
     for text in (pr, nightly, verification, workflow, specification):
         assert "`Closes #N`" in text
     for text in (pr, workflow, specification):
-        assert "`Closes #N` from creation" in text
+        assert "from creation" in text
         assert "`Refs #N`" in text
+        assert "related issue" in text
     pr_steps = re.findall(r"(?ms)^\d+\. .*?(?=^\d+\. |\Z)", pr)
     contract_step = next(step for step in pr_steps if "standalone change contract" in step)
     creation_step = next(step for step in pr_steps if "authorizes PR creation" in step)
-    assert "`Closes #N` from creation" not in contract_step
-    assert "`Closes #N` from creation" in creation_step
-    assert "`Refs #N` for an" in creation_step
+    assert "`Closes #N`" not in contract_step
+    assert "`Closes #N`" in creation_step
+    assert "target issue from creation" in creation_step
+    assert "every issue-driven PR" in creation_step
+    assert "draft, incomplete, blocked" in creation_step
+    assert "never for the\n   target issue" in creation_step
+    assert "related issue" in creation_step
     assert "gh pr\n   create --draft" in creation_step
     assert "Never directly close an\n   issue" in pr
     assert "user-directed fix/review passes" in specification
