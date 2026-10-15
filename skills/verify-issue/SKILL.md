@@ -67,8 +67,8 @@ testable on the current diff first, including available PR CI/scan results befor
 readiness. A pre-merge verification pass with these documented follow-ups permits
 normal PR creation and readiness under the existing check and fresh-review gates;
 it does not mean the whole issue is verified. Leave `verified` unapplied. An
-issue-driven PR intended to deliver the issue still includes `Closes #N` from
-creation; that link closes the issue only if the PR is later merged.
+issue-driven PR still includes `Closes #N` for its target issue from creation;
+that link closes the issue only if the PR is later merged.
 
 Do not defer a failing or unavailable pre-merge check as post-merge, silently drop
 criteria, or override an explicit requirement that evidence must exist before
